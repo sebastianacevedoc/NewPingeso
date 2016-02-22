@@ -1,0 +1,345 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mb.digitador;
+
+import ejb.FormularioDigitadorLocal;
+import ejb.UsuarioEJBLocal;
+import ejb.ValidacionVistasMensajesEJBLocal;
+import entity.Usuario;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.inject.Named;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ *
+ * @author Aracelly
+ */
+@Named(value = "crearFormularioMB")
+@RequestScoped
+@ManagedBean
+public class CrearFormularioMB {
+
+    @EJB
+    private ValidacionVistasMensajesEJBLocal validacionVistasMensajesEJB;
+    @EJB
+    private FormularioDigitadorLocal formularioDigitador;
+
+    @EJB
+    private UsuarioEJBLocal usuarioEJB;
+
+    static final Logger logger = Logger.getLogger(CrearFormularioMB.class.getName());
+
+    private HttpServletRequest httpServletRequest;
+    private FacesContext facesContext;
+
+    private HttpServletRequest httpServletRequest1;
+    private FacesContext facesContext1;
+
+    private HttpServletRequest httpServletRequest2;
+    private FacesContext facesContext2;
+
+    private String usuarioSis;
+    //Guardamos el usuario que inicia sesion
+    private Usuario usuarioSesion;
+
+    //Atributos del formulario
+    private String ruc;
+    private String rit;
+    private int parte;
+    private int nue;
+    private String cargo;
+    private String delito;
+    private String direccionSS;
+    private String lugar;
+    private String unidadPolicial;
+    private String levantadaPor;
+    private String rut;
+    private Date fecha;
+    private String observacion;
+    private String descripcion;
+
+    private String motivo;
+
+    //Usuario levantador
+    private Usuario iniciaCadena;
+
+    public CrearFormularioMB() {
+        logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "CrearFormularioMB");
+
+        this.usuarioSesion = new Usuario();
+        this.iniciaCadena = new Usuario();
+
+        this.facesContext2 = FacesContext.getCurrentInstance();
+        this.httpServletRequest2 = (HttpServletRequest) facesContext2.getExternalContext().getRequest();
+
+        this.facesContext = FacesContext.getCurrentInstance();
+        this.httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+
+        this.facesContext1 = FacesContext.getCurrentInstance();
+        this.httpServletRequest1 = (HttpServletRequest) facesContext1.getExternalContext().getRequest();
+        if (httpServletRequest1.getSession().getAttribute("cuentaUsuario") != null) {
+            this.usuarioSis = (String) httpServletRequest1.getSession().getAttribute("cuentaUsuario");
+            logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
+        }
+
+        logger.exiting(this.getClass().getName(), "CrearFormularioMB");
+    }
+
+    @PostConstruct
+    public void cargarDatos() {
+        logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "loadUsuario");
+        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        logger.exiting(this.getClass().getName(), "loadUsuario");
+    }
+
+    public String iniciarFormulario() {
+        logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "iniciarFormulario");
+
+        boolean datosIncorrectos = false;
+        if (rut == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
+            datosIncorrectos = true;
+            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+            return "";
+        } else {
+            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
+            if (!mensaje.equals("Exito")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+                datosIncorrectos = true;
+                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+                return "";
+            }
+        }
+
+        if (parte != 0) {
+            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
+            if (!mensaje.equals("Exito")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+                datosIncorrectos = true;
+                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+                return "";
+            }
+        }
+        if (ruc != null) {
+            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
+            if (!mensaje.equals("Exito")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+                datosIncorrectos = true;
+                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+                return "";
+            }
+        }
+        if (rit != null) {
+            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
+            if (!mensaje.equals("Exito")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+                datosIncorrectos = true;
+                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+                return "";
+            }
+        }
+        if (nue <=0) {
+            
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
+                datosIncorrectos = true;
+                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+                return "";
+            
+        }
+
+        String resultado = formularioDigitador.crearFormulario(ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioSesion);
+
+        if (resultado.equals("Exito")) {
+            httpServletRequest.getSession().setAttribute("nueF", this.nue);
+            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+            httpServletRequest1.getSession().setAttribute("rutInicia", this.rut);
+
+            logger.exiting(this.getClass().getName(), "iniciarFormulario", "forAddTHU11");
+            return "forAddTHU11?faces-redirect=true";
+        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Datos no válidos"));
+        logger.exiting(this.getClass().getName(), "iniciarFormulario", "");
+        return "";
+    }
+
+    //redirecciona a la pagina para iniciar cadena de custodia
+    public String iniciarCadena() {
+        logger.entering(this.getClass().getName(), "iniciarCadena");
+        httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+        logger.exiting(this.getClass().getName(), "iniciarCadena", "digitadorFormulario");
+        return "digitadorFormularioHU11?faces-redirect=true";
+    }
+
+    public String salir() {
+        logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "salirDigitador");
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
+        httpServletRequest1.removeAttribute("cuentaUsuario");
+        logger.exiting(this.getClass().getName(), "salirDigitador", "/indexListo");
+        return "/indexListo?faces-redirect=true";
+    }
+
+    public String getUsuarioSis() {
+        return usuarioSis;
+    }
+
+    public void setUsuarioSis(String usuarioSis) {
+        this.usuarioSis = usuarioSis;
+    }
+
+    public Usuario getUsuarioSesion() {
+        return usuarioSesion;
+    }
+
+    public void setUsuarioSesion(Usuario usuarioSesion) {
+        this.usuarioSesion = usuarioSesion;
+    }
+
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    public String getRit() {
+        return rit;
+    }
+
+    public void setRit(String rit) {
+        this.rit = rit;
+    }
+
+    public int getNue() {
+        return nue;
+    }
+
+    public void setNue(int nue) {
+        this.nue = nue;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getDelito() {
+        return delito;
+    }
+
+    public void setDelito(String delito) {
+        this.delito = delito;
+    }
+
+    public String getDireccionSS() {
+        return direccionSS;
+    }
+
+    public void setDireccionSS(String direccionSS) {
+        this.direccionSS = direccionSS;
+    }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
+
+    public String getUnidadPolicial() {
+        return unidadPolicial;
+    }
+
+    public void setUnidadPolicial(String unidadPolicial) {
+        this.unidadPolicial = unidadPolicial;
+    }
+
+  
+    public String getLevantadaPor() {
+        return levantadaPor;
+    }
+
+    public void setLevantadaPor(String levantadaPor) {
+        this.levantadaPor = levantadaPor;
+    }
+
+    public String getRut() {
+        return rut;
+    }
+
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getParte() {
+        return parte;
+    }
+
+    public void setParte(int parte) {
+        this.parte = parte;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public Usuario getIniciaCadena() {
+        return iniciaCadena;
+    }
+
+    public void setIniciaCadena(Usuario iniciaCadena) {
+        this.iniciaCadena = iniciaCadena;
+    }
+    
+    
+}
