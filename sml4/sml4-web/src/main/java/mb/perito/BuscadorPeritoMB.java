@@ -16,6 +16,8 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,6 +46,7 @@ public class BuscadorPeritoMB {
 
     private String usuarioSis;
     private int nue;
+    private String nueS;
 
     public BuscadorPeritoMB() {
         logger.setLevel(Level.ALL);
@@ -84,7 +87,7 @@ public class BuscadorPeritoMB {
             logger.exiting(this.getClass().getName(), "buscarFormularioPerito", "todoPerito");
             return "todoPerito.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "no existe", "Datos no válidos"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "N.U.E. no existe", "Datos no válidos"));
         logger.info("formulario no encontrado");
         logger.exiting(this.getClass().getName(), "buscarFormularioPerito", "");
         return "";
@@ -99,6 +102,23 @@ public class BuscadorPeritoMB {
         return "/indexListo?faces-redirect=true";
     }
 
+    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "NUE erróneo";
+        try {
+            int nueIngresado = Integer.parseInt(texto);
+            this.nue = nueIngresado;
+            if (nueIngresado <= 0) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            }
+        } catch (NumberFormatException nfe) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+        }
+    }
+    
     public int getNue() {
         return nue;
     }
@@ -123,4 +143,11 @@ public class BuscadorPeritoMB {
         this.usuarioSesion = usuarioSesion;
     }
 
+    public String getNueS() {
+        return nueS;
+    }
+
+    public void setNueS(String nueS) {
+        this.nueS = nueS;
+    }
 }

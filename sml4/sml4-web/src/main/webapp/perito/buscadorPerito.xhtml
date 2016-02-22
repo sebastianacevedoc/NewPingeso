@@ -69,12 +69,12 @@
                                 <h:form>
                                     <br />
                                     <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
-                                        <p:outputLabel for="nue" value="N.U.E.:" style="width:120px"></p:outputLabel>
-                                        <h:inputText id="nue" style="margin-right:10px" rendered="true" value = "#{buscadorPeritoMB.nue}" requiredMessage="Debe ingresar el N.U.E."></h:inputText>
+                                        <p:outputLabel for="nue" value="N.U.E.:" style="width:90px"></p:outputLabel>
+                                        <p:inputText id="nue" type="number" style="margin-right:10px" rendered="true" value = "#{buscadorPeritoMB.nueS}" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{buscadorPeritoMB.validarNUE}"></p:inputText>
                                         <p:commandButton value="Buscar" label="nue" action = "#{buscadorPeritoMB.buscarFormulario()}" ></p:commandButton>                          
                                     </h:panelGrid>
                                     <br />
-                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                    <p:messages id="messages" autoUpdate="true" closable="true" />
                                 </h:form> 
                             </div>
                         </div>

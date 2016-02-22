@@ -17,6 +17,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import mb.jefeArea.BuscadorJefeAreaMB;
@@ -98,13 +100,13 @@ public class BuscadorAdministradorMB {
         logger.entering(this.getClass().getName(), "buscarUsuario");
         logger.log(Level.INFO, "RUT CAPTURADO:{0}", this.rut);
 
-        if (rut != null && !rut.equals("")) {
-            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar R.U.T. válido", " "));
-                return "";
-            }
-        }
+//        if (rut != null && !rut.equals("")) {
+//            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar R.U.T. válido", " "));
+//                return "";
+//            }
+//        }
 
         Usuario user = usuarioEJB.findUserByRut(rut);
 
@@ -149,6 +151,17 @@ public class BuscadorAdministradorMB {
         return "/indexListo?faces-redirect=true";
     }
 
+    public void validarRut(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = validacionVistasMensajesEJB.checkRut(texto);
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+        }
+    }
+    
+    
     public Usuario getUsuarioSesion() {
         return usuarioSesion;
     }

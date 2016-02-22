@@ -78,7 +78,7 @@
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="nue" value="N.U.E.:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="nue" type="number" style="margin-right:10px" value = "#{buscadorJefeAreaMB.nue}" rendered="true"  requiredMessage="Debe ingresar el N.U.E.">
+                                            <p:inputText id="nue" type="number" style="margin-right:10px" value = "#{buscadorJefeAreaMB.nueS}" rendered="true" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{buscadorJefeAreaMB.validarNUE}">
 
                                             </p:inputText>
                                             <h:commandButton value="Buscar" label="nue" action = "#{buscadorJefeAreaMB.buscarFormulario()}" ></h:commandButton>  
@@ -107,7 +107,7 @@
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="rut" value="R.U.T.:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="rut" style="margin-right:10px" value = "#{buscadorJefeAreaMB.rut}" rendered="true" requiredMessage="Debe ingresar la búsqueda"/>
+                                            <p:inputText id="rut" style="margin-right:10px" value = "#{buscadorJefeAreaMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.T." validator="#{buscadorJefeAreaMB.validarRut}"/>
 
                                             <h:commandButton value="Buscar" label="rut" type="number" action = "#{buscadorJefeAreaMB.buscarUsuario()}" ></h:commandButton>  
 
@@ -129,22 +129,18 @@
                                 <h:form>
                                     <br />
                                     <div align="center">
-
-
-                                        <h:selectOneRadio id="check" value="#{buscadorJefeAreaMB.buscar}" required="true" requiredMessage="Debe seleccionar el dato para buscar: RUC, RIT o Número de parte">
+                                        <h:selectOneRadio id="check" value="#{buscadorJefeAreaMB.buscar}" required="true" requiredMessage="Debe seleccionar el dato para buscar: R.U.C., R.I.T. o N° parte">
                                             <f:selectItem itemValue="Ruc" itemLabel="R.U.C." /> <!-- agregar libreria arriba-->
                                             <f:selectItem itemValue="Rit" itemLabel="R.I.T." />
-                                            <f:selectItem itemValue="NumeroParte" itemLabel="Parte" />
+                                            <f:selectItem itemValue="NumeroParte" itemLabel="N° Parte" />
                                         </h:selectOneRadio><br />
-
-
 
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="bus" value="Buscar:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="bus" style="margin-right:10px" value = "#{buscadorJefeAreaMB.input}" rendered="true" requiredMessage="Debe ingresar la búsqueda"/>
+                                            <p:inputText id="bus" style="margin-right:10px" value = "#{buscadorJefeAreaMB.input}" required="true" rendered="true" requiredMessage="Debe ingresar la búsqueda" />
 
-                                            <h:commandButton value="Buscar" label="busca" action = "#{buscadorJefeAreaMB.buscarFormularioRRP()}" ></h:commandButton>  
+                                            <h:commandButton  value="Buscar" label="busca"  action = "#{buscadorJefeAreaMB.buscarFormularioRRP()}" ></h:commandButton>  
 
                                         </h:panelGrid>
                                     </div>

@@ -48,7 +48,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     public String checkRucE(String ruc){
         if(!validacionEJB.checkRucOrRit(ruc)){
             System.out.println("Error ruc ------> "+ruc);
-            return "Debe ingresar un R.U.C. válido";
+            return "R.U.C. erróneo";
         }
         
         return "Exito";
@@ -57,7 +57,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     @Override
     public String checkRitE(String rit){
         if(rit == null || rit.equals("") || !validacionEJB.checkRucOrRit(rit)){
-            return "Debe ingresar un R.I.T. válido";
+            return "R.I.T. erróneo";
         }
         return "Exito";
     }
@@ -66,7 +66,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     public String checkParte(int numeroParte) {
         
         if(numeroParte < 1){
-            return "El Número de parte ingresado es erróneo";
+            return "N° Parte erróneo";
         }
         return "Exito";
         
@@ -75,7 +75,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     @Override
     public String checkRut(String rut){
         if(!validacionEJB.val(rut)){
-            return "Debe ingresar un R.U.T. válido";
+            return "R.U.T. erróneo";
         }
         return "Exito";
     }

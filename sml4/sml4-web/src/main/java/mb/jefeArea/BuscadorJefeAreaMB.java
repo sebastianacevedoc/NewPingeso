@@ -14,6 +14,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -47,9 +49,13 @@ public class BuscadorJefeAreaMB {
     private HttpServletRequest httpServletRequest2;
     private FacesContext facesContext2;
 
+    private HttpServletRequest httpServletRequest3;
+    private FacesContext facesContext3;
+
     private String usuarioSis;
     //para busqueda de nue
     private int nue;
+    private String nueS;
 
     //busqueda ruc ric y nparte
     private String buscar;
@@ -75,6 +81,14 @@ public class BuscadorJefeAreaMB {
             logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
         }
 
+        this.facesContext3 = FacesContext.getCurrentInstance();
+        this.httpServletRequest3 = (HttpServletRequest) facesContext3.getExternalContext().getRequest();
+        if (httpServletRequest3.getSession().getAttribute("buscar") != null) {
+            this.buscar = (String) httpServletRequest3.getSession().getAttribute("buscar");
+
+        }
+        System.out.println("LOAD busqueda -> " + buscar);
+
         logger.exiting(this.getClass().getName(), "BusquedaJefeAreaMB");
     }
 
@@ -91,11 +105,10 @@ public class BuscadorJefeAreaMB {
         logger.entering(this.getClass().getName(), "buscarFormularioJefeArea");
         logger.log(Level.INFO, "NUE CAPTURADO:{0}", this.nue);
 
-        if (nue <= 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E. válido", " "));
-            return "";
-        }
-
+//        if (nue <= 0) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E. válido", " "));
+//            return "";
+//        }
         Formulario formulario = formularioEJB.findFormularioByNue(this.nue);
 
         if (formulario != null) {
@@ -104,7 +117,7 @@ public class BuscadorJefeAreaMB {
             logger.exiting(this.getClass().getName(), "buscarFormularioJefeArea", "buscadorJefeAreaResultTE");
             return "buscadorJefeAreaResultTE.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "N.U.E. no encontrado", "Datos no válidos"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "N.U.E. no existe", "Datos no válidos"));
         logger.info("formulario no encontrado");
         logger.exiting(this.getClass().getName(), "buscarFormularioJefeArea", "buscadorJefeArea");
         return "";
@@ -115,39 +128,45 @@ public class BuscadorJefeAreaMB {
         logger.entering(this.getClass().getName(), "buscarFormularioRRPJefeArea");
         logger.log(Level.INFO, "INPUT CAPTURADO:{0}", this.input);
 
-        String mensaje = "";
         String formNotFound = "";
+        String mensaje = "";
+       
         if (buscar != null && !buscar.equals("")) {
 
             switch (buscar) {
                 case "Ruc":
-                    mensaje = validacionVistasMensajesEJB.checkRuc(input);
-                    formNotFound = "El RUC ingresado no existe";
+                    if(input.equals("")){
+                        mensaje = "Debe ingresasr R.U.C.";
+                    }
+                    else
+                        mensaje = validacionVistasMensajesEJB.checkRucE(input);
+                    formNotFound = "R.U.C. no existe";
                     break;
                 case "Rit":
-                    mensaje = validacionVistasMensajesEJB.checkRit(input);
-                    formNotFound = "El Rit ingresado no existe";
+                    if(input.equals("")){
+                        mensaje = "Debe ingresasr R.I.T";
+                    }
+                    else
+                        mensaje = validacionVistasMensajesEJB.checkRitE(input);
+                    formNotFound = "R.I.T. no existe";
                     break;
                 case "NumeroParte":
-
                     int parte;
                     try {
                         parte = Integer.parseInt(input);
                     } catch (NumberFormatException e) {
                         String msg = "";
-                        if(!input.equals("")){
-                            msg = "Debe ingresar un Número de parte válido";
-                        }else{
-                            msg = "Debe ingresar el Número de parte para realizar la búsqueda";
+                        if (!input.equals("")) {
+                            msg = "N° Parte erróneo";
+                        } else {
+                            msg = "Debe ingresar N.U.E.";
                         }
-                  
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, " "));
                         return "";
                     }
-                        mensaje = validacionVistasMensajesEJB.checkParte(parte);
+                    mensaje = validacionVistasMensajesEJB.checkParte(parte);
 
-
-                    formNotFound = "El número de parte ingresado no existe";
+                    formNotFound = "N° Parte no existe";
                     break;
             }
             if (!mensaje.equals("Exito")) {
@@ -177,14 +196,13 @@ public class BuscadorJefeAreaMB {
         logger.entering(this.getClass().getName(), "buscarUsuarioJefeArea");
         logger.log(Level.INFO, "RUT CAPTURADO:{0}", this.rut);
 
-        if (rut != null && !rut.equals("")) {
-            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar R.U.T. válido", " "));
-                return "";
-            }
-        }
-
+//        if (rut != null && !rut.equals("")) {
+//            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar R.U.T. válido", " "));
+//                return "";
+//            }
+//        }
         Usuario user = usuarioEJB.findUserByRut(rut);
 
         if (user != null) {
@@ -237,6 +255,97 @@ public class BuscadorJefeAreaMB {
         return "/indexListo?faces-redirect=true";
     }
 
+    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "NUE erróneo";
+        try {
+            int nueIngresado = Integer.parseInt(texto);
+            this.nue = nueIngresado;
+            if (nueIngresado <= 0) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            }
+        } catch (NumberFormatException nfe) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+        }
+    }
+
+    public void validarRut(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = validacionVistasMensajesEJB.checkRut(texto);
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+        }
+    }
+
+//    public void validarRRP(FacesContext context, UIComponent toValidate, Object value) {
+//
+//        context = FacesContext.getCurrentInstance();
+//        String mensaje = "";
+//        String texto = (String) value;
+//        System.out.println("VALIDACION buscar -> " + buscar + ", input -> " + texto);
+//
+//        if (buscar != null && !buscar.equals("")) {
+//            switch (buscar) {
+//                case "Ruc":
+//                    mensaje = validacionVistasMensajesEJB.checkRucE(texto);
+//                    break;
+//                case "Rit":
+//                    mensaje = validacionVistasMensajesEJB.checkRitE(texto);
+//                    break;
+//                case "NumeroParte":
+//                    try {
+//                        int parteIngresado = Integer.parseInt(texto);
+//                        mensaje = validacionVistasMensajesEJB.checkParte(parteIngresado);
+//                    } catch (NumberFormatException nfe) {
+//
+//                        mensaje = "N° Parte erróneo";
+//                    }
+//                    break;
+//            }
+//            if (!mensaje.equals("Exito")) {
+//                ((UIInput) toValidate).setValid(false);
+//                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+//            }
+//        }
+//    }
+    
+//    public void validarRRP() {
+//
+//        //context = FacesContext.getCurrentInstance();
+//        String mensaje = "";
+//        String texto = input;
+//        System.out.println("VALIDACION buscar -> " + buscar + ", input -> " + texto);
+//
+//        if (buscar != null && !buscar.equals("")) {
+//            switch (buscar) {
+//                case "Ruc":
+//                    mensaje = validacionVistasMensajesEJB.checkRucE(texto);
+//                    break;
+//                case "Rit":
+//                    mensaje = validacionVistasMensajesEJB.checkRitE(texto);
+//                    break;
+//                case "NumeroParte":
+//                    try {
+//                        int parteIngresado = Integer.parseInt(texto);
+//                        mensaje = validacionVistasMensajesEJB.checkParte(parteIngresado);
+//                    } catch (NumberFormatException nfe) {
+//
+//                        mensaje = "N° Parte erróneo";
+//                    }
+//                    break;
+//            }
+//            if (!mensaje.equals("Exito")) {
+//                
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+//            }
+//        }
+//    }
+
     public String getUsuarioSis() {
         return usuarioSis;
     }
@@ -283,6 +392,14 @@ public class BuscadorJefeAreaMB {
 
     public void setRut(String rut) {
         this.rut = rut;
+    }
+
+    public String getNueS() {
+        return nueS;
+    }
+
+    public void setNueS(String nueS) {
+        this.nueS = nueS;
     }
 
 }

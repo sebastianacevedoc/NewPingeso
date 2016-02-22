@@ -68,19 +68,17 @@
                                 <h:form>
                                     <br />
                                     <div align="center">
-
-
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="rut" value="R.U.T.:" style="width:90px"></p:outputLabel>
-                                            <h:inputText id="rut" style="margin-right:10px" value = "#{buscadorAdministradorMB.rut}" rendered="true" requiredMessage="Debe ingresar la búsqueda"/>
+                                            <h:inputText id="rut" style="margin-right:10px" value = "#{buscadorAdministradorMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.T." validator="#{buscadorAdministradorMB.validarRut}"/>
 
                                             <h:commandButton value="Buscar" label="busca" action = "#{buscadorAdministradorMB.buscarUsuario()}" ></h:commandButton>  
 
                                         </h:panelGrid>
                                     </div>
                                     <br />
-                                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                    <p:messages id="messages" autoUpdate="true" closable="true" />
                                 </h:form>
                             </div>
                         </div>
