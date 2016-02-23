@@ -73,12 +73,13 @@
                                             <p:outputLabel for="rut" value="R.U.T.:" style="width:90px"></p:outputLabel>
                                             <h:inputText id="rut" style="margin-right:10px" value = "#{buscadorAdministradorMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.T." validator="#{buscadorAdministradorMB.validarRut}"/>
 
-                                            <h:commandButton value="Buscar" label="busca" action = "#{buscadorAdministradorMB.buscarUsuario()}" ></h:commandButton>  
+                                            <h:commandButton id="btnbu" value="Buscar" label="busca" action = "#{buscadorAdministradorMB.buscarUsuario()}" ></h:commandButton>  
 
                                         </h:panelGrid>
                                     </div>
                                     <br />
-                                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                                    <p:message for="rut"/>
+                                    <p:message for="btnbu"/>
                                 </h:form>
                             </div>
                         </div>

@@ -87,7 +87,9 @@ public class BuscadorPeritoMB {
             logger.exiting(this.getClass().getName(), "buscarFormularioPerito", "todoPerito");
             return "todoPerito.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "N.U.E. no existe", "Datos no válidos"));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "N.U.E. no existe"));
         logger.info("formulario no encontrado");
         logger.exiting(this.getClass().getName(), "buscarFormularioPerito", "");
         return "";
@@ -102,20 +104,31 @@ public class BuscadorPeritoMB {
         return "/indexListo?faces-redirect=true";
     }
 
-    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
+    
+    public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = "NUE erróneo";
+        String mensaje = "";
         try {
-            int nueIngresado = Integer.parseInt(texto);
-            this.nue = nueIngresado;
-            if (nueIngresado <= 0) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            nue = Integer.parseInt(texto);
+            if (nue > 0) {
+                mensaje = "Exito";
+            } else {
+                mensaje = "N.U.E. erróneo";
             }
-        } catch (NumberFormatException nfe) {
+
+        } catch (NumberFormatException e) {
+
+            if (!texto.equals("")) {
+                mensaje = "N.U.E. erróneo";
+            } else {
+                mensaje = "Debe ingresar N.U.E.";
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
     

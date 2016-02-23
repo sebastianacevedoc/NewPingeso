@@ -21,6 +21,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,12 +44,13 @@ public class CrearFormularioChoferMB {
     static final Logger logger = Logger.getLogger(CrearFormularioChoferMB.class.getName());
 
     //Guardamos el usuario que inicia sesion
-    private Usuario usuarioS;
+    private Usuario usuarioSesion;
 
     //Atributos del formulario
     private String ruc;
     private String rit;
     private int nue;
+    private String nueS;
     private String cargo;
     private String delito;
     private String direccionSS;
@@ -59,6 +62,7 @@ public class CrearFormularioChoferMB {
     private String observacion;
     private String descripcion;
     private int parte;
+    private String parteS;
 
     private String motivo;
 
@@ -77,7 +81,7 @@ public class CrearFormularioChoferMB {
     public CrearFormularioChoferMB() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearFormularioChoferMB");
-        this.usuarioS = new Usuario();
+        this.usuarioSesion = new Usuario();
 
         this.facesContext = FacesContext.getCurrentInstance();
         this.httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -95,11 +99,11 @@ public class CrearFormularioChoferMB {
     public void cargarDatos() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosChofer");
-        this.usuarioS = (Usuario) usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        this.usuarioSesion = (Usuario) usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
 
-        this.cargo = usuarioS.getCargoidCargo().getNombreCargo();
-        this.levantadaPor = usuarioS.getNombreUsuario();
-        this.rut = usuarioS.getRutUsuario();
+        this.cargo = usuarioSesion.getCargoidCargo().getNombreCargo();
+        this.levantadaPor = usuarioSesion.getNombreUsuario();
+        this.rut = usuarioSesion.getRutUsuario();
 
         GregorianCalendar c = new GregorianCalendar();
         this.fecha = c.getTime();
@@ -110,53 +114,53 @@ public class CrearFormularioChoferMB {
     public String iniciarFormulario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormularioChofer");
-        int nParte =0;
-        boolean datosIncorrectos = false;
-        if (parte != 0) {
-            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-        if (ruc != null) {
-            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-        if (rit != null) {
-            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-         if (nue <=0) {
-            
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
-                datosIncorrectos = true;
-                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            
-        }
+//        int nParte =0;
+//        boolean datosIncorrectos = false;
+//        if (parte != 0) {
+//            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//        if (ruc != null) {
+//            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//        if (rit != null) {
+//            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//         if (nue <=0) {
+//            
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
+//                datosIncorrectos = true;
+//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            
+//        }
+//        
+//        if(datosIncorrectos){
+//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
+//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
+//            return "";
+//        }    
+//        
         
-        if(datosIncorrectos){
-            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
-            return "";
-        }    
-        
-        
-        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, nParte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioS);
+        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
             //Enviando nue
@@ -176,7 +180,7 @@ public class CrearFormularioChoferMB {
     public String salir() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirChofer");
-        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioS.getNombreUsuario());
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
         logger.exiting(this.getClass().getName(), "salirChofer", "/indexListo");
         return "/indexListo?faces-redirect=true";
@@ -198,6 +202,85 @@ public class CrearFormularioChoferMB {
         return "choferFormulario?faces-redirect=true";
     }
 
+    public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.checkRucE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarRit(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.checkRitE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarNParte(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "";
+
+        if (texto.equals("")) {
+            mensaje = "Exito";
+        } else {
+
+            try {
+                parte = Integer.parseInt(texto);
+                mensaje = validacionVistasMensajesEJB.checkParte(parte);
+            } catch (NumberFormatException e) {
+
+                if (!texto.equals("")) {
+                    mensaje = "N° Parte erróneo";
+                }
+                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
+    }
+
+    public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "";
+        try {
+            nue = Integer.parseInt(texto);
+            if (nue > 0) {
+                mensaje = "Exito";
+            } else {
+                mensaje = "N.U.E. erróneo";
+            }
+
+        } catch (NumberFormatException e) {
+
+            if (!texto.equals("")) {
+                mensaje = "N.U.E. erróneo";
+            } else {
+                mensaje = "Debe ingresar N.U.E.";
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
+    }
+    
     public String getMotivo() {
         return motivo;
     }
@@ -206,12 +289,12 @@ public class CrearFormularioChoferMB {
         this.motivo = motivo;
     }
 
-    public Usuario getUsuarioS() {
-        return usuarioS;
+    public Usuario getUsuarioSesion() {
+        return usuarioSesion;
     }
 
-    public void setUsuarioS(Usuario usuarioS) {
-        this.usuarioS = usuarioS;
+    public void setUsuarioSesion(Usuario usuarioSesion) {
+        this.usuarioSesion = usuarioSesion;
     }
 
     public String getRuc() {
@@ -334,8 +417,19 @@ public class CrearFormularioChoferMB {
         this.parte = parte;
     }
 
-  
+      public String getNueS() {
+        return nueS;
+    }
 
+    public void setNueS(String nueS) {
+        this.nueS = nueS;
+    }
 
+    public String getParteS() {
+        return parteS;
+    }
 
+    public void setParteS(String parteS) {
+        this.parteS = parteS;
+    }
 }

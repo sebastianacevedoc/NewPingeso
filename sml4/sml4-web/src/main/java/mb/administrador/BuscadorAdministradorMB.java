@@ -116,7 +116,9 @@ public class BuscadorAdministradorMB {
             logger.exiting(this.getClass().getName(), "buscarUsuario", "buscadorJefeAreaResultUsuario");
             return "buscadorAdmResultUsuario.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "R.U.T. no encontrado", ""));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "R.U.T. no existe"));
 
         logger.exiting(this.getClass().getName(), "buscarUsuario", "buscarUsuario");
         return "";
@@ -157,7 +159,7 @@ public class BuscadorAdministradorMB {
         String mensaje = validacionVistasMensajesEJB.checkRut(texto);
         if (!mensaje.equals("Exito")) {
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
     

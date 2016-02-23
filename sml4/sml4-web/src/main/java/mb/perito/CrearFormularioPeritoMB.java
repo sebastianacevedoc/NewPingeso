@@ -21,6 +21,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,6 +51,7 @@ public class CrearFormularioPeritoMB {
     private String ruc;
     private String rit;
     private int nue;
+    private String nueS;
     private String cargo;
     private String delito;
     private String direccionSS;
@@ -60,6 +63,7 @@ public class CrearFormularioPeritoMB {
     private String observacion;
     private String descripcion;
     private int parte;
+    private String parteS;
 
     private String motivo;
 
@@ -109,48 +113,48 @@ public class CrearFormularioPeritoMB {
     public String iniciarFormulario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormularioPerito");
-        boolean datosIncorrectos = false;
-
-        if (parte != 0) {
-            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-        if (ruc != null) {
-            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-        if (rit != null) {
-            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
-            if (!mensaje.equals("Exito")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-                datosIncorrectos = true;
-                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-                return "";
-            }
-        }
-        if (nue <= 0) {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
-            datosIncorrectos = true;
-            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-            return "";
-        }
-        if (datosIncorrectos) {
-            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
-            return "";
-        }
+//        boolean datosIncorrectos = false;
+//
+//        if (parte != 0) {
+//            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//        if (ruc != null) {
+//            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//        if (rit != null) {
+//            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
+//            if (!mensaje.equals("Exito")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
+//                datosIncorrectos = true;
+//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//                return "";
+//            }
+//        }
+//        if (nue <= 0) {
+//
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
+//            datosIncorrectos = true;
+//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//            return "";
+//        }
+//        if (datosIncorrectos) {
+//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
+//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+//            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
+//            return "";
+//        }
 
         String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, this.usuarioSesion.getNombreUsuario(), rut, fecha, observacion, descripcion, usuarioSesion);
 
@@ -169,8 +173,7 @@ public class CrearFormularioPeritoMB {
         return "";
     }
 
-    
-     //redirecciona a la pagina para realizar una busqueda
+    //redirecciona a la pagina para realizar una busqueda
     public String buscar() {
         logger.entering(this.getClass().getName(), "buscar");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
@@ -185,7 +188,7 @@ public class CrearFormularioPeritoMB {
         logger.exiting(this.getClass().getName(), "iniciarCadena", "peritoFormulario");
         return "peritoFormulario?faces-redirect=true";
     }
-    
+
     public String salir() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
@@ -193,6 +196,85 @@ public class CrearFormularioPeritoMB {
         httpServletRequest1.removeAttribute("cuentaUsuario");
         logger.exiting(this.getClass().getName(), "salirPerito", "/indexListo");
         return "/indexListo?faces-redirect=true";
+    }
+
+    public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.checkRucE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarRit(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.checkRitE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarNParte(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "";
+
+        if (texto.equals("")) {
+            mensaje = "Exito";
+        } else {
+
+            try {
+                parte = Integer.parseInt(texto);
+                mensaje = validacionVistasMensajesEJB.checkParte(parte);
+            } catch (NumberFormatException e) {
+
+                if (!texto.equals("")) {
+                    mensaje = "N° Parte erróneo";
+                }
+                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
+    }
+
+    public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "";
+        try {
+            nue = Integer.parseInt(texto);
+            if (nue > 0) {
+                mensaje = "Exito";
+            } else {
+                mensaje = "N.U.E. erróneo";
+            }
+
+        } catch (NumberFormatException e) {
+
+            if (!texto.equals("")) {
+                mensaje = "N.U.E. erróneo";
+            } else {
+                mensaje = "Debe ingresar N.U.E.";
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
     }
 
     public Usuario getUsuarioSesion() {
@@ -330,4 +412,21 @@ public class CrearFormularioPeritoMB {
     public void setParte(int parte) {
         this.parte = parte;
     }
+
+    public String getNueS() {
+        return nueS;
+    }
+
+    public void setNueS(String nueS) {
+        this.nueS = nueS;
+    }
+
+    public String getParteS() {
+        return parteS;
+    }
+
+    public void setParteS(String parteS) {
+        this.parteS = parteS;
+    }
+
 }

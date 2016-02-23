@@ -87,7 +87,9 @@ public class BuscadorChoferMB {
             logger.exiting(this.getClass().getName(), "buscarFormulario", "editarChoferET");
             return "editarChoferET.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "N.U.E. no existe", ""));
+         FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "N.U.E. no existe"));
         logger.info("formulario no encontrado");
         logger.exiting(this.getClass().getName(), "buscarFormularioChofer", "");
         return "";
@@ -118,20 +120,48 @@ public class BuscadorChoferMB {
         return "choferFormulario?faces-redirect=true";
     }
     
-    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
+//    /* valida suponiendo que se ha ingresado texto, ya que la vista lo requiere obligatoriamente. */
+//    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
+//        context = FacesContext.getCurrentInstance();
+//        String texto = (String) value;
+//        String mensaje = "NUE erróneo";
+//        try {
+//            int nueIngresado = Integer.parseInt(texto);
+//            this.nue = nueIngresado;
+//            if (nueIngresado <= 0) {
+//                ((UIInput) toValidate).setValid(false);
+//                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+//            }
+//        } catch (NumberFormatException nfe) {
+//            ((UIInput) toValidate).setValid(false);
+//            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+//        }
+//    }
+    
+    public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = "NUE erróneo";
+        String mensaje = "";
         try {
-            int nueIngresado = Integer.parseInt(texto);
-            this.nue = nueIngresado;
-            if (nueIngresado <= 0) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            nue = Integer.parseInt(texto);
+            if (nue > 0) {
+                mensaje = "Exito";
+            } else {
+                mensaje = "N.U.E. erróneo";
             }
-        } catch (NumberFormatException nfe) {
+
+        } catch (NumberFormatException e) {
+
+            if (!texto.equals("")) {
+                mensaje = "N.U.E. erróneo";
+            } else {
+                mensaje = "Debe ingresar N.U.E.";
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
     

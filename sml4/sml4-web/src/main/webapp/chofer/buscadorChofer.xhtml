@@ -68,15 +68,17 @@
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="nue" value="N.U.E.:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="nue" type="number" style="margin-right:10px"  value = "#{buscadorChoferMB.nueS}" rendered="true" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{buscadorChoferMB.validarNUE}">
+                                            <p:inputText id="nue" style="margin-right:10px"  value = "#{buscadorChoferMB.nueS}" rendered="true" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{buscadorChoferMB.validarNue}">
 
                                             </p:inputText>
-                                            <p:commandButton value="Buscar" label="nue" action = "#{buscadorChoferMB.buscarFormulario()}" ></p:commandButton>  
+                                            <p:commandButton id="btnbfc" value="Buscar" label="nue" action = "#{buscadorChoferMB.buscarFormulario()}" ></p:commandButton>  
 
                                         </h:panelGrid>
                                     </div>
                                     <br />
-                                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                                    <!--<p:messages id="messages" autoUpdate="true" closable="true" />-->
+                                    <p:message for="nue"/>
+                                    <p:message for="btnbfc"/>
                                 </h:form>
                             </div>
                         </div>

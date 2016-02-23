@@ -74,42 +74,35 @@
                                     <br />
                                     <div align="center">
  
-                                        <p:dataTable value = "#{resultadoCrearJefeAreaMB.userCreado}" var = "user" emptyMessage="No se encuentra usuario" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="100" style="margin-bottom:0">
- 
- 
-                                            <p:column headerText="Cuenta">
-                                                <h:outputText value="#{user.cuentaUsuario}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="Contraseña">
-                                                <h:outputText value="#{user.passUsuario}"/>                                                
-                                            </p:column>
-                                            <p:column headerText="Nombre">
-                                                <h:outputText value="#{user.nombreUsuario}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="Apellido">
-                                                <h:outputText value="#{user.apellidoUsuario}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="R.U.N.">
-                                                <h:outputText value="#{user.rutUsuario}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="Correo">
-                                                <h:outputText value="#{user.mailUsuario}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="Cargo">
-                                                <h:outputText value="#{user.cargoidCargo.nombreCargo}"/>                                                
-                                            </p:column>
- 
-                                            <p:column headerText="Área">
-                                                <h:outputText value="#{user.areaidArea.nombreArea}"/>                                                
-                                            </p:column>
- 
- 
-                                        </p:dataTable>
+                                        <img src="../imagenes/user.jpg" width="204" height="204" alt="user"/><br /><br />
+
+
+                                        <h:panelGrid columns="2" cellpadding="5" class="ui-grid">
+                                            <p:outputLabel style="width:120px" title="Cuenta">Cuenta: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.cuentaUsuario}"/>
+
+                                            <p:outputLabel style="width:120px" title="Contraseña">Contraseña: </p:outputLabel>   
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.passUsuario}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="Nombre">Nombre: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.nombreUsuario}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="Apellido">Apellido: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.apellidoUsuario}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="RUN">R.U.N.: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.rutUsuario}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="Correo">Correo: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.mailUsuario}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="Cargo">Cargo: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.cargoidCargo.nombreCargo}"/>                                                
+
+                                            <p:outputLabel style="width:120px" title="area">Área: </p:outputLabel>
+                                            <h:outputText value="#{resultadoCrearJefeAreaMB.userCreado.areaidArea.nombreArea}"/>                                                
+
+                                        </h:panelGrid><br />
  
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
  

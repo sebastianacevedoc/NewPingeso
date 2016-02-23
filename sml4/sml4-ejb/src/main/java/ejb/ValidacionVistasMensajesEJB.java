@@ -10,7 +10,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author Alan
+ * @author Aracelly
  */
 @Stateless
 public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBLocal {
@@ -91,27 +91,43 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     @Override
     public String validarCuentaUsuario(String cuenta){
         if(validacionEJB.validarCuentaUsuario(cuenta) == false){
-            return "Cuenta de usuario ya existe";
+            return "Cuenta ya registrada";
         }
         return "Exito";
     }
     
+//    @Override
+//    public String validarCorreo(String correo){
+//        if(correo == null || correo.equals("") || validacionEJB.validarEmail(correo)==false){
+//            return "Debe ingresar un correo válido";
+//        }else{
+//            if(validacionEJB.correoExiste(correo)==true){
+//                return "Correo se encuentra asociado a otro usuario";
+//            }
+//        }
+//        return "Exito";
+//    }
+    
     @Override
-    public String validarCorreo(String correo){
-        if(correo == null || correo.equals("") || validacionEJB.validarEmail(correo)==false){
-            return "Debe ingresar un correo válido";
-        }else{
-            if(validacionEJB.correoExiste(correo)==true){
-                return "Correo se encuentra asociado a otro usuario";
-            }
+    public String checkCorreo(String correo){
+        if(validacionEJB.validarEmail(correo)==false){
+            return "Correo erróneo";
         }
         return "Exito";
     }
+    
+     @Override
+     public String validarCorreo(String correo){
+         if(validacionEJB.correoExiste(correo)==true){
+             return "Correo ya registrado";
+         }
+         return "Exito";
+     }
     
     @Override
     public String validarRut(String rut){
         if(validacionEJB.rutExiste(rut)==true){
-            return "R.U.N. ya se encuentra registrado";
+            return "R.U.T. ya registrado";
         }
         return "Exito";
     }

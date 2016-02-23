@@ -18,6 +18,8 @@ public interface ValidacionVistasMensajesEJBLocal {
     public String checkRucE(String ruc);
     public String checkRitE(String rit);  
 
+    public String checkCorreo(String correo);
+    
     public String checkParte(int numeroParte);
     public String checkRut(String rut);
     

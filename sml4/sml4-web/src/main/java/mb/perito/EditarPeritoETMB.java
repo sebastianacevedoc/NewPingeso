@@ -24,9 +24,10 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import static mb.perito.CrearFormularioPeritoMB.logger;
 
 /**
  *
@@ -71,6 +72,7 @@ public class EditarPeritoETMB {
 
     //para registrar contenido de la edicion
     private int parte;
+    private String parteS;
     private String ruc;
     private String rit;
     
@@ -125,6 +127,8 @@ public class EditarPeritoETMB {
         
         if (formulario.getNumeroParte() == 0) {
             this.isParte = false;
+        }else{
+            parteS = formulario.getNumeroParte()+"";
         }
         if (formulario.getRuc() == null || formulario.getRuc().equals("")) {
             this.isRuc = false;
@@ -141,47 +145,47 @@ public class EditarPeritoETMB {
     public String editarFormulario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarFormularioPerito");
-        boolean datosIncorrectos = false;
-        if (this.isParte == false && formulario.getNumeroParte() != 0) {
-            parte = formulario.getNumeroParte();
-            logger.log(Level.INFO, "MB parte -> {0}", parte);
-            String mensaje = validacionVistasMensajesEJB.checkParte(formulario.getNumeroParte());
-            if(mensaje.equals("Exito"))
-                isParte = true;
-            else{                
-                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-                datosIncorrectos = true;
-            }            
-        }
-        if (this.isRuc == false && formulario.getRuc() != null && !formulario.getRuc().equals("")) {
-            ruc = formulario.getRuc();
-            logger.log(Level.INFO, "MB ruc -> {0}", ruc);   
-            String mensaje = validacionVistasMensajesEJB.checkRucE(formulario.getRuc());
-            if(mensaje.equals("Exito"))
-                isRuc = true;
-            else{                
-                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-                datosIncorrectos = true;
-            }
-        }
-        if (this.isRit == false && formulario.getRit() != null && !formulario.getRit().equals("")) {
-            rit = formulario.getRit();
-            logger.log(Level.INFO, "MB rit -> {0}", rit);
-            String mensaje = validacionVistasMensajesEJB.checkRitE(formulario.getRit());
-            if(mensaje.equals("Exito"))
-                isRit = true;
-            else{                
-                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-                datosIncorrectos = true;
-            }
-        }
-        
-        if(datosIncorrectos){
-            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
-            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
-            return "";
-        }        
+//        boolean datosIncorrectos = false;
+//        if (this.isParte == false && formulario.getNumeroParte() != 0) {
+//            parte = formulario.getNumeroParte();
+//            logger.log(Level.INFO, "MB parte -> {0}", parte);
+//            String mensaje = validacionVistasMensajesEJB.checkParte(formulario.getNumeroParte());
+//            if(mensaje.equals("Exito"))
+//                isParte = true;
+//            else{                
+//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
+//                datosIncorrectos = true;
+//            }            
+//        }
+//        if (this.isRuc == false && formulario.getRuc() != null && !formulario.getRuc().equals("")) {
+//            ruc = formulario.getRuc();
+//            logger.log(Level.INFO, "MB ruc -> {0}", ruc);   
+//            String mensaje = validacionVistasMensajesEJB.checkRucE(formulario.getRuc());
+//            if(mensaje.equals("Exito"))
+//                isRuc = true;
+//            else{                
+//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
+//                datosIncorrectos = true;
+//            }
+//        }
+//        if (this.isRit == false && formulario.getRit() != null && !formulario.getRit().equals("")) {
+//            rit = formulario.getRit();
+//            logger.log(Level.INFO, "MB rit -> {0}", rit);
+//            String mensaje = validacionVistasMensajesEJB.checkRitE(formulario.getRit());
+//            if(mensaje.equals("Exito"))
+//                isRit = true;
+//            else{                
+//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
+//                datosIncorrectos = true;
+//            }
+//        }
+//        
+//        if(datosIncorrectos){
+//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
+//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
+//            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
+//            return "";
+//        }        
 
         String response = formularioEJB.edicionFormulario(formulario, observacionEdicion, usuarioSesion, parte, ruc, rit);
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
@@ -222,13 +226,6 @@ public class EditarPeritoETMB {
         return "/indexListo?faces-redirect=true";
     }
     
-    public void validarRuc(){
-        System.out.println("entra a validador del ruc en la vista, valida -> "+formulario.getRuc());
-        String mensaje = validacionVistasMensajesEJB.checkRuc(formulario.getRuc());
-        if(!mensaje.equals("exito")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-        }
-    }
     
    public String cambio() {
 
@@ -270,6 +267,59 @@ public class EditarPeritoETMB {
 
         }
         System.out.println(intercalado.toString());
+    }
+     
+     
+     public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.checkRucE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarRit(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.checkRitE(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarNParte(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        String mensaje = "";
+
+        if (texto.equals("")) {
+            mensaje = "Exito";
+        } else {
+
+            try {
+                parte = Integer.parseInt(texto);
+                mensaje = validacionVistasMensajesEJB.checkParte(parte);
+            } catch (NumberFormatException e) {
+
+                if (!texto.equals("")) {
+                    mensaje = "N° Parte erróneo";
+                }
+                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+
+        if (!mensaje.equals("Exito")) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
     }
 
     public String getCambia() {
@@ -384,5 +434,11 @@ public class EditarPeritoETMB {
         this.rit = rit;
     }
 
-    
+    public String getParteS() {
+        return parteS;
+    }
+
+    public void setParteS(String parteS) {
+        this.parteS = parteS;
+    }    
 }
