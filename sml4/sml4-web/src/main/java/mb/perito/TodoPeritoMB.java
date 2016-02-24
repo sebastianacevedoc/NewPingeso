@@ -195,7 +195,7 @@ public class TodoPeritoMB {
         return cambia;
     }
 
-     private void intercalado(List<Traslado> traslados) {
+         private void intercalado(List<Traslado> traslados) {
 
         for (int i = 0; i < traslados.size(); i++) {
 
