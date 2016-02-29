@@ -14,19 +14,30 @@ import javax.ejb.Local;
  */
 @Local
 public interface ValidacionVistasMensajesEJBLocal {
+
     public String checkRuc(String ruc);
-    public String checkRit(String rit);    
+
+    public String checkRit(String rit);
+
     public String checkRucE(String ruc);
-    public String checkRitE(String rit);  
+
+    public String checkRitE(String rit);
+
+    public String checkFecha(Date fecha);
 
     public String checkCorreo(String correo);
-    
+
     public String checkParte(int numeroParte);
+
     public String checkRut(String rut);
-    
+
     public String soloCaracteres(String dato);
+
     public String validarCuentaUsuario(String cuenta);
+
     public String validarCorreo(String correo);
+
     public String validarRut(String rut);
+
     public String validarFechaDigitador(Date fecha);
 }

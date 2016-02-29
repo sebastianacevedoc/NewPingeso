@@ -141,10 +141,10 @@ public class TodoMB {
     public void cargarDatos() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosDigitador");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.trasladosList = formularioEJB.traslados(this.formulario);
-        this.usuarioInicia = usuarioEJB.findUserByRut(rutInicia);
+        this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
 
         intercalado(trasladosList);
 
@@ -215,7 +215,7 @@ public class TodoMB {
             return "";
         }
 
-        String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibe, usuarioRecibeCargo, usuarioRecibeRut, usuarioRecibeUnidad, fechaT, observacionesT, motivo, usuarioSesion);
+        String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibe, usuarioRecibeCargo, usuarioRecibeRut, usuarioRecibeUnidad, fechaT, observacionesT, motivo);
         if (resultado.equals("Exito")) {
             httpServletRequest3.getSession().setAttribute("nueF", this.nue);
             httpServletRequest4.getSession().setAttribute("cuentaUsuario", this.usuarioSis);

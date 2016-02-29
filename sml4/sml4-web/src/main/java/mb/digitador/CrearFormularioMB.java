@@ -116,57 +116,6 @@ public class CrearFormularioMB {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormulario");
 
-//        boolean datosIncorrectos = false;
-//        if (rut == null) {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
-//            datosIncorrectos = true;
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//            return "";
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//
-//        if (parte != 0) {
-//            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (ruc != null) {
-//            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (rit != null) {
-//            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (nue <=0) {
-//            
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
-//                datosIncorrectos = true;
-//                 httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            
-//        }
         String resultado = formularioDigitador.crearFormulario(ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
@@ -280,14 +229,6 @@ public class CrearFormularioMB {
         }
     }
 
-    public void validarFecha(FacesContext context, UIComponent toValidate, Object value) {
-        context = FacesContext.getCurrentInstance();
-
-        String texto = "perrito";
-
-        context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", texto));
-
-    }
 
     public String getUsuarioSis() {
         return usuarioSis;

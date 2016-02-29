@@ -90,13 +90,14 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
             logger.exiting(this.getClass().getName(), "crearFormulario", "Error con levantado por");
             return "Error con levantador por, debe ingresar solo caracteres.";
         }
-
+        
         Date fechaActual = new Date();
 
         if (fecha.after(fechaActual)) {
-            logger.exiting(this.getClass().getName(), "compareFechas", "error");
-              return "Error con fecha ingresada, no puede ser superior a la fecha actual";
+
+            return "Error con fecha ingresada, no puede ser superior a la fecha actual";
         }
+
         //ruc - rit- nparte - obs y descripcion no son obligatorios
         Usuario usuarioIngresar = null;
         //Verificando en la base de datos si existe el usuario con ese rut
@@ -158,7 +159,7 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
 
         Usuario nuevoExterno = new Usuario();
         //area se esta entregando Externo
-        Area areaExterno = areaFacade.findByArea("Externo");
+        Area areaExterno = areaFacade.findByArea("Otro");
         if (areaExterno == null) {
             logger.exiting(this.getClass().getName(), "crearExterno1", "problema al buscar area externo");
             return null;
@@ -171,7 +172,7 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
         }
         //buscando cargo, en el caso que no exista se crea
 
-        Cargo cargoExterno = cargoFacade.findByCargo("Otro");
+        Cargo cargoExterno = cargoFacade.findByCargo("Externo");
         if (cargoExterno == null) {
             logger.exiting(this.getClass().getName(), "crearExterno1", "problema al buscar cargo otro");
             return null;
@@ -200,7 +201,7 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
     }
 
     @Override
-    public String crearTraslado(Formulario formulario, Usuario usuarioInicia, String usuarioRecibe, String usuarioRecibeCargo, String usuarioRecibeRut, String usuarioRecibeUnidad, Date fechaT, String observaciones, String motivo, Usuario uSesion) {
+    public String crearTraslado(Formulario formulario, Usuario usuarioInicia, String usuarioRecibe, String usuarioRecibeCargo, String usuarioRecibeRut, String usuarioRecibeUnidad, Date fechaT, String observaciones, String motivo) {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearTraslado");
 
