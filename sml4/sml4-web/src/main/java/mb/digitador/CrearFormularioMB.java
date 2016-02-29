@@ -167,7 +167,6 @@ public class CrearFormularioMB {
 //                return "";
 //            
 //        }
-
         String resultado = formularioDigitador.crearFormulario(ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
@@ -178,7 +177,9 @@ public class CrearFormularioMB {
             logger.exiting(this.getClass().getName(), "iniciarFormulario", "forAddTHU11");
             return "forAddTHU11?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Datos no válidos"));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", resultado));
         logger.exiting(this.getClass().getName(), "iniciarFormulario", "");
         return "";
     }
@@ -199,7 +200,7 @@ public class CrearFormularioMB {
         logger.exiting(this.getClass().getName(), "salirDigitador", "/indexListo");
         return "/indexListo?faces-redirect=true";
     }
-    
+
     public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
@@ -279,8 +280,15 @@ public class CrearFormularioMB {
         }
     }
 
+    public void validarFecha(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
 
-    
+        String texto = "perrito";
+
+        context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", texto));
+
+    }
+
     public String getUsuarioSis() {
         return usuarioSis;
     }
@@ -361,7 +369,6 @@ public class CrearFormularioMB {
         this.unidadPolicial = unidadPolicial;
     }
 
-  
     public String getLevantadaPor() {
         return levantadaPor;
     }
@@ -425,8 +432,8 @@ public class CrearFormularioMB {
     public void setIniciaCadena(Usuario iniciaCadena) {
         this.iniciaCadena = iniciaCadena;
     }
-    
-     public String getNueS() {
+
+    public String getNueS() {
         return nueS;
     }
 

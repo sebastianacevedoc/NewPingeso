@@ -136,7 +136,7 @@
                                         <br />
 
                                         <h:outputLabel for="fecha" value="Fecha*: " style="width:120px" />
-                                        <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" required="true" requiredMessage="Debe ingresar fecha" value="#{crearFormularioMB.fecha}"/>
+                                        <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" required="true" requiredMessage="Debe ingresar fecha" value="#{crearFormularioMB.fecha}" validator="#{crearFormularioMB.validarFecha}"/>
                                         <p:message for="fecha" display="text"/>
                                         <br />
 
@@ -172,7 +172,7 @@
 
 
                                     <h:commandButton id="btnAceptar" value="Aceptar" action="#{crearFormularioMB.iniciarFormulario()}"  />
-                                    
+                                    <p:message for="btnAceptar"/>
                                 </h:form> <br />
                             </div>
                         </div>

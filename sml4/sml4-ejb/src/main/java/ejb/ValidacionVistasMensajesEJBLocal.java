@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -27,4 +28,5 @@ public interface ValidacionVistasMensajesEJBLocal {
     public String validarCuentaUsuario(String cuenta);
     public String validarCorreo(String correo);
     public String validarRut(String rut);
+    public String validarFechaDigitador(Date fecha);
 }

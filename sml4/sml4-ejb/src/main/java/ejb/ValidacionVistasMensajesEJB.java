@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -130,5 +131,10 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "R.U.T. ya registrado";
         }
         return "Exito";
+    }
+
+    @Override
+    public String validarFechaDigitador(Date fecha) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
