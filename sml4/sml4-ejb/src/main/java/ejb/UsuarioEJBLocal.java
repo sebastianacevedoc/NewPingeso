@@ -8,6 +8,7 @@ package ejb;
 import entity.Area;
 import entity.Cargo;
 import entity.Usuario;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -24,7 +25,10 @@ public interface UsuarioEJBLocal {
     public boolean edicionEstadoUsuario(String rut, String estado);
 
     public Usuario findUserByRut(String rut);
-    
+
     public String crearUsuario(String nombreUsuario, String apellidoUsuario, String rut, String pass, String mail, String cuentaUsuario, String cargo, String area);
-        
+
+    public List<String> findAllUserCrear();
+
+    public List<String> findAllUserTraslado();
 }

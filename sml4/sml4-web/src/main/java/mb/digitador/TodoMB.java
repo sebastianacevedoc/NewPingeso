@@ -16,6 +16,7 @@ import entity.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -24,6 +25,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,8 +69,6 @@ public class TodoMB {
     private FacesContext facesContext5;
 
     private String usuarioRecibe;
-    private String usuarioRecibeUnidad;
-    private String usuarioRecibeCargo;
     private String usuarioRecibeRut;
     private String motivo;
     private String observacionesT;
@@ -95,13 +95,15 @@ public class TodoMB {
     private String cambia;
     private List<Traslado> intercalado;
 
+    private List<String> usuarios;
+
     static final Logger logger = Logger.getLogger(TodoMB.class.getName());
 
     public TodoMB() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "TodoMB");
         this.trasladosList = new ArrayList<>();
-
+        this.usuarios = new ArrayList();
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         if (httpServletRequest.getSession().getAttribute("nueF") != null) {
@@ -145,7 +147,7 @@ public class TodoMB {
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
-
+        this.usuarios = usuarioEJB.findAllUserTraslado();
         intercalado(trasladosList);
 
         this.bloqueada = formulario.getBloqueado();
@@ -181,6 +183,21 @@ public class TodoMB {
         logger.log(Level.FINEST, " usuario recibe {0}", this.usuarioRecibe);
         logger.log(Level.FINEST, "motivo {0}", this.motivo);
 
+        StringTokenizer st = new StringTokenizer(usuarioRecibe, " ");
+        int cont = st.countTokens();
+        for (int i = 0; i < cont; i++) {
+            String cosas = st.nextToken();
+            if (i == 0) {
+                usuarioRecibeRut = cosas;
+                System.out.println("RUT ------> " + usuarioRecibeRut);
+            }
+            if (i == 2) {
+                //30.08
+                usuarioRecibe = cosas;
+                System.out.println("NOMBRE-------> " + usuarioRecibe);
+            }
+        }
+
         if (usuarioRecibeRut == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
 
@@ -203,19 +220,13 @@ public class TodoMB {
 
         }
 
-        if ("".equals(usuarioRecibeCargo) || "".equals(usuarioRecibeUnidad) || usuarioRecibeCargo == null || usuarioRecibeUnidad == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar el cargo y unidad", " "));
-            logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "debbe seleccionar cargo o unidad");
-            return "";
-        }
-
         if (motivo == null || motivo.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe especificar el motivo del traslado", " "));
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe especificar el motivo del traslado");
             return "";
         }
 
-        String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibe, usuarioRecibeCargo, usuarioRecibeRut, usuarioRecibeUnidad, fechaT, observacionesT, motivo);
+        String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibeRut, fechaT, observacionesT, motivo);
         if (resultado.equals("Exito")) {
             httpServletRequest3.getSession().setAttribute("nueF", this.nue);
             httpServletRequest4.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
@@ -224,9 +235,11 @@ public class TodoMB {
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "todoHU11?faces-redirect=true");
             return "todoHU11?faces-redirect=true";
         }
-        
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
 
+        // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", resultado));
         logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "traslado no pudo ser creado");
         //return "";
         return "";
@@ -330,22 +343,6 @@ public class TodoMB {
         this.usuarioRecibe = usuarioRecibe;
     }
 
-    public String getUsuarioRecibeUnidad() {
-        return usuarioRecibeUnidad;
-    }
-
-    public void setUsuarioRecibeUnidad(String usuarioRecibeUnidad) {
-        this.usuarioRecibeUnidad = usuarioRecibeUnidad;
-    }
-
-    public String getUsuarioRecibeCargo() {
-        return usuarioRecibeCargo;
-    }
-
-    public void setUsuarioRecibeCargo(String usuarioRecibeCargo) {
-        this.usuarioRecibeCargo = usuarioRecibeCargo;
-    }
-
     public String getUsuarioRecibeRut() {
         return usuarioRecibeRut;
     }
@@ -416,6 +413,22 @@ public class TodoMB {
 
     public void setTrasladosList(List<Traslado> trasladosList) {
         this.trasladosList = trasladosList;
+    }
+
+    public String getRutInicia() {
+        return rutInicia;
+    }
+
+    public void setRutInicia(String rutInicia) {
+        this.rutInicia = rutInicia;
+    }
+
+    public List<String> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<String> usuarios) {
+        this.usuarios = usuarios;
     }
 
 }

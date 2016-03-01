@@ -13,6 +13,9 @@ import facade.AreaFacadeLocal;
 import facade.CargoFacadeLocal;
 import facade.TipoUsuarioFacadeLocal;
 import facade.UsuarioFacadeLocal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -248,4 +251,46 @@ public class UsuarioEJB implements UsuarioEJBLocal {
         return "Exito";
     }
 
+    @Override
+    public List<String> findAllUserCrear() {
+
+        List<Usuario> users = null;
+        users = usuarioFacade.findAll();
+        List<String> usuarios = new ArrayList();
+        for (int i = 0; i < users.size(); i++) {
+
+            if (users.get(i).getCargoidCargo().getNombreCargo().equals("Perito") || users.get(i).getCargoidCargo().getNombreCargo().equals("Tecnico") || users.get(i).getCargoidCargo().getNombreCargo().equals("Chofer")) {
+                String usuario = "";
+
+                usuario = users.get(i).getRutUsuario() + " - " + users.get(i).getNombreUsuario() + " " + users.get(i).getApellidoUsuario();
+                usuarios.add(usuario);
+
+                Collections.sort(usuarios);
+            }
+        }
+
+        return usuarios;
+    }
+
+    @Override
+    public List<String> findAllUserTraslado() {
+
+        List<Usuario> users = null;
+        users = usuarioFacade.findAll();
+        List<String> usuarios = new ArrayList();
+        for (int i = 0; i < users.size(); i++) {
+
+            if (users.get(i).getCargoidCargo().getNombreCargo().equals("Perito") || users.get(i).getCargoidCargo().getNombreCargo().equals("Tecnico")) {
+                String usuario = "";
+
+                usuario = users.get(i).getRutUsuario() + " - " + users.get(i).getNombreUsuario() + " " + users.get(i).getApellidoUsuario();
+                usuarios.add(usuario);
+
+                Collections.sort(usuarios);
+            }
+        }
+
+        return usuarios;
+
+    }
 }

@@ -126,13 +126,11 @@
                                         <br />
 
                                         <h:outputLabel  for="lev" value="Levantada por*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="lev" value="#{crearFormularioMB.levantadaPor}" label="Levantada por" required="true" requiredMessage="Debe ingresar nombre"></p:inputText>
+                                        <p:selectOneMenu id="lev" value="#{crearFormularioMB.levantadaPor}" style="width:205px" required="true" requiredMessage="Debe seleccionar el usuario">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItems value="#{crearFormularioMB.usuarios}" />                                        
+                                        </p:selectOneMenu>
                                         <p:message for="lev" display="text"/> 
-                                        <br />
-
-                                        <h:outputLabel  for="run" value="R.U.N.*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="run" value="#{crearFormularioMB.rut}" label="R.U.N." required="true" requiredMessage="Debe ingresar R.U.N." ></p:inputText>
-                                        <p:message for="run" display="text"/> 
                                         <br />
 
                                         <h:outputLabel for="fecha" value="Fecha*: " style="width:120px" />
@@ -142,18 +140,7 @@
 
                                     </h:panelGrid> <br />
 
-                                    <h:panelGrid columns="8" cellpadding="5" class="ui-grid">
-                                    <h:outputLabel for="cargo" value="Cargo*: " style="width:120px"/>
-                                    <h:selectOneMenu id="cargo" value="#{crearFormularioMB.cargo}" style="width:120px" required="true" requiredMessage="Debe seleccionar el cargo">
-                                        <f:selectItem itemLabel="Seleccione" noSelectionOption="true"/>
-                                        <f:selectItem itemValue="Tecnico" itemLabel="Técnico"/>
-                                        <f:selectItem itemValue="Perito" itemLabel="Perito"/>
-                                        <f:selectItem itemValue="Chofer" itemLabel="Chofer"/>
-                                        <f:selectItem itemValue="Otro" itemLabel="Otro"/>                                        
-                                    </h:selectOneMenu>
-                                    <p:message for="cargo" display="text"/>
-                                    <br />
-                                    </h:panelGrid>
+                                    
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
 
                                         <h:outputLabel  for="Observaciones" value="Observaciones:" style="width:120px"></h:outputLabel>
@@ -161,8 +148,6 @@
 
                                     </h:panelGrid>  
                                     <br />  
-
-
 
 
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">    

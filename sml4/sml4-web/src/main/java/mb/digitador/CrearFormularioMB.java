@@ -12,6 +12,7 @@ import entity.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -81,12 +82,15 @@ public class CrearFormularioMB {
     //Usuario levantador
     private Usuario iniciaCadena;
 
+    private List<String> usuarios;
+    
     public CrearFormularioMB() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearFormularioMB");
 
         this.usuarioSesion = new Usuario();
         this.iniciaCadena = new Usuario();
+        this.usuarios = new ArrayList();
 
         this.facesContext2 = FacesContext.getCurrentInstance();
         this.httpServletRequest2 = (HttpServletRequest) facesContext2.getExternalContext().getRequest();
@@ -109,14 +113,30 @@ public class CrearFormularioMB {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadUsuario");
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        this.usuarios = usuarioEJB.findAllUserCrear();
         logger.exiting(this.getClass().getName(), "loadUsuario");
     }
 
     public String iniciarFormulario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormulario");
+        StringTokenizer st = new StringTokenizer(levantadaPor," ");
+        int cont = st.countTokens();
+        for (int i =0; i <cont; i++){
+            String cosas = st.nextToken();
+            if(i==0){
+                rut = cosas;
+                System.out.println("RUT ------> "+rut);
+            }
+            if(i==2){
+                //30.08
+                levantadaPor = cosas;
+                System.out.println("NOMBRE-------> "+levantadaPor);
+            }
+        }
+        
 
-        String resultado = formularioDigitador.crearFormulario(ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, levantadaPor, rut, fecha, observacion, descripcion, usuarioSesion);
+        String resultado = formularioDigitador.crearFormulario(rut, ruc, rit, nue, parte, delito, direccionSS, lugar, unidadPolicial, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
             httpServletRequest.getSession().setAttribute("nueF", this.nue);
@@ -389,4 +409,12 @@ public class CrearFormularioMB {
     public void setParteS(String parteS) {
         this.parteS = parteS;
     }
+
+    public List<String> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<String> usuarios) {
+        this.usuarios = usuarios;
+    }    
 }
