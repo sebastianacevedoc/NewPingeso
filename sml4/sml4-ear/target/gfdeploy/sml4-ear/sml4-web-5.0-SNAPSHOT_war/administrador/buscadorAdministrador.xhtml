@@ -73,7 +73,7 @@
                                             <p:outputLabel for="rut" value="R.U.T.:" style="width:90px"></p:outputLabel>
                                             <h:inputText id="rut" style="margin-right:10px" value = "#{buscadorAdministradorMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.T." validator="#{buscadorAdministradorMB.validarRut}"/>
 
-                                            <h:commandButton id="btnbu" value="Buscar" label="busca" action = "#{buscadorAdministradorMB.buscarUsuario()}" ></h:commandButton>  
+                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnbu" value="Buscar" label="busca" action = "#{buscadorAdministradorMB.buscarUsuario()}" />
 
                                         </h:panelGrid>
                                     </div>

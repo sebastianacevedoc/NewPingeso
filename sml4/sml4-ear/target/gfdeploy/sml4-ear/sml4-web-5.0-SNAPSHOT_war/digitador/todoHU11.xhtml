@@ -236,8 +236,8 @@
                                 <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
                                 <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{todoMB.observacionesT}" disabled="#{todoMB.bloqueada}" queryDelay="750" minQueryLength="4" />
                                 <br />    
-                                <h:commandButton id="btnAceptar" value="Aceptar" action="#{todoMB.agregarTraslado()}" disabled="#{todoMB.bloqueada}"/>
-                                <h:commandButton value="Iniciar Cadena de Custodia" label="" action = "#{todoMB.nuevaCadena()}" ></h:commandButton>  
+                                <h:commandButton id="btnAceptar" value="Aceptar" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" action="#{todoMB.agregarTraslado()}" disabled="#{todoMB.bloqueada}"/>
+                                <h:commandButton value="Iniciar Cadena de Custodia" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" label="" action = "#{todoMB.nuevaCadena()}" ></h:commandButton>  
                                 
                                 <br />
 
