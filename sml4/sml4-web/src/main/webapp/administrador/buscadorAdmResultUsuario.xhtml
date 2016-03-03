@@ -74,11 +74,11 @@
                                         <p:dataTable id="listaUser" var="listaFormulario" value="#" scrollRows="20" scrollable="true" liveScroll="true" style="margin-bottom:0">
  
                                             <p:column headerText="Nombre">
-                                                <h:outputText value="#{resultadoBuscadorUserAdmMB.usuarioBuscado.nombreUsuario}"/>                                                
+                                                <h:outputText value="#{resultadoBuscadorUserAdmMB.usuarioBuscado.nombreUsuario} #{resultadoBuscadorUserAdmMB.usuarioBuscado.apellidoUsuario}"/>                                                
                                             </p:column>
  
-                                            <p:column headerText="Apellido">
-                                                <h:outputText value="#{resultadoBuscadorUserAdmMB.usuarioBuscado.apellidoUsuario}"/>                                                
+                                            <p:column headerText="Cargo - Área">
+                                                <h:outputText value="#{resultadoBuscadorUserAdmMB.usuarioBuscado.cargoidCargo.nombreCargo} - #{resultadoBuscadorUserAdmMB.usuarioBuscado.areaidArea.nombreArea}"/>                                                
                                             </p:column>
  
                                             <p:column headerText="Correo">
@@ -94,9 +94,9 @@
                                         <br />
                                         <h4>Modificar Estado</h4><br />                                                                                
  
-                                        <h:commandButton value="Habilitar" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" label="Habilitar" action = "#{resultadoBuscadorUserAdmMB.habilitarUsuario()}"  ></h:commandButton>
+                                        <h:commandButton value="Habilitar" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" disabled="#{resultadoBuscadorUserAdmMB.estadoH}" label="Habilitar" action = "#{resultadoBuscadorUserAdmMB.habilitarUsuario()}"  ></h:commandButton>
                                         <p:spacer width="50" height="10" />
-                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Deshabilitar" label="Deshabilitar" action = "#{resultadoBuscadorUserAdmMB.deshabilitarUsuario()}" ></h:commandButton>
+                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Deshabilitar" disabled="#{resultadoBuscadorUserAdmMB.estadoD}" label="Deshabilitar" action = "#{resultadoBuscadorUserAdmMB.deshabilitarUsuario()}" ></h:commandButton>
                                         
                                     </div>
                                     <br />

@@ -110,8 +110,8 @@
 
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
-                                            <p:outputLabel for="rut" value="R.U.T.:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="rut" style="margin-right:10px" value = "#{buscadorJefeAreaMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.T." validator="#{buscadorJefeAreaMB.validarRut}"/>
+                                            <p:outputLabel for="rut" value="R.U.N.:" style="width:90px"></p:outputLabel>
+                                            <p:inputText id="rut" style="margin-right:10px" value = "#{buscadorJefeAreaMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.N." validator="#{buscadorJefeAreaMB.validarRut}"/>
 
                                             <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnRut" value="Buscar" label="rut"  action = "#{buscadorJefeAreaMB.buscarUsuario()}" ></h:commandButton>  
                                             
@@ -120,7 +120,6 @@
                                         <p:message for="btnRut"/>
                                     </div>
                                     <br />
-
                                 </h:form>
                             </div>
                         </div>

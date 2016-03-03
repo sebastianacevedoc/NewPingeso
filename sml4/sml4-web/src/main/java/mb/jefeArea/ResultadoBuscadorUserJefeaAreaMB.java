@@ -42,6 +42,8 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     private Usuario usuarioBuscado;
     
     private String estadoUsuarioEspanol;
+    private boolean estadoH;
+    private boolean estadoD;
 
     private static final Logger logger = Logger.getLogger(ResultadoBuscadorUserJefeaAreaMB.class.getName());
 
@@ -75,7 +77,6 @@ public class ResultadoBuscadorUserJefeaAreaMB {
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.userSesion);
         this.usuarioBuscado = usuarioEJB.findUserByRut(this.rut);
         latino();
-                
         
         logger.log(Level.INFO, "Nombre usuario {0}", this.usuarioBuscado.getNombreUsuario());
         logger.log(Level.FINEST, "Rut usuario {0}", this.usuarioBuscado.getRutUsuario());
@@ -84,12 +85,17 @@ public class ResultadoBuscadorUserJefeaAreaMB {
 
     private void latino(){
     boolean estado = this.usuarioBuscado.getEstadoUsuario();
-        if(estado)
+        if(estado){
             estadoUsuarioEspanol = "Habilitado";
-        else
+            this.estadoH=true;
+            this.estadoD=false;
+        }
+        else{
             estadoUsuarioEspanol = "Deshabilitado";
+            this.estadoD=true;
+            this.estadoH=false;
+        }
     }
-    
     public String habilitarUsuario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "habilitarUsuario");
@@ -210,4 +216,21 @@ public class ResultadoBuscadorUserJefeaAreaMB {
         this.usuarioBuscado = usuarioBuscado;
     }
 
+    public boolean isEstadoH() {
+        return estadoH;
+    }
+
+    public void setEstadoH(boolean estado) {
+        this.estadoH = estado;
+    }
+
+    public boolean isEstadoD() {
+        return estadoD;
+    }
+
+    public void setEstadoD(boolean estadoD) {
+        this.estadoD = estadoD;
+    }
+    
+    
 }

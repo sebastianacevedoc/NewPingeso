@@ -299,4 +299,14 @@ public class TodoPeritoMB {
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
+
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
+    
+    
 }

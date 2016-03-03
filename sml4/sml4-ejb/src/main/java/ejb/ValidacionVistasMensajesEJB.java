@@ -103,25 +103,42 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
 
     @Override
     public String validarCuentaUsuario(String cuenta) {
+
+        int largoCuenta = cuenta.length();
+        char espacio = 32;
+
+        if (largoCuenta < 0) {
+            return "Debe ingresar cuenta de usuario";
+        }
+
+        for (int i = 0; i < largoCuenta; i++) {
+            if (cuenta.charAt(i) == espacio) {
+                return "No puede contener espacios";
+            }
+        }
+
         if (validacionEJB.validarCuentaUsuario(cuenta) == false) {
             return "Cuenta ya registrada";
         }
         return "Exito";
     }
 
-//    @Override
-//    public String validarCorreo(String correo){
-//        if(correo == null || correo.equals("") || validacionEJB.validarEmail(correo)==false){
-//            return "Debe ingresar un correo válido";
-//        }else{
-//            if(validacionEJB.correoExiste(correo)==true){
-//                return "Correo se encuentra asociado a otro usuario";
-//            }
-//        }
-//        return "Exito";
-//    }
     @Override
     public String checkCorreo(String correo) {
+
+        int largoCuenta = correo.length();
+        char espacio = 32;
+
+        if (largoCuenta < 0) {
+            return "Debe ingresar un correo";
+        }
+
+        for (int i = 0; i < largoCuenta; i++) {
+            if (correo.charAt(i) == espacio) {
+                return "No puede contener espacios";
+            }
+        }
+
         if (validacionEJB.validarEmail(correo) == false) {
             return "Correo erróneo";
         }
@@ -130,6 +147,20 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
 
     @Override
     public String validarCorreo(String correo) {
+
+        int largoCuenta = correo.length();
+        char espacio = 32;
+
+        if (largoCuenta < 0) {
+            return "Debe ingresar un correo";
+        }
+
+        for (int i = 0; i < largoCuenta; i++) {
+            if (correo.charAt(i) == espacio) {
+                return "No puede contener espacios";
+            }
+        }
+
         if (validacionEJB.correoExiste(correo) == true) {
             return "Correo ya registrado";
         }
@@ -138,6 +169,20 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
 
     @Override
     public String validarRut(String rut) {
+
+        int largoCuenta = rut.length();
+        char espacio = 32;
+
+        if (largoCuenta < 0) {
+            return "Debe ingresar un R.U.N";
+        }
+
+        for (int i = 0; i < largoCuenta; i++) {
+            if (rut.charAt(i) == espacio) {
+                return "No puede contener espacios";
+            }
+        }
+
         if (validacionEJB.rutExiste(rut) == true) {
             return "R.U.N. ya registrado";
         }
@@ -148,4 +193,5 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     public String validarFechaDigitador(Date fecha) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 }

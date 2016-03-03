@@ -27,17 +27,9 @@ public interface FormularioEJBLocal {
 
     public List<Traslado> traslados(Formulario formulario);
 
-    public String crearTraslado(Formulario formulario, String usuarioEntrega, String usuarioEntregaCargo, String usuarioEntregaRut, String usuarioRecibe, String usuarioRecibeCargo, String usuarioRecibeRut, Date fechaT, String observaciones, String motivo, Usuario usuarioSesion);
-    
-    //public String edicionFormulario(Formulario formulario, String obsEdicion, Usuario usuarioSesion);
-    
-  //  public List<EdicionFormulario> listaEdiciones(int nue, int idUsuario);
-    
-    //public String crearFormulario(String ruc, String rit, int nue, int nParte, String cargo, String delito, String direccionSS, String lugar, String unidad, String levantadoPor, String rut, Date fecha, String observacion, String descripcion, Usuario digitador);
+    public String crearTraslado(Formulario formulario, Date fechaT, String observaciones, String motivoNext, Usuario uSesion, Usuario entrega);
 
-    public String crearFormulario(String motivo, String ruc,
-            String rit, int nue, int nParte, String cargo, String delito, String direccionSS, String lugar,
-            String unidad, String levantadoPor, String rut, Date fecha, String observacion, String descripcion, Usuario digitador);
+    public String crearFormulario(String motivo, String ruc, String rit, int nue, int nParte, String delito, String direccionSS, String lugar, Date fecha, String observacion, String descripcion, String unidad, Usuario inicia);
     
     public Usuario obtenerPoseedorFormulario(Formulario formulario);
     

@@ -113,51 +113,8 @@ public class CrearFormularioPeritoMB {
     public String iniciarFormulario() {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormularioPerito");
-//        boolean datosIncorrectos = false;
-//
-//        if (parte != 0) {
-//            String mensaje = validacionVistasMensajesEJB.checkParte(parte);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (ruc != null) {
-//            String mensaje = validacionVistasMensajesEJB.checkRuc(ruc);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (rit != null) {
-//            String mensaje = validacionVistasMensajesEJB.checkRit(rit);
-//            if (!mensaje.equals("Exito")) {
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, " "));
-//                datosIncorrectos = true;
-//                httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//                return "";
-//            }
-//        }
-//        if (nue <= 0) {
-//
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un N.U.E válido", " "));
-//            datosIncorrectos = true;
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//            return "";
-//        }
-//        if (datosIncorrectos) {
-//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
-//            return "";
-//        }
 
-        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, cargo, delito, direccionSS, lugar, unidadPolicial, this.usuarioSesion.getNombreUsuario(), rut, fecha, observacion, descripcion, usuarioSesion);
-
+        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, delito, direccionSS, lugar, fecha, observacion, descripcion, unidadPolicial,usuarioSesion);
         //Enviando nue
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
         //Enviando usuario

@@ -78,13 +78,17 @@
                                         <p:dataTable id="listaUser" var="listaFormulario" value="#" scrollRows="20" scrollable="true" liveScroll="true" style="margin-bottom:0">
  
                                             <p:column headerText="Nombre">
-                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.nombreUsuario}"/>                                                
+                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.nombreUsuario} #{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.apellidoUsuario}"/>                                                
                                             </p:column>
  
-                                            <p:column headerText="Apellido">
-                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.apellidoUsuario}"/>                                                
+                                            <p:column headerText="Cargo - Área">
+                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.cargoidCargo.nombreCargo} - #{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.areaidArea.nombreArea}"/>                                                
                                             </p:column>
- 
+                                            
+                                            <!--<p:column headerText="Área">
+                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.areaidArea.nombreArea}"/>                                                
+                                            </p:column>-->
+                                            
                                             <p:column headerText="Correo">
                                                 <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.mailUsuario}"/>                                                
                                             </p:column>
@@ -98,9 +102,9 @@
                                         <br />
                                         <h4>Modificar Estado</h4><br />                                                                                
  
-                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Habilitar" label="Habilitar" action = "#{resultadoBuscadorUserJefeaAreaMB.habilitarUsuario()}"  ></h:commandButton>
+                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" disabled="#{resultadoBuscadorUserJefeaAreaMB.estadoH}" value="Habilitar" label="Habilitar" action = "#{resultadoBuscadorUserJefeaAreaMB.habilitarUsuario()}"  ></h:commandButton>
                                         <p:spacer width="50" height="10" />
-                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Deshabilitar" label="Deshabilitar" action = "#{resultadoBuscadorUserJefeaAreaMB.deshabilitarUsuario()}" ></h:commandButton>
+                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" disabled="#{resultadoBuscadorUserJefeaAreaMB.estadoD}" value="Deshabilitar" label="Deshabilitar" action = "#{resultadoBuscadorUserJefeaAreaMB.deshabilitarUsuario()}" ></h:commandButton>
                                         
                                     </div>
                                     <br />

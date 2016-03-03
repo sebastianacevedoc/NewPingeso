@@ -118,15 +118,7 @@ public class RecibirPeritoMB {
         GregorianCalendar c = new GregorianCalendar();
         this.fechaT = c.getTime();
 
-        this.usuarioRecibe = usuarioSesion.getNombreUsuario();
-        this.usuarioRecibeCargo = usuarioSesion.getCargoidCargo().getNombreCargo();
-        this.usuarioRecibeRut = usuarioSesion.getRutUsuario();
-
         this.userEntrega = formularioEJB.obtenerPoseedorFormulario(formulario);
-
-        this.usuarioEntrega = userEntrega.getNombreUsuario();
-        this.usuarioEntregaCargo = userEntrega.getCargoidCargo().getNombreCargo();
-        this.usuarioEntregaRut = userEntrega.getRutUsuario();
 
         this.motivo = "ninguno";
          intercalado(trasladosList);
@@ -138,7 +130,7 @@ public class RecibirPeritoMB {
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoPerito");
 
-        String resultado = formularioEJB.crearTraslado(formulario, usuarioEntrega, usuarioEntregaCargo, usuarioEntregaRut, usuarioRecibe, usuarioRecibeCargo, usuarioRecibeRut, fechaT, observacionesT, motivo, usuarioSesion);
+        String resultado = formularioEJB.crearTraslado(formulario, fechaT, observacionesT, motivo, usuarioSesion, userEntrega);
         System.out.println("RESULTADO------->"+resultado);
                     System.out.println("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeeee1");
         if (resultado.equals("Exito")) {

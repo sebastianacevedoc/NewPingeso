@@ -48,6 +48,8 @@ public class ResultadoBuscadorUserAdmMB {
     private String estadoUsuarioEspanol;
 
     private static final Logger logger = Logger.getLogger(ResultadoBuscadorUserJefeaAreaMB.class.getName());
+    private boolean estadoH;
+    private boolean estadoD;
 
     public ResultadoBuscadorUserAdmMB() {
         
@@ -87,10 +89,16 @@ public class ResultadoBuscadorUserAdmMB {
 
     private void latino(){
     boolean estado = this.usuarioBuscado.getEstadoUsuario();
-        if(estado)
+        if(estado){
             estadoUsuarioEspanol = "Habilitado";
-        else
+            this.estadoH=true;
+            this.estadoD=false;
+        }
+        else{
             estadoUsuarioEspanol = "Deshabilitado";
+            this.estadoD=true;
+            this.estadoH=false;
+        }
     }
     
     public String habilitarUsuario() {
@@ -200,6 +208,22 @@ public class ResultadoBuscadorUserAdmMB {
 
     public void setEstadoUsuarioEspanol(String estadoUsuarioEspanol) {
         this.estadoUsuarioEspanol = estadoUsuarioEspanol;
+    }
+
+    public boolean isEstadoH() {
+        return estadoH;
+    }
+
+    public void setEstadoH(boolean estadoH) {
+        this.estadoH = estadoH;
+    }
+
+    public boolean isEstadoD() {
+        return estadoD;
+    }
+
+    public void setEstadoD(boolean estadoD) {
+        this.estadoD = estadoD;
     }
     
     
