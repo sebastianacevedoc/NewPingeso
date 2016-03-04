@@ -6,12 +6,9 @@
 package ejb;
 
 import static ejb.FormularioEJB.logger;
-import entity.Area;
-import entity.Cargo;
 import entity.Formulario;
 import entity.Semaforo;
 import entity.TipoMotivo;
-import entity.TipoUsuario;
 import entity.Traslado;
 import entity.Usuario;
 import facade.AreaFacadeLocal;

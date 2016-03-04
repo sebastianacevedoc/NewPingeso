@@ -118,7 +118,7 @@ public class ForTrasladoMB {
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
-        this.usuarios = usuarioEJB.findAllUserTraslado();
+        this.usuarios = usuarioEJB.findAllUserTraslado(usuarioInicia);
         this.fechaT = formulario.getFechaOcurrido();
         logger.exiting(this.getClass().getName(), "cargarDatos");
     }

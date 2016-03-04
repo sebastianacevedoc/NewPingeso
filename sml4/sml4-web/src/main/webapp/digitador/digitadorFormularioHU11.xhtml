@@ -106,22 +106,22 @@
                                         <br />
 
                                         <h:outputLabel  for="del" value="Delito*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="del" value="#{crearFormularioMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar el delito"></p:inputText>
+                                        <p:inputText id="del" value="#{crearFormularioMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar el delito" validator ="#{crearFormularioMB.validarDelito}" ></p:inputText>
                                         <p:message for="del" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="dir" value="Dirección*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="dir" value="#{crearFormularioMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar la dirección"></p:inputText>
+                                        <p:inputText id="dir" value="#{crearFormularioMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar la dirección" validator = "#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="dir" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="lu" value="Lugar*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="lu" value="#{crearFormularioMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar el lugar"></p:inputText>
+                                        <p:inputText id="lu" value="#{crearFormularioMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar el lugar" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="lu" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="uni" value="Unidad Policial*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="uni" value="#{crearFormularioMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar la unidad policial"></p:inputText>
+                                        <p:inputText id="uni" value="#{crearFormularioMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar la unidad policial" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="uni" display="text"/> 
                                         <br />
 

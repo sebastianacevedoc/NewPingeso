@@ -73,7 +73,7 @@ public class UsuarioEJB implements UsuarioEJBLocal {
 
         //Verifico el rut
         if (!validacionEJB.val(rut)) {
-            return "Rut inválido";
+            return "R.U.N inválido";
         }
 
         //Verifico si existe ese rut en la BD
@@ -180,12 +180,12 @@ public class UsuarioEJB implements UsuarioEJBLocal {
 
         //Verifico el rut
         if (!validacionEJB.val(rut)) {
-            return "Rut inválido";
+            return "R.U.N inválido";
         }
 
         //Verifico si existe ese rut en la BD
         if (usuarioFacade.findByRUN(rut) != null) {
-            return "Rut existente";
+            return "R.U.N existente";
         }
 
         //Verifico el nombreUsuario
@@ -234,7 +234,7 @@ public class UsuarioEJB implements UsuarioEJBLocal {
         area1 = areaFacade.findByArea(area);
 
         if (area1 == null) {
-            return "Problemas al cargar el area";
+            return "Problemas al cargar el área";
         }
 
         nuevoUsuario.setAreaidArea(area1);
@@ -273,7 +273,7 @@ public class UsuarioEJB implements UsuarioEJBLocal {
     }
 
     @Override
-    public List<String> findAllUserTraslado() {
+    public List<String> findAllUserTraslado(Usuario sesion) {
 
         List<Usuario> users = null;
         users = usuarioFacade.findAll();
@@ -282,11 +282,13 @@ public class UsuarioEJB implements UsuarioEJBLocal {
 
             if (users.get(i).getCargoidCargo().getNombreCargo().equals("Perito") || users.get(i).getCargoidCargo().getNombreCargo().equals("Tecnico")) {
                 String usuario = "";
+                if (!sesion.getRutUsuario().equals(users.get(i).getRutUsuario())) {
+                    usuario = users.get(i).getRutUsuario() + " - " + users.get(i).getNombreUsuario() + " " + users.get(i).getApellidoUsuario();
+                    usuarios.add(usuario);
 
-                usuario = users.get(i).getRutUsuario() + " - " + users.get(i).getNombreUsuario() + " " + users.get(i).getApellidoUsuario();
-                usuarios.add(usuario);
+                    Collections.sort(usuarios);
+                }
 
-                Collections.sort(usuarios);
             }
         }
 

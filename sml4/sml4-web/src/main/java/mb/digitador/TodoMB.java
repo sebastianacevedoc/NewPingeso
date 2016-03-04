@@ -147,7 +147,7 @@ public class TodoMB {
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
-        this.usuarios = usuarioEJB.findAllUserTraslado();
+        this.usuarios = usuarioEJB.findAllUserTraslado(usuarioInicia);
         intercalado(trasladosList);
 
         this.bloqueada = formulario.getBloqueado();

@@ -79,12 +79,13 @@
 
 
                     <!--fin usuario logeado --> 
-                    <div class="col-md-9">
-                        <div class="thumbnail" style="width: 785px; padding: 15px;">
-                            <!-- Barra de navegación -->
+                    <div align="center">
+                        <div class="col-md-9">
+                            <div class="thumbnail" style="width: 785px; padding: 15px;">
+                                <!-- Barra de navegación -->
 
-                            <h:form>
-                                <div align="center">
+                                <h:form>
+
                                     <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
                                         <h:outputLabel  for="ruc" value="R.U.C.:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="ruc" value="#{recibirPeritoMB.formulario.ruc}" label="ruc" disabled="true" ></p:inputText>
@@ -121,101 +122,99 @@
 
                                     </h:panelGrid> <br />
 
+                                    <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
+                                        <h:outputLabel  for="fecha" value="Fecha:" style="width:120px"></h:outputLabel>
+                                        <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" value="#{recibirPeritoMB.formulario.fechaOcurrido}" disabled="true"/>
+                                        <hr />
+                                        <h:outputLabel  for="obs" value="Observaciones:" style="width:120px"></h:outputLabel>
+                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{recibirPeritoMB.formulario.observaciones}" queryDelay="750" minQueryLength="4" disabled="true" />
+                                        <h:outputLabel  for="des" value="Descripción:" style="width:120px"></h:outputLabel>
+                                        <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{recibirPeritoMB.formulario.descripcionEspecieFormulario}" disabled="true" queryDelay="750" minQueryLength="4" />
+                                    </h:panelGrid>
+
+                                    <hr />
+
+                                    <br />
+
+                                    <br />
+
+                                    <h4> Mostrando Traslados</h4>
                                     <div align="center">
-                                        <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
-                                            <h:outputLabel  for="fecha" value="Fecha:" style="width:120px"></h:outputLabel>
-                                            <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" value="#{recibirPeritoMB.formulario.fechaOcurrido}" disabled="true"/>
-                                            <hr />
-                                            <h:outputLabel  for="obs" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                            <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{recibirPeritoMB.formulario.observaciones}" queryDelay="750" minQueryLength="4" disabled="true" />
 
+                                        <p:dataTable var="traslado" value="#{recibirPeritoMB.intercalado}" emptyMessage="No se han registrado más participantes en esta cadena de custodia." scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="150" style="margin-bottom:0">
 
-                                            <h:outputLabel  for="des" value="Descripción:" style="width:120px"></h:outputLabel>
-                                            <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{recibirPeritoMB.formulario.descripcionEspecieFormulario}" disabled="true" queryDelay="750" minQueryLength="4" />
-                                        </h:panelGrid>
-                                    </div>
-                                </div>
-                                <hr />
+                                            <p:column headerText="">
+                                                <h:outputText value="#{recibirPeritoMB.cambio()}"/>
+                                            </p:column>
 
-                                <br />
+                                            <p:column headerText="Nombre">
+                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.nombreUsuario} #{traslado.usuarioidUsuarioEntrega.apellidoUsuario}" />
 
-                                <br />
-                                <h4> Mostrando Traslados</h4>
-                                <div align="center">
+                                            </p:column>
 
-                                    <p:dataTable var="traslado" value="#{recibirPeritoMB.intercalado}" emptyMessage="No se han registrado más participantes en esta cadena de custodia." scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="150" style="margin-bottom:0">
+                                            <p:column headerText="Cargo">
+                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.cargoidCargo.nombreCargo}" />
 
-                                        <p:column headerText="">
-                                            <h:outputText value="#{recibirPeritoMB.cambio()}"/>
-                                        </p:column>
+                                            </p:column>
 
-                                        <p:column headerText="Nombre">
-                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.nombreUsuario} #{traslado.usuarioidUsuarioEntrega.apellidoUsuario}" />
+                                            <p:column headerText="R.U.N.">
+                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.rutUsuario}" />
 
-                                        </p:column>
+                                            </p:column>
 
-                                        <p:column headerText="Cargo">
-                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.cargoidCargo.nombreCargo}" />
+                                            <p:column headerText="Fecha" rowspan="2">
+                                                <h:outputText value="#{traslado.fechaEntrega}" />
+                                            </p:column>
 
-                                        </p:column>
+                                            <p:column headerText="Observación" rowspan="2">
+                                                <h:outputText value="#{traslado.observaciones}" />
+                                            </p:column>
 
-                                        <p:column headerText="R.U.N.">
-                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.rutUsuario}" />
+                                            <p:column headerText="Motivo" rowspan="2">
+                                                <h:outputText value="#{traslado.tipoMotivoidMotivo.tipoMotivo}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div><br />
 
-                                        </p:column>
+                                    <!-- mostrar ediciones  -->
+                                    <h4> Ediciones</h4>
+                                    <div align="center">
+                                        <p:dataTable emptyMessage="No se han registrado ediciones." var="ediciones" value="#{recibirPeritoMB.edicionesList}" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="90" style="margin-bottom:0">
+                                            <p:column headerText="Editado por">
+                                                <h:outputText value="#{ediciones.usuarioidUsuario.nombreUsuario} #{ediciones.usuarioidUsuario.apellidoUsuario}" />
+                                            </p:column>
 
-                                        <p:column headerText="Fecha" rowspan="2">
-                                            <h:outputText value="#{traslado.fechaEntrega}" />
-                                        </p:column>
+                                            <p:column headerText="Fecha">
+                                                <h:outputText value="#{ediciones.fechaEdicion}" />
+                                            </p:column>
 
-                                        <p:column headerText="Observación" rowspan="2">
-                                            <h:outputText value="#{traslado.observaciones}" />
-                                        </p:column>
+                                            <p:column headerText="Observaciones">
+                                                <h:outputText value="#{ediciones.observaciones}" />
+                                            </p:column>
+                                        </p:dataTable>
 
-                                        <p:column headerText="Motivo" rowspan="2">
-                                            <h:outputText value="#{traslado.tipoMotivoidMotivo.tipoMotivo}" />
-                                        </p:column>
-                                    </p:dataTable>
-                                </div><br />
+                                    </div><br />
+                                    <br />
 
-                                <!-- mostrar ediciones  -->
-                                <h4> Ediciones</h4>
-                                <div align="center">
-                                    <p:dataTable emptyMessage="No se han registrado ediciones." var="ediciones" value="#{recibirPeritoMB.edicionesList}" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="90" style="margin-bottom:0">
-                                        <p:column headerText="Editado por">
-                                            <h:outputText value="#{ediciones.usuarioidUsuario.nombreUsuario} #{ediciones.usuarioidUsuario.apellidoUsuario}" />
-                                        </p:column>
+                                    <h4>Motivo de entrega</h4>
+                                    <div align="center">
+                                        <h:selectOneRadio id="check" value="#{recibirPeritoMB.motivo}" required="true" requiredMessage="Debe seleccionar el motivo de entrega.">
+                                            <f:selectItem itemValue="Peritaje" itemLabel="Peritaje" /> <!-- agregar libreria arriba-->
+                                            <f:selectItem itemValue="Custodia" itemLabel="Custodia" />
+                                            <f:selectItem itemValue="Traslado" itemLabel="Traslado" />
+                                        </h:selectOneRadio><br />
+                                    </div><br />
 
-                                        <p:column headerText="Fecha">
-                                            <h:outputText value="#{ediciones.fechaEdicion}" />
-                                        </p:column>
+                                    <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
+                                    <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{recibirPeritoMB.observacionesT}" queryDelay="750" minQueryLength="4" />
+                                    <br />    
+                                    <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{recibirPeritoMB.agregarTraslado()}"/>
+                                    <p:messages id="messages" closable="true" />
+                                    <br />
 
-                                        <p:column headerText="Observaciones">
-                                            <h:outputText value="#{ediciones.observaciones}" />
-                                        </p:column>
-                                    </p:dataTable>
+                                </h:form> <br />
 
-                                </div><br />
-                                <br />
-
-                                <h4>Motivo de entrega</h4>
-                                <div align="center">
-                                    <h:selectOneRadio id="check" value="#{recibirPeritoMB.motivo}" required="true" requiredMessage="Debe seleccionar el motivo de entrega.">
-                                        <f:selectItem itemValue="Peritaje" itemLabel="Peritaje" /> <!-- agregar libreria arriba-->
-                                        <f:selectItem itemValue="Custodia" itemLabel="Custodia" />
-                                        <f:selectItem itemValue="Traslado" itemLabel="Traslado" />
-                                    </h:selectOneRadio><br />
-                                </div><br />
-
-                                <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{recibirPeritoMB.observacionesT}" queryDelay="750" minQueryLength="4" />
-                                <br />    
-                                <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{recibirPeritoMB.agregarTraslado()}"/>
-                                <p:messages id="messages" closable="true" />
-                                <br />
-
-                            </h:form> <br />
-
+                            </div>
                         </div>
                     </div>
 

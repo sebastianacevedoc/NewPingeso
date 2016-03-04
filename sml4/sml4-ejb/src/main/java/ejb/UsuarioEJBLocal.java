@@ -30,5 +30,5 @@ public interface UsuarioEJBLocal {
 
     public List<String> findAllUserCrear();
 
-    public List<String> findAllUserTraslado();
+    public List<String> findAllUserTraslado(Usuario usuario);
 }

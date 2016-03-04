@@ -40,4 +40,8 @@ public interface ValidacionVistasMensajesEJBLocal {
     public String validarRut(String rut);
 
     public String validarFechaDigitador(Date fecha);
+
+    public String verificarInitFinCarac(String cadena);
+
+    public String verificarCaracteresInitFin(String direccion);
 }
