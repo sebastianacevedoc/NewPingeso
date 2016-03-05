@@ -209,7 +209,7 @@ public class FormularioEJB implements FormularioEJBLocal {
 
         if (motivoNext.equals("ninguno")) { //indica que se esta recibiendo para peritaje. implica que se debe cerrar la cc y dejarla en verde.
             //esto solo puede ser realiza por un tecnico o perito. 
-            if (!(uSesion.getCargoidCargo().getNombreCargo().equals("Técnico") || uSesion.getCargoidCargo().getNombreCargo().equals("Perito"))) {
+            if (!(uSesion.getCargoidCargo().getNombreCargo().equals("Tecnico") || uSesion.getCargoidCargo().getNombreCargo().equals("Perito"))) {
                 logger.exiting(this.getClass().getName(), "crearTraslado", "Error, un no Perito ni Tecnico desea recibir para traslado.");
                 return "Error, no tiene permiso para recibir con motivo de peritaje.";
             }
