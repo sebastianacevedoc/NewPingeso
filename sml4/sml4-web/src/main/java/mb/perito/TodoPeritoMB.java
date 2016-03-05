@@ -13,6 +13,7 @@ import entity.Traslado;
 import entity.Usuario;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -57,6 +58,7 @@ public class TodoPeritoMB {
 
     private boolean bloqueada;
     private boolean editable;
+    private boolean deshabBtnRecibir;
 
     private int contador = 1;
 
@@ -124,11 +126,17 @@ public class TodoPeritoMB {
 
         this.edicionesList = formularioEJB.listaEdiciones(nue);
 
-        this.bloqueada = formulario.getBloqueado();
+        this.bloqueada = formulario.getBloqueado();       
+        
         this.editable = formularioEJB.esParticipanteCC(formulario, usuarioSesion);
         logger.log(Level.INFO, "editable {0}", editable);
         if (bloqueada) {
+            this.deshabBtnRecibir = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Esta cadena de custodia se encuentra cerrada.", ""));
+        }
+        
+        if(bloqueada || Objects.equals(usuarioSesion.getIdUsuario(), trasladosList.get(trasladosList.size()-1).getUsuarioidUsuarioEntrega().getIdUsuario())){
+            this.deshabBtnRecibir = true;            
         }
 
         intercalado(trasladosList);
@@ -330,6 +338,14 @@ public class TodoPeritoMB {
 
     public void setContador(int contador) {
         this.contador = contador;
+    }
+
+    public boolean isDeshabBtnRecibir() {
+        return deshabBtnRecibir;
+    }
+
+    public void setDeshabBtnRecibir(boolean deshabBtnRecibir) {
+        this.deshabBtnRecibir = deshabBtnRecibir;
     }
 
 }

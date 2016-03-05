@@ -306,6 +306,8 @@ public class EditarPeritoETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }else{
+                ruc = texto;
             }
         }
     }
@@ -318,6 +320,8 @@ public class EditarPeritoETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }else{
+                rit = texto;
             }
         }
     }

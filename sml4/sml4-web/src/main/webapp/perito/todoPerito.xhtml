@@ -172,7 +172,7 @@
 
                                     <div align="center">
                                         <h:panelGrid columns="4">  
-                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Recibir Cadena de Custodia" label="" action = "#{todoPeritoMB.recibirCadena()}" disabled="#{todoPeritoMB.bloqueada}"  ></h:commandButton>  
+                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Recibir Cadena de Custodia" label="" action = "#{todoPeritoMB.recibirCadena()}" disabled="#{todoPeritoMB.deshabBtnRecibir}"  ></h:commandButton>  
                                             <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Iniciar Cadena de Custodia" label="" action = "#{todoPeritoMB.nuevaCadena()}" ></h:commandButton>  
                                             <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Editar Formulario" label="" action = "#{todoPeritoMB.editar()}" title="Solo para participantes de la cadena de custodia." disabled="#{!todoPeritoMB.editable}" />    
                                         </h:panelGrid>

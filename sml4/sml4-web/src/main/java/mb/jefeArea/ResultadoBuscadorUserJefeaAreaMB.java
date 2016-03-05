@@ -4,6 +4,7 @@ package mb.jefeArea;
 import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import entity.Usuario;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -98,11 +99,16 @@ public class ResultadoBuscadorUserJefeaAreaMB {
             } catch (Exception e) {
                 System.out.println("POST CONSTRUCTOR FALLO");
             }
-        } 
-        
+        }        
         
         this.usuarioBuscado = usuarioEJB.findUserByRut(this.rut);
         latino();
+        
+        if(Objects.equals(usuarioSesion.getIdUsuario(), usuarioBuscado.getIdUsuario())){ //deshabilitar botones si es el mismo usuario
+            estadoD=true;
+            estadoH=true;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Imposible modificar usuario actual", ""));
+        }
         
         logger.log(Level.INFO, "Nombre usuario {0}", this.usuarioBuscado.getNombreUsuario());
         logger.log(Level.FINEST, "Rut usuario {0}", this.usuarioBuscado.getRutUsuario());

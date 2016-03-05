@@ -167,11 +167,9 @@ public class EditarChoferETMB {
             }
             if (formulario.getRit() == null || formulario.getRit().equals("")) {
                 this.isRit = false;
-            }
-
-            intercalado(trasladosList);
+            }           
         }
-
+        intercalado(trasladosList);
         logger.exiting(this.getClass().getName(), "cargarDatosChofer");
     }
 
@@ -313,6 +311,8 @@ public class EditarChoferETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }else{
+                ruc = texto;
             }
         }
     }
@@ -325,6 +325,8 @@ public class EditarChoferETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }else{
+                rit = texto;
             }
         }
     }
