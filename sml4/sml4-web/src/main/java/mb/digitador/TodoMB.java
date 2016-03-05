@@ -26,6 +26,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -100,7 +102,7 @@ public class TodoMB {
     static final Logger logger = Logger.getLogger(TodoMB.class.getName());
 
     public TodoMB() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "TodoMB");
         this.trasladosList = new ArrayList<>();
         this.usuarios = new ArrayList();
@@ -141,8 +143,34 @@ public class TodoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosDigitador");
+        
+        boolean falla = false;
+
+        if (usuarioSis != null && rutInicia != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Digitador") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }   
+        
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.trasladosList = formularioEJB.traslados(this.formulario);
@@ -160,7 +188,7 @@ public class TodoMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirDigitador");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -170,6 +198,7 @@ public class TodoMB {
 
     //redirecciona a la pagina para iniciar cadena de custodia
     public String nuevaCadena() {
+          //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "digitadorFormularioHU11");
@@ -177,7 +206,7 @@ public class TodoMB {
     }
 
     public String agregarTraslado() {
-        logger.setLevel(Level.ALL);
+      //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoDigitador");
         //logger.log(Level.FINEST, "rut usuario entrega {0}", this.usuarioEntrega);
         logger.log(Level.FINEST, " usuario recibe {0}", this.usuarioRecibe);
@@ -285,6 +314,20 @@ public class TodoMB {
 
         }
         System.out.println(intercalado.toString());
+    }
+    
+    public void validarFecha(FacesContext context, UIComponent toValidate, Object value){
+        context = FacesContext.getCurrentInstance();
+        Date f = (Date) value;
+        String mensaje = "";
+        
+        if(f != null){
+            mensaje = validacionVistasMensajesEJB.checkFecha(f);
+            if(!mensaje.equals("Exito")){
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
     }
 
     public Usuario getUsuarioInicia() {

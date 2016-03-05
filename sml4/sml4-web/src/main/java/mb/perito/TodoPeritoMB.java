@@ -9,7 +9,6 @@ import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import entity.EdicionFormulario;
 import entity.Formulario;
-import entity.FormularioEvidencia;
 import entity.Traslado;
 import entity.Usuario;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,10 +55,8 @@ public class TodoPeritoMB {
     private List<Traslado> trasladosList;
     private List<EdicionFormulario> edicionesList;
 
-
     private boolean bloqueada;
     private boolean editable;
-
 
     private int contador = 1;
 
@@ -69,7 +67,7 @@ public class TodoPeritoMB {
     static final Logger logger = Logger.getLogger(TodoPeritoMB.class.getName());
 
     public TodoPeritoMB() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "TodoPeritoMB");
         this.trasladosList = new ArrayList<>();
         this.edicionesList = new ArrayList<>();
@@ -91,15 +89,40 @@ public class TodoPeritoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
+
+        boolean falla = false;
+
+        if (usuarioSis != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !(usuarioSesion.getCargoidCargo().getNombreCargo().equals("Perito") || usuarioSesion.getCargoidCargo().getNombreCargo().equals("Tecnico")) || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
 
         this.trasladosList = formularioEJB.traslados(this.formulario);
 
         this.edicionesList = formularioEJB.listaEdiciones(nue);
-
 
         this.bloqueada = formulario.getBloqueado();
         this.editable = formularioEJB.esParticipanteCC(formulario, usuarioSesion);
@@ -108,16 +131,16 @@ public class TodoPeritoMB {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Esta cadena de custodia se encuentra cerrada.", ""));
         }
 
-         intercalado(trasladosList);
-        
+        intercalado(trasladosList);
+
         logger.log(Level.INFO, "formulario ruc {0}", this.formulario.getRuc());
         logger.log(Level.FINEST, "todos cant traslados {0}", this.trasladosList.size());
         logger.exiting(this.getClass().getName(), "cargarDatosPerito");
     }
 
-       
-     //redirecciona a la pagina para realizar una busqueda
+    //redirecciona a la pagina para realizar una busqueda
     public String buscar() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscar");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "buscar", "buscadorPerito");
@@ -126,14 +149,15 @@ public class TodoPeritoMB {
 
     //redirecciona a la pagina para iniciar cadena de custodia
     public String iniciarCadena() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "peritoFormulario");
         return "peritoFormulario?faces-redirect=true";
     }
-    
+
     public String salir() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -143,7 +167,7 @@ public class TodoPeritoMB {
 
     //envia a la pagina para realizar una edicion en este formulario.
     public String editar() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editar");
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
@@ -152,7 +176,7 @@ public class TodoPeritoMB {
     }
 
     public String nuevaCadena() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "nuevaCadena");
         //Enviando usuario
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
@@ -163,7 +187,7 @@ public class TodoPeritoMB {
 
     //envía a la página para recibir la cadena
     public String recibirCadena() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "recibirCadena");
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
@@ -178,7 +202,7 @@ public class TodoPeritoMB {
         return "recibirPeritoET?faces-redirect=true";
     }
 
-  public String cambio() {
+    public String cambio() {
 
         if (contador == 1) {
             cambia = "Entrega";
@@ -194,7 +218,7 @@ public class TodoPeritoMB {
         return cambia;
     }
 
-         private void intercalado(List<Traslado> traslados) {
+    private void intercalado(List<Traslado> traslados) {
 
         for (int i = 0; i < traslados.size(); i++) {
 
@@ -219,7 +243,7 @@ public class TodoPeritoMB {
         }
         System.out.println(intercalado.toString());
     }
-    
+
     public String getCambia() {
         return cambia;
     }
@@ -307,6 +331,5 @@ public class TodoPeritoMB {
     public void setContador(int contador) {
         this.contador = contador;
     }
-    
-    
+
 }

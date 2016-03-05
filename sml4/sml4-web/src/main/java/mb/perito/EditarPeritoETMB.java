@@ -26,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -85,10 +86,9 @@ public class EditarPeritoETMB {
     static final Logger logger = Logger.getLogger(EditarPeritoETMB.class.getName());
 
     public EditarPeritoETMB() {
-
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "EditarPeritoETMB");
-        /**/
+       
         this.edicionesList = new ArrayList();
         this.trasladosList = new ArrayList();
         this.intercalado = new ArrayList<>();
@@ -118,10 +118,35 @@ public class EditarPeritoETMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
+        
+         boolean falla = false;
+
+        if (usuarioS != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !(usuarioSesion.getCargoidCargo().getNombreCargo().equals("Perito") || usuarioSesion.getCargoidCargo().getNombreCargo().equals("Tecnico")) || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+        
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioS);
         this.trasladosList = formularioEJB.traslados(formulario);
         this.edicionesList = formularioEJB.listaEdiciones(this.nue);
         
@@ -143,7 +168,7 @@ public class EditarPeritoETMB {
     }
 
     public String editarFormulario() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarFormularioPerito");
 //        boolean datosIncorrectos = false;
 //        if (this.isParte == false && formulario.getNumeroParte() != 0) {
@@ -203,6 +228,7 @@ public class EditarPeritoETMB {
 
      //redirecciona a la pagina para realizar una busqueda
     public String buscar() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscar");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.exiting(this.getClass().getName(), "buscar", "buscadorPerito");
@@ -211,6 +237,7 @@ public class EditarPeritoETMB {
 
     //redirecciona a la pagina para iniciar cadena de custodia
     public String iniciarCadena() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "peritoFormulario");
@@ -218,7 +245,7 @@ public class EditarPeritoETMB {
     }
     
     public String salir() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

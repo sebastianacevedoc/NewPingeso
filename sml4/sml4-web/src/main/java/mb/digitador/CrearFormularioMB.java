@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -85,7 +86,7 @@ public class CrearFormularioMB {
     private List<String> usuarios;
     
     public CrearFormularioMB() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearFormularioMB");
 
         this.usuarioSesion = new Usuario();
@@ -110,15 +111,40 @@ public class CrearFormularioMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadUsuario");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        
+        boolean falla = false;
+
+        if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Digitador") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }    
+        
         this.usuarios = usuarioEJB.findAllUserCrear();
         logger.exiting(this.getClass().getName(), "loadUsuario");
     }
 
     public String iniciarFormulario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormulario");
         StringTokenizer st = new StringTokenizer(levantadaPor," ");
         int cont = st.countTokens();
@@ -162,7 +188,7 @@ public class CrearFormularioMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirDigitador");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -273,6 +299,20 @@ public class CrearFormularioMB {
         if (!mensaje.equals("Exito")) {
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
+    }
+    
+    public void validarFecha(FacesContext context, UIComponent toValidate, Object value){
+        context = FacesContext.getCurrentInstance();
+        Date f = (Date) value;
+        String mensaje = "";
+        
+        if(f != null){
+            mensaje = validacionVistasMensajesEJB.checkFecha(f);
+            if(!mensaje.equals("Exito")){
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
         }
     }
 

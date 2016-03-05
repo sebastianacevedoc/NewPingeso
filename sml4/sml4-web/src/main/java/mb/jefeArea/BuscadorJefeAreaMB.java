@@ -5,6 +5,7 @@ import ejb.UsuarioEJBLocal;
 import ejb.ValidacionVistasMensajesEJBLocal;
 import entity.Formulario;
 import entity.Usuario;
+import entity.Usuario_;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -65,7 +67,7 @@ public class BuscadorJefeAreaMB {
     private String rut;
 
     public BuscadorJefeAreaMB() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "BusquedaJefeAreaMB");
         /**/
         this.facesContext = FacesContext.getCurrentInstance();
@@ -81,27 +83,52 @@ public class BuscadorJefeAreaMB {
             logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
         }
 
-        this.facesContext3 = FacesContext.getCurrentInstance();
-        this.httpServletRequest3 = (HttpServletRequest) facesContext3.getExternalContext().getRequest();
-        if (httpServletRequest3.getSession().getAttribute("buscar") != null) {
-            this.buscar = (String) httpServletRequest3.getSession().getAttribute("buscar");
-
-        }
-        System.out.println("LOAD busqueda -> " + buscar);
+//        this.facesContext3 = FacesContext.getCurrentInstance();
+//        this.httpServletRequest3 = (HttpServletRequest) facesContext3.getExternalContext().getRequest();
+//        if (httpServletRequest3.getSession().getAttribute("buscar") != null) {
+//            this.buscar = (String) httpServletRequest3.getSession().getAttribute("buscar");
+//
+//        }
+//        System.out.println("LOAD busqueda -> " + buscar);
 
         logger.exiting(this.getClass().getName(), "BusquedaJefeAreaMB");
     }
 
     @PostConstruct
     public void loadUsuario() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadUsuarioJefeArea");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        
+        boolean falla = false;
+
+        if (usuarioSis != null ) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Jefe de area") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }            
+        
         logger.exiting(this.getClass().getName(), "loadUsuarioJefeArea");
     }
 
     public String buscarFormulario() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscarFormularioJefeArea");
         logger.log(Level.INFO, "NUE CAPTURADO:{0}", this.nue);
 
@@ -127,7 +154,7 @@ public class BuscadorJefeAreaMB {
     }
 
     public String buscarFormularioRRP() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscarFormularioRRPJefeArea");
         logger.log(Level.INFO, "INPUT CAPTURADO:{0}", this.input);
 
@@ -197,8 +224,7 @@ public class BuscadorJefeAreaMB {
     }
 
     public String buscarUsuario() {
-
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscarUsuarioJefeArea");
         logger.log(Level.INFO, "RUT CAPTURADO:{0}", this.rut);
 
@@ -229,7 +255,7 @@ public class BuscadorJefeAreaMB {
 
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -238,7 +264,7 @@ public class BuscadorJefeAreaMB {
     }
 
     public String crearUsuario() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -247,7 +273,7 @@ public class BuscadorJefeAreaMB {
     }
 
     public String semaforo() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -256,7 +282,7 @@ public class BuscadorJefeAreaMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -264,22 +290,7 @@ public class BuscadorJefeAreaMB {
         return "/indexListo?faces-redirect=true";
     }
 
-//    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
-//        context = FacesContext.getCurrentInstance();
-//        String texto = (String) value;
-//        String mensaje = "NUE erróneo";
-//        try {
-//            int nueIngresado = Integer.parseInt(texto);
-//            this.nue = nueIngresado;
-//            if (nueIngresado <= 0) {
-//                ((UIInput) toValidate).setValid(false);
-//                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        } catch (NumberFormatException nfe) {
-//            ((UIInput) toValidate).setValid(false);
-//            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//        }
-//    }
+
     public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
@@ -317,68 +328,7 @@ public class BuscadorJefeAreaMB {
         }
     }
 
-//    public void validarRRP(FacesContext context, UIComponent toValidate, Object value) {
-//
-//        context = FacesContext.getCurrentInstance();
-//        String mensaje = "";
-//        String texto = (String) value;
-//        System.out.println("VALIDACION buscar -> " + buscar + ", input -> " + texto);
-//
-//        if (buscar != null && !buscar.equals("")) {
-//            switch (buscar) {
-//                case "Ruc":
-//                    mensaje = validacionVistasMensajesEJB.checkRucE(texto);
-//                    break;
-//                case "Rit":
-//                    mensaje = validacionVistasMensajesEJB.checkRitE(texto);
-//                    break;
-//                case "NumeroParte":
-//                    try {
-//                        int parteIngresado = Integer.parseInt(texto);
-//                        mensaje = validacionVistasMensajesEJB.checkParte(parteIngresado);
-//                    } catch (NumberFormatException nfe) {
-//
-//                        mensaje = "N° Parte erróneo";
-//                    }
-//                    break;
-//            }
-//            if (!mensaje.equals("Exito")) {
-//                ((UIInput) toValidate).setValid(false);
-//                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        }
-//    }
-//    public void validarRRP() {
-//
-//        //context = FacesContext.getCurrentInstance();
-//        String mensaje = "";
-//        String texto = input;
-//        System.out.println("VALIDACION buscar -> " + buscar + ", input -> " + texto);
-//
-//        if (buscar != null && !buscar.equals("")) {
-//            switch (buscar) {
-//                case "Ruc":
-//                    mensaje = validacionVistasMensajesEJB.checkRucE(texto);
-//                    break;
-//                case "Rit":
-//                    mensaje = validacionVistasMensajesEJB.checkRitE(texto);
-//                    break;
-//                case "NumeroParte":
-//                    try {
-//                        int parteIngresado = Integer.parseInt(texto);
-//                        mensaje = validacionVistasMensajesEJB.checkParte(parteIngresado);
-//                    } catch (NumberFormatException nfe) {
-//
-//                        mensaje = "N° Parte erróneo";
-//                    }
-//                    break;
-//            }
-//            if (!mensaje.equals("Exito")) {
-//                
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        }
-//    }
+
     public void validarInput(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;

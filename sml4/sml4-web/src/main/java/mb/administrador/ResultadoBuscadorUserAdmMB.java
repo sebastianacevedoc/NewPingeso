@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import mb.jefeArea.ResultadoBuscadorUserJefeaAreaMB;
@@ -53,7 +54,7 @@ public class ResultadoBuscadorUserAdmMB {
 
     public ResultadoBuscadorUserAdmMB() {
         
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ResultadoBuscadorUserAdmMB");
 
         facesContext1 = FacesContext.getCurrentInstance();
@@ -77,10 +78,39 @@ public class ResultadoBuscadorUserAdmMB {
     
      @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CargarDatosADM");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.userSesion);
-        this.usuarioBuscado = usuarioEJB.findUserByRut(this.rut);
+                
+        boolean falla = false;
+
+        if (userSesion != null && rut != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.userSesion);
+            this.usuarioBuscado = usuarioEJB.findUserByRut(this.rut);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Administrativo") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        if(usuarioBuscado == null){
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }      
+        
         latino();
         logger.log(Level.INFO, "Nombre usuario {0}", this.usuarioBuscado.getNombreUsuario());
         logger.log(Level.FINEST, "Rut usuario {0}", this.usuarioBuscado.getRutUsuario());
@@ -102,7 +132,7 @@ public class ResultadoBuscadorUserAdmMB {
     }
     
     public String habilitarUsuario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "habilitarUsuario");
         boolean response = usuarioEJB.edicionEstadoUsuario(this.rut, "Activo");
 
@@ -123,7 +153,7 @@ public class ResultadoBuscadorUserAdmMB {
     }
 
     public String deshabilitarUsuario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "deshabilitarUsuario");
         boolean response = usuarioEJB.edicionEstadoUsuario(this.rut, "Inactivo");
         if (response == true) {
@@ -141,7 +171,7 @@ public class ResultadoBuscadorUserAdmMB {
     }
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.userSesion);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -150,7 +180,7 @@ public class ResultadoBuscadorUserAdmMB {
     }
 
     public String crearUsuario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearUsuarioADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.userSesion);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -159,7 +189,7 @@ public class ResultadoBuscadorUserAdmMB {
     }
     
      public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirADM");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

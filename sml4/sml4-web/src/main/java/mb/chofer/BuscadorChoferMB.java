@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,7 +52,7 @@ public class BuscadorChoferMB {
     private String nueS;
 
     public BuscadorChoferMB() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "BuscadorChoferMB");
         /**/
         this.facesContext = FacesContext.getCurrentInstance();
@@ -68,14 +69,39 @@ public class BuscadorChoferMB {
 
     @PostConstruct
     public void loadUsuario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadUsuarioChofer");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        
+        boolean falla = false;
+
+        if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }        
+        
         logger.exiting(this.getClass().getName(), "loadUsuarioChofer");
     }
 
     public String buscarFormulario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscarFormularioChofer");
         logger.log(Level.INFO, "NUE CAPTURADO:{0}", this.nue);
         Formulario formulario = formularioEJB.findFormularioByNue(this.nue);
@@ -96,7 +122,7 @@ public class BuscadorChoferMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirChofer");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

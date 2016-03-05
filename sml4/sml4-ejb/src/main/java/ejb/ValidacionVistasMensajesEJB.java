@@ -26,7 +26,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
 
         if (fecha.after(fechaActual)) {
 
-            return "Error con fecha ingresada, no puede ser superior a la fecha actual";
+            return "No puede ser superior a la fecha actual";
         }
         return "Exito";
     }
@@ -212,10 +212,8 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "Debe ingresar un R.U.N";
         }
 
-        for (int i = 0; i < largoCuenta; i++) {
-            if (rut.charAt(i) == espacio) {
-                return "No puede contener espacios";
-            }
+        if (!validacionEJB.val(rut)) {
+            return "R.U.N. erróneo";
         }
 
         if (validacionEJB.rutExiste(rut) == true) {
@@ -224,9 +222,12 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         return "Exito";
     }
 
+  
     @Override
-    public String validarFechaDigitador(Date fecha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String validarDelitoRef(String delito){
+        if(validacionEJB.soloCaracteres(delito) == false){
+            return "Debe ingresar solo caracteres.";
+        }    
+        return "Exito";
     }
-
 }

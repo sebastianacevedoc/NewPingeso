@@ -24,6 +24,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -82,7 +83,7 @@ public class RecibirPeritoMB {
     private List<Traslado> intercalado;
 
     public RecibirPeritoMB() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "RecibirPeritoMB");
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -108,10 +109,36 @@ public class RecibirPeritoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
+        
+         boolean falla = false;
+
+        if (usuarioSis != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !(usuarioSesion.getCargoidCargo().getNombreCargo().equals("Perito") || usuarioSesion.getCargoidCargo().getNombreCargo().equals("Tecnico")) || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+        
+        
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.edicionesList = formularioEJB.listaEdiciones(nue);
 
@@ -127,7 +154,7 @@ public class RecibirPeritoMB {
     }
 
     public String agregarTraslado() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoPerito");
 
         String resultado = formularioEJB.crearTraslado(formulario, fechaT, observacionesT, motivo, usuarioSesion, userEntrega);
@@ -146,7 +173,7 @@ public class RecibirPeritoMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

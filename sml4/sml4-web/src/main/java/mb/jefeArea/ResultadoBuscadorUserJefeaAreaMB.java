@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,8 +49,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     private static final Logger logger = Logger.getLogger(ResultadoBuscadorUserJefeaAreaMB.class.getName());
 
     public ResultadoBuscadorUserJefeaAreaMB() {
-
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ResultadoBuscadorUserJefeaAreaMB");
 
         facesContext1 = FacesContext.getCurrentInstance();
@@ -72,9 +72,35 @@ public class ResultadoBuscadorUserJefeaAreaMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CargarDatosJefeArea");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.userSesion);
+        
+        boolean falla = false;
+
+        if (userSesion != null && rut != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.userSesion);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Jefe de area") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        } 
+        
+        
         this.usuarioBuscado = usuarioEJB.findUserByRut(this.rut);
         latino();
         
@@ -97,7 +123,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
         }
     }
     public String habilitarUsuario() {
-        logger.setLevel(Level.ALL);
+    //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "habilitarUsuario");
         boolean response = usuarioEJB.edicionEstadoUsuario(this.rut, "Activo");
 
@@ -118,7 +144,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     }
 
     public String deshabilitarUsuario() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "deshabilitarUsuario");
         boolean response = usuarioEJB.edicionEstadoUsuario(this.rut, "Inactivo");
         if (response == true) {
@@ -137,7 +163,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
 
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.userSesion);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -146,7 +172,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     }
 
     public String crearUsuario() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.userSesion);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -155,7 +181,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     }
 
     public String semaforo() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.userSesion);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -168,7 +194,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+      //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

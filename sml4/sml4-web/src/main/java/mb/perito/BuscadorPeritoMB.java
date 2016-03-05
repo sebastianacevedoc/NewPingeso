@@ -18,6 +18,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,7 +50,7 @@ public class BuscadorPeritoMB {
     private String nueS;
 
     public BuscadorPeritoMB() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "BuscadorPeritoMB");
         /**/
         this.facesContext = FacesContext.getCurrentInstance();
@@ -67,15 +68,40 @@ public class BuscadorPeritoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        
+        boolean falla = false;
+
+        if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !(usuarioSesion.getCargoidCargo().getNombreCargo().equals("Perito") || usuarioSesion.getCargoidCargo().getNombreCargo().equals("Tecnico")) || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+        
         logger.exiting(this.getClass().getName(), "cargarDatosPerito");
     }
 
     //si encuentra el formulario, envía a la pagina para verlo.
     public String buscarFormulario() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscarFormularioPerito");
         logger.log(Level.INFO, "NUE CAPTURADO:{0}", this.nue);
         Formulario formulario = formularioEJB.findFormularioByNue(this.nue);
@@ -96,7 +122,7 @@ public class BuscadorPeritoMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

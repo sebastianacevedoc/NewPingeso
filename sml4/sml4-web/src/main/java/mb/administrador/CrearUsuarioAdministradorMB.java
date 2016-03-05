@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import mb.jefeArea.CrearUsuarioJefeAreaMB;
@@ -73,7 +74,7 @@ public class CrearUsuarioAdministradorMB {
 
     public CrearUsuarioAdministradorMB() {
 
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioADM");
 
         this.facesContext = FacesContext.getCurrentInstance();
@@ -93,9 +94,35 @@ public class CrearUsuarioAdministradorMB {
 
     @PostConstruct
     public void loadDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadDatosJefeArea");
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        
+        boolean falla = false;
+
+        if (usuarioSis != null) { //si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        } else {
+            falla = true;
+        }        
+               
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Administrativo") || usuarioSesion.getEstadoUsuario()==false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");                
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+        
+        
         //Cargando cargos
         List<Cargo> cargos1 = formularioEJB.findAllCargos();
 
@@ -103,19 +130,20 @@ public class CrearUsuarioAdministradorMB {
             this.cargos.add(cargo.getNombreCargo());
         }
 
+        //Cargando areas
         List<Area> areas1 = formularioEJB.findAllAreas();
 
         for (Area area : areas1) {
             this.areas.add(area.getNombreArea());
         }
 
-        //Cargando areas
+        
         logger.exiting(this.getClass().getName(), "loadDatosJefeArea");
     }
 
     public String crearUsuario() {
 
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioADM");       
         
       
@@ -140,7 +168,7 @@ public class CrearUsuarioAdministradorMB {
 
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -149,7 +177,7 @@ public class CrearUsuarioAdministradorMB {
     }
 
     public String crearUsuario1() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearUADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -158,7 +186,7 @@ public class CrearUsuarioAdministradorMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirADM");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

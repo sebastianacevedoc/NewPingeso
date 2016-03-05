@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import mb.jefeArea.ResultadoCrearJefeAreaMB;
@@ -51,7 +52,7 @@ public class CrearUsuarioResultAdmMB {
 
     public CrearUsuarioResultAdmMB() {
 
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioResultAdmMB");
 
         this.facesContext = FacesContext.getCurrentInstance();
@@ -75,19 +76,46 @@ public class CrearUsuarioResultAdmMB {
 
     @PostConstruct
     public void loadDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadDatosJefeArea");
 
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
-        this.userCreado = usuarioEJB.findUserByRut(this.rut);
+        boolean falla = false;
 
-    	//Cargando areas
+        if (usuarioSis != null && rut != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+            this.userCreado = usuarioEJB.findUserByRut(this.rut);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Administrativo") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        if(userCreado == null){
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
+
+        //Cargando areas
         logger.exiting(this.getClass().getName(), "loadDatosJefeArea");
     }
 
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -96,7 +124,7 @@ public class CrearUsuarioResultAdmMB {
     }
 
     public String crearUsuario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearUsuarioADM");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -105,7 +133,7 @@ public class CrearUsuarioResultAdmMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirADM");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

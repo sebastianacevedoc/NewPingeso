@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -89,7 +90,7 @@ public class EditarChoferETMB {
 
     public EditarChoferETMB() {
 
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarChoferETMB");
 
         this.edicionesList = new ArrayList();
@@ -121,10 +122,35 @@ public class EditarChoferETMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosChofer");
+        
+        boolean falla = false;
+
+        if (usuarioS != null && nue != 0 ) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        } 
+        
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioS);
         this.trasladosList = formularioEJB.traslados(formulario);
         this.edicionesList = formularioEJB.listaEdiciones(this.nue);
         this.esEditable = formularioEJB.esParticipanteCC(formulario, usuarioSesion);
@@ -151,7 +177,7 @@ public class EditarChoferETMB {
 
     //realiza la edición en el formulario, retorna a la pagina con todo el formulario.
     public String editarFormulario() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarFormulario");
 //        boolean datosIncorrectos = false;
 //        if (this.isParte == false && formulario.getNumeroParte() != 0) {
@@ -211,7 +237,7 @@ public class EditarChoferETMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirChofer");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

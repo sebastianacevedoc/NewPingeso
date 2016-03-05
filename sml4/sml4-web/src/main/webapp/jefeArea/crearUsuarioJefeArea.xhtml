@@ -77,8 +77,8 @@
                                     <div align="center">
                                         <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
 
-                                            <p:outputLabel for="CuentaUsuario" value="Cuenta:" style="width:90px"></p:outputLabel>
-                                            <p:inputText id="CuentaUsuario" style="margin-right:10px" value = "#{crearUsuarioJefeAreaMB.cuentaUsuario}" rendered="true" required="true" requiredMessage="Debe ingresar Cuenta" validator="#{crearUsuarioJefeAreaMB.validarCuenta}"/>
+                                            <p:outputLabel for="CuentaUsuario" value="Nombre de usuario: " style="width:90px"></p:outputLabel>
+                                            <p:inputText id="CuentaUsuario" style="margin-right:10px" value = "#{crearUsuarioJefeAreaMB.cuentaUsuario}" rendered="true" required="true" requiredMessage="Debe ingresar Nombre de usuario" validator="#{crearUsuarioJefeAreaMB.validarCuenta}"/>
                                             <p:message for="CuentaUsuario"/>
                                             <hr/>
 

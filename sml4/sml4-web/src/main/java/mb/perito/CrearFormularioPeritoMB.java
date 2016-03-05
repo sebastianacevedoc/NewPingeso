@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,7 +80,7 @@ public class CrearFormularioPeritoMB {
     private FacesContext facesContext;
 
     public CrearFormularioPeritoMB() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearFormularioPeritoMB");
         this.usuarioSesion = new Usuario();
         this.facesContext1 = FacesContext.getCurrentInstance();
@@ -96,9 +97,33 @@ public class CrearFormularioPeritoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
-        this.usuarioSesion = (Usuario) usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
+        
+         boolean falla = false;
+
+        if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !(usuarioSesion.getCargoidCargo().getNombreCargo().equals("Perito") || usuarioSesion.getCargoidCargo().getNombreCargo().equals("Tecnico")) || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }       
 
         this.cargo = this.usuarioSesion.getCargoidCargo().getNombreCargo();
         this.levantadaPor = this.usuarioSesion.getNombreUsuario() + " " + this.usuarioSesion.getApellidoUsuario();
@@ -111,7 +136,7 @@ public class CrearFormularioPeritoMB {
     }
 
     public String iniciarFormulario() {
-        logger.setLevel(Level.ALL);
+       //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormularioPerito");
 
         String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, delito, direccionSS, lugar, fecha, observacion, descripcion, unidadPolicial,usuarioSesion);
@@ -132,6 +157,7 @@ public class CrearFormularioPeritoMB {
 
     //redirecciona a la pagina para realizar una busqueda
     public String buscar() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscar");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "buscar", "buscadorPerito");
@@ -140,6 +166,7 @@ public class CrearFormularioPeritoMB {
 
     //redirecciona a la pagina para iniciar cadena de custodia
     public String iniciarCadena() {
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "peritoFormulario");
@@ -147,6 +174,7 @@ public class CrearFormularioPeritoMB {
     }
 
     public String salir() {
+        //logger.setLevel(Level.ALL);
         logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -231,6 +259,18 @@ public class CrearFormularioPeritoMB {
         if (!mensaje.equals("Exito")) {
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        }
+    }
+    
+    public void validarDelitoRef(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.validarDelitoRef(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
         }
     }
 

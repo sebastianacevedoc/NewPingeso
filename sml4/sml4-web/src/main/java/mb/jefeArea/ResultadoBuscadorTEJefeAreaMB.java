@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,7 +59,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
     static final Logger logger = Logger.getLogger(ResultadoBuscadorTEJefeAreaMB.class.getName());
 
     public ResultadoBuscadorTEJefeAreaMB() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ResultadoBuscadorTJefeAreaMB");
         this.trasladosList = new ArrayList<>();
         this.edicionesList = new ArrayList<>();
@@ -82,10 +83,36 @@ public class ResultadoBuscadorTEJefeAreaMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CargarDatosJefeArea");
+        
+        boolean falla = false;
+
+        if (usuarioS != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Jefe de area") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }    
+        
+        
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);
         this.trasladosList = formularioEJB.traslados(this.formulario);
 
         intercalado(trasladosList);
@@ -115,7 +142,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
 
     //redirige a nuevamente a la vista de busqueda.
     public String nuevaBusqueda() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "nuevaBusquedaJA");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.exiting(this.getClass().getName(), "nuevaBusquedaJA", "buscadorJefeArea");
@@ -150,7 +177,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
 
     //retorna a la vista para realizar busqueda
     public String buscador() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -159,7 +186,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
     }
 
     public String crearUsuario() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -168,7 +195,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
     }
 
     public String semaforo() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -181,7 +208,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

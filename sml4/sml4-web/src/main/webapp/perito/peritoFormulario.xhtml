@@ -45,8 +45,8 @@
                     <h:form>
                         <ul class="nav nav-tabs nav-justified">
 
-                            <li role="presentation" class="active" ><h:commandLink id="cs2" action="#{crearFormularioPeritoMB.iniciarCadena()}" value="Iniciar cadena de custodia"></h:commandLink> </li> 
-                            <li role="presentation"><h:commandLink id="cs1" action="#{crearFormularioPeritoMB.buscar()}" value="Buscar"></h:commandLink> </li>   
+                            <li role="presentation" class="active" ><h:commandLink id="cs2" action="#{crearFormularioPeritoMB.iniciarCadena()}" value="Iniciar Cadena de Custodia"></h:commandLink> </li> 
+                            <li role="presentation"><h:commandLink id="cs1" action="#{crearFormularioPeritoMB.buscar()}" value="Buscar Cadena de Custodia"></h:commandLink> </li>   
                             <li role="presentation"> <h:commandLink id="cs" action="#{crearFormularioPeritoMB.salir()}" value="Cerrar sesión"></h:commandLink> </li>
 
                         </ul>
@@ -112,7 +112,7 @@
                                         <br />
 
                                         <p:outputLabel  for="del" value="Delito Ref:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref"></p:inputText>
+                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref" validator="#{crearFormularioPeritoMB.validarDelitoRef}" ></p:inputText>
                                         <p:message for="del" /> 
                                         <br />
 

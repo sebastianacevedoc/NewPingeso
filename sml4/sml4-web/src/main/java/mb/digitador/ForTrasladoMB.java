@@ -24,6 +24,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -79,7 +80,7 @@ public class ForTrasladoMB {
     private List<String> usuarios;
 
     public ForTrasladoMB() {
-        logger.setLevel(Level.ALL);
+       // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ForTrasladoMB");
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -113,8 +114,35 @@ public class ForTrasladoMB {
 
     @PostConstruct
     public void cargarDatos() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatos");
+        
+        boolean falla = false;
+
+        if (usuarioSis != null && rutInicia != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+        } else {
+            falla = true;
+        }
+
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Digitador") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
+
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }   
+        
+        
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
@@ -124,7 +152,7 @@ public class ForTrasladoMB {
     }
 
     public String agregarTraslado() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoDigitador");
         //logger.log(Level.FINEST, "rut usuario entrega {0}", this.usuarioEntrega);
         logger.log(Level.FINEST, " usuario recibe {0}", this.usuarioRecibe);
@@ -190,7 +218,7 @@ public class ForTrasladoMB {
     }
 
     public String nuevaCadena() {
-        logger.setLevel(Level.ALL);
+     //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "nuevaCadena");
         httpServletRequest.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "nuevaCadena", "/digitadorFormularioHU11");
@@ -198,7 +226,7 @@ public class ForTrasladoMB {
     }
 
     public String salir() {
-        logger.setLevel(Level.ALL);
+//        logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirDigitador");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");

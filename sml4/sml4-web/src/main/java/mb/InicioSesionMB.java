@@ -58,7 +58,7 @@ public class InicioSesionMB {
 
             if (response.equals("off")) {
 
-                logger.log(Level.FINEST, "login1 false user: {0}", this.user);
+                logger.log(Level.FINEST, "login1 inactivo user: {0}", this.user);
                 logger.exiting(this.getClass().getName(), "login1", "");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario se encuentra inactivo"));
                 return "";

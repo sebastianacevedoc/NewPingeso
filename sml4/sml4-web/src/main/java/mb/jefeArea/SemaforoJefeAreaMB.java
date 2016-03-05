@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import static mb.jefeArea.BuscadorJefeAreaMB.logger;
@@ -26,116 +27,138 @@ import static mb.jefeArea.BuscadorJefeAreaMB.logger;
 @ManagedBean
 public class SemaforoJefeAreaMB {
 
-	@EJB
-	private UsuarioEJBLocal usuarioEJB;
-	@EJB
-	private FormularioEJBLocal formularioEJB;
+    @EJB
+    private UsuarioEJBLocal usuarioEJB;
+    @EJB
+    private FormularioEJBLocal formularioEJB;
 
-	private Usuario usuarioSesion;
+    private Usuario usuarioSesion;
 
-	private HttpServletRequest httpServletRequest;
-	private FacesContext facesContext;
+    private HttpServletRequest httpServletRequest;
+    private FacesContext facesContext;
 
-	private HttpServletRequest httpServletRequest1;
-	private FacesContext facesContext1;
+    private HttpServletRequest httpServletRequest1;
+    private FacesContext facesContext1;
 
-	private String usuarioSis;
+    private String usuarioSis;
 
-	private List<Formulario> formularios;
+    private List<Formulario> formularios;
 
-	public SemaforoJefeAreaMB() {
+    public SemaforoJefeAreaMB() {
+        //logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "BusquedaJefeAreaMB");
 
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "BusquedaJefeAreaMB");
+        this.formularios = new ArrayList();
+        this.facesContext = FacesContext.getCurrentInstance();
+        this.httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
 
-    	this.formularios = new ArrayList();
-    	this.facesContext = FacesContext.getCurrentInstance();
-    	this.httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        this.facesContext1 = FacesContext.getCurrentInstance();
+        this.httpServletRequest1 = (HttpServletRequest) facesContext1.getExternalContext().getRequest();
+        if (httpServletRequest1.getSession().getAttribute("cuentaUsuario") != null) {
+            this.usuarioSis = (String) httpServletRequest1.getSession().getAttribute("cuentaUsuario");
+            logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
+        }
 
-    	this.facesContext1 = FacesContext.getCurrentInstance();
-    	this.httpServletRequest1 = (HttpServletRequest) facesContext1.getExternalContext().getRequest();
-    	if (httpServletRequest1.getSession().getAttribute("cuentaUsuario") != null) {
-        	this.usuarioSis = (String) httpServletRequest1.getSession().getAttribute("cuentaUsuario");
-        	logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
-    	}
+        logger.exiting(this.getClass().getName(), "BusquedaJefeAreaMB");
+    }
 
-    	logger.exiting(this.getClass().getName(), "BusquedaJefeAreaMB");
-	}
+    @PostConstruct
+    public void loadDatos() {
+        //logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "loadDatosJefeArea");
 
-	@PostConstruct
-	public void loadDatos() {
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "loadDatosJefeArea");
-    	this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
-    	this.formularios = formularioEJB.findAllFormularios();
-    	logger.exiting(this.getClass().getName(), "loadDatosJefeArea");
-	}
+        boolean falla = false;
 
-	//retorna a la vista para realizar busqueda
-	public String buscador() {
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "buscadorJefeArea");
-    	httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-    	logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
-    	logger.exiting(this.getClass().getName(), "buscadorJefeArea", "buscadorJefeArea");
-    	return "buscadorJefeArea?faces-redirect=true";
-	}
+        if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
+        } else {
+            falla = true;
+        }
 
-	public String crearUsuario() {
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "buscadorJefeArea");
-    	httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-    	logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
-    	logger.exiting(this.getClass().getName(), "buscadorJefeArea", "crearUsuario");
-    	return "crearUsuarioJefeArea.xhtml?faces-redirect=true";
-	}
+        //si es un usario no permitido, o si está deshabilitado
+        if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Jefe de area") || usuarioSesion.getEstadoUsuario() == false) {
+            falla = true;
+        }
 
-	public String semaforo() {
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "buscadorJefeArea");
-    	httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-    	logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
-    	logger.exiting(this.getClass().getName(), "buscadorJefeArea", "semaforo");
-    	return "semaforoJefeArea.xhtml?faces-redirect=true";
-	}
+        //en caso de falla, redireccionamos a la página de inicio de sesión
+        if (falla == true) {
+            try {
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext exc = fc.getExternalContext();
+                String uri = exc.getRequestContextPath();
+                exc.redirect(uri + "/faces/indexListo.xhtml");
+            } catch (Exception e) {
+                System.out.println("POST CONSTRUCTOR FALLO");
+            }
+        }
 
-	public String estadisticas() {
-    	return "";
-	}
+        this.formularios = formularioEJB.findAllFormularios();
+        logger.exiting(this.getClass().getName(), "loadDatosJefeArea");
+    }
 
-	public String salir() {
-    	logger.setLevel(Level.ALL);
-    	logger.entering(this.getClass().getName(), "salirJefeArea");
-    	logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
-    	httpServletRequest1.removeAttribute("cuentaUsuario");
-    	logger.exiting(this.getClass().getName(), "salirJefeArea", "/indexListo");
-    	return "/indexListo?faces-redirect=true";
-	}
+    //retorna a la vista para realizar busqueda
+    public String buscador() {
+        //logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "buscadorJefeArea");
+        httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
+        logger.exiting(this.getClass().getName(), "buscadorJefeArea", "buscadorJefeArea");
+        return "buscadorJefeArea?faces-redirect=true";
+    }
 
-	public Usuario getUsuarioSesion() {
-    	return usuarioSesion;
-	}
+    public String crearUsuario() {
+       // logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "buscadorJefeArea");
+        httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
+        logger.exiting(this.getClass().getName(), "buscadorJefeArea", "crearUsuario");
+        return "crearUsuarioJefeArea.xhtml?faces-redirect=true";
+    }
 
-	public void setUsuarioSesion(Usuario usuarioSesion) {
-    	this.usuarioSesion = usuarioSesion;
-	}
+    public String semaforo() {
+       // logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "buscadorJefeArea");
+        httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
+        logger.exiting(this.getClass().getName(), "buscadorJefeArea", "semaforo");
+        return "semaforoJefeArea.xhtml?faces-redirect=true";
+    }
 
-	public String getUsuarioSis() {
-    	return usuarioSis;
-	}
+    public String estadisticas() {
+        return "";
+    }
 
-	public void setUsuarioSis(String usuarioSis) {
-    	this.usuarioSis = usuarioSis;
-	}
+    public String salir() {
+       // logger.setLevel(Level.ALL);
+        logger.entering(this.getClass().getName(), "salirJefeArea");
+        logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
+        httpServletRequest1.removeAttribute("cuentaUsuario");
+        logger.exiting(this.getClass().getName(), "salirJefeArea", "/indexListo");
+        return "/indexListo?faces-redirect=true";
+    }
 
-	public List<Formulario> getFormularios() {
-    	return formularios;
-	}
+    public Usuario getUsuarioSesion() {
+        return usuarioSesion;
+    }
 
-	public void setFormularios(List<Formulario> formularios) {
-    	this.formularios = formularios;
-	}
+    public void setUsuarioSesion(Usuario usuarioSesion) {
+        this.usuarioSesion = usuarioSesion;
+    }
+
+    public String getUsuarioSis() {
+        return usuarioSis;
+    }
+
+    public void setUsuarioSis(String usuarioSis) {
+        this.usuarioSis = usuarioSis;
+    }
+
+    public List<Formulario> getFormularios() {
+        return formularios;
+    }
+
+    public void setFormularios(List<Formulario> formularios) {
+        this.formularios = formularios;
+    }
 
 }
-
-

@@ -102,10 +102,10 @@ public class ValidacionEJB implements ValidacionEJBLocal {
         Matcher encaja = patron.matcher(palabra);
 
         if (!encaja.find()) {
-            System.out.println(palabra + " -> solo tiene letras y espacio!");
+            //System.out.println(palabra + " -> solo tiene letras y espacio!");
             return true;
         } else {
-            System.out.println(palabra + " -> tiene otra cosa");
+            //System.out.println(palabra + " -> tiene otra cosa");
             return false;
         }
 
