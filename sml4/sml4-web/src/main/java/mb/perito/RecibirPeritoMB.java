@@ -81,6 +81,8 @@ public class RecibirPeritoMB {
     private String cambia;
 
     private List<Traslado> intercalado;
+    
+    private String numeroParte;
 
     public RecibirPeritoMB() {
         //logger.setLevel(Level.ALL);
@@ -139,6 +141,12 @@ public class RecibirPeritoMB {
         
         
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
+        
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.edicionesList = formularioEJB.listaEdiciones(nue);
 
@@ -375,4 +383,13 @@ public class RecibirPeritoMB {
         this.edicionesList = edicionesList;
     }
 
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
+    }
+
+    
 }

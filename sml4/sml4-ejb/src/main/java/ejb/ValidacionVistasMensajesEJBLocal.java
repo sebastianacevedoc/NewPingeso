@@ -44,4 +44,6 @@ public interface ValidacionVistasMensajesEJBLocal {
     public String verificarCaracteresInitFin(String direccion);
     
     public String validarDelitoRef(String delito);
+    
+    public String existeNue(int nue);
 }

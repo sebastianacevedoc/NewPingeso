@@ -350,7 +350,7 @@ public class FormularioEJB implements FormularioEJBLocal {
         
         if (obsEdicion.equals("") && parte == 0 && ruc == null && rit == null) { //si no viene ningún campo, al menos se necesita observacion
             logger.exiting(this.getClass().getName(), "edicionFormulario", "requiere observacion");
-            return "Se requiere observación.";
+            return "Se requiere edición.";
         }
 
         if (!obsEdicion.equals("")) {
@@ -395,7 +395,7 @@ public class FormularioEJB implements FormularioEJBLocal {
             //Actualizando ultima edicion formulario
             formulario.setUltimaEdicion(edFRit.getFechaEdicion());
 
-            edFRit.setObservaciones("Se ingresa R.I.T: " + rit);
+            edFRit.setObservaciones("Se ingresa R.I.T.: " + rit);
             edicionFormularioFacade.create(edFRit);
             formulario.setRit(rit);
             formularioFacade.edit(formulario);

@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Formulario;
 import entity.Usuario;
 import facade.FormularioFacadeLocal;
 import facade.UsuarioFacadeLocal;
@@ -248,6 +249,15 @@ public class ValidacionEJB implements ValidacionEJBLocal {
         //ojo, cuidado con un posible null exception con el parametro recibido
         Usuario existe = usuarioFacade.findByRUN(rut);
         if (existe != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean nueExiste(int nue) {
+        Formulario existe = formularioFacade.findByNue(nue);
+        if(existe != null){
             return true;
         }
         return false;

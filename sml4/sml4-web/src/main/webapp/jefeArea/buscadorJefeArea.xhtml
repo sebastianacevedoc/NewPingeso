@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
-        <title>Buscar por NUE</title>
+        <title>Servicio Medico Legal SML</title>
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <link href=".../css/shop-item.css" rel="stylesheet" />
     </h:head>
@@ -82,12 +82,12 @@
                                             <p:inputText id="nue" style="margin-right:10px" value = "#{buscadorJefeAreaMB.nueS}" rendered="true" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{buscadorJefeAreaMB.validarNue}">
 
                                             </p:inputText>
-                                           
+
                                             <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnNue" value="Buscar" label="nue" action = "#{buscadorJefeAreaMB.buscarFormulario()}" ></h:commandButton>  
-                                            
+
                                         </h:panelGrid>
-                                         <p:message for="nue" />
-                                         <p:message for="btnNue"/>
+                                        <p:message for="nue" />
+                                        <p:message for="btnNue"/>
                                     </div>
                                     <br />
 
@@ -114,7 +114,7 @@
                                             <p:inputText id="rut" style="margin-right:10px" value = "#{buscadorJefeAreaMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.N." validator="#{buscadorJefeAreaMB.validarRut}"/>
 
                                             <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnRut" value="Buscar" label="rut"  action = "#{buscadorJefeAreaMB.buscarUsuario()}" ></h:commandButton>  
-                                            
+
                                         </h:panelGrid>
                                         <p:message for="rut"/>
                                         <p:message for="btnRut"/>
@@ -134,26 +134,30 @@
                                 <h:form>
                                     <br />
                                     <div align="center">
-
-                                        <h:selectOneRadio id="check" value="#{buscadorJefeAreaMB.buscar}" binding="#{tipoBusqueda}" required="true" requiredMessage="Debe seleccionar el dato para buscar: R.U.C., R.I.T. o N° parte">
-                                            <f:selectItem itemValue="Ruc" itemLabel="R.U.C." /> <!-- agregar libreria arriba-->
-                                            <f:selectItem itemValue="Rit" itemLabel="R.I.T." />
-                                            <f:selectItem itemValue="NumeroParte" itemLabel="N° Parte" />
-                                        </h:selectOneRadio><br />
-
-                                        <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
+                                        <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
+                                            <h:selectOneRadio id="check" value="#{buscadorJefeAreaMB.buscar}" binding="#{tipoBusqueda}" required="true" requiredMessage="Debe seleccionar el dato para buscar: R.U.C., R.I.T. o N° parte">
+                                                <f:selectItem itemValue="Ruc" itemLabel="R.U.C." /> <!-- agregar libreria arriba-->
+                                                <f:selectItem itemValue="Rit" itemLabel="R.I.T." />
+                                                <f:selectItem itemValue="NumeroParte" itemLabel="N° Parte" />
+                                            </h:selectOneRadio><br />
+                                            
+                                        </h:panelGrid>
+                                        <p:message for="check"/>
+                                        <br />
+                                        <h:panelGrid columns="2" cellpadding="5" class="ui-grid">
 
                                             <p:outputLabel for="bus" value="Buscar:" style="width:90px"></p:outputLabel>
                                             <p:inputText id="bus" style="margin-right:10px" value = "#{buscadorJefeAreaMB.input}" required="true" rendered="true" validator="#{buscadorJefeAreaMB.validarInput}" requiredMessage="Debe ingresar la búsqueda" >
                                                 <f:attribute name="check" value="#{tipoBusqueda.value}"/>
                                             </p:inputText>
 
-                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnRRP" value="Buscar" label="busca"  action = "#{buscadorJefeAreaMB.buscarFormularioRRP()}" ></h:commandButton>  
-                                           
-                                        </h:panelGrid>
-                                        <p:message for="check"/>
-                                         <p:message for="bus"/>
-                                         <p:message for="btnRRP"/>
+                                        </h:panelGrid><br />
+                                        <p:message for="bus"/>
+                                        <br />
+                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnRRP" value="Buscar" label="busca"  action = "#{buscadorJefeAreaMB.buscarFormularioRRP()}" ></h:commandButton>  
+
+                                        
+                                        <p:message for="btnRRP"/>
                                     </div>
                                     <br />
 

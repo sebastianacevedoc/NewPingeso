@@ -147,6 +147,7 @@ public class EditarPeritoETMB {
         }
         
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        
         this.trasladosList = formularioEJB.traslados(formulario);
         this.edicionesList = formularioEJB.listaEdiciones(this.nue);
         
@@ -219,9 +220,11 @@ public class EditarPeritoETMB {
             logger.exiting(this.getClass().getName(), "editarFormularioPerito", "todoPerito");
             return "todoPerito.xhtml?faces-redirect=true";
         }
-        
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", response));
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrió un problema al guardar los cambios, por favor intente más tarde.", "error al editar"));
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response, ""));
+       // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response, ""));
         logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
         return "";
     }

@@ -12,9 +12,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>
-            Servicio Médico Legal
-        </title>
+        <title>Servicio Medico Legal SML</title>
         <!--  Bootstrap Core CSS -->
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <!--  Custom CSS -->
@@ -69,7 +67,7 @@
                         </p><hr />
 
                         <p class="lead">
-                            <a href="https://www.facebook.com/smlchile" target="_blank"><img class="img-responsive" src=".../imagenes/fb_logo1.png" alt=" "/></a>
+                            <a href="http://www.sml.cl/intranetsml/index.php" target="_blank"><img class="img-responsive" src=".../imagenes/intranet.jpg" alt=" "/></a>
                         </p><hr />                       
                     </div>
 
@@ -108,7 +106,7 @@
                                     <p:inputText id="lu" value="#{recibirPeritoMB.formulario.lugarLevantamiento}" label="Lugar" disabled="true"></p:inputText>
 
                                     <h:outputLabel  for="parte" value="N° Parte:" style="width:120px"></h:outputLabel>
-                                    <p:inputText id="parte" value="#{recibirPeritoMB.formulario.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
+                                    <p:inputText id="parte" value="#{recibirPeritoMB.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
 
                                     <h:outputLabel  for="uni" value="Unidad Policial:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="uni" value="#{recibirPeritoMB.formulario.unidadPolicial}" label="Unidad" disabled="true"></p:inputText>
@@ -129,75 +127,75 @@
                                     <h:outputLabel  for="obs" value="Observaciones:" style="width:120px"></h:outputLabel>
                                     <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{recibirPeritoMB.formulario.observaciones}" queryDelay="750" minQueryLength="4" disabled="true" />
 
-                               
-                                    
+
+
                                     <h:outputLabel  for="des" value="Descripción:" style="width:120px"></h:outputLabel>
                                     <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{recibirPeritoMB.formulario.descripcionEspecieFormulario}" disabled="true" queryDelay="750" minQueryLength="4" />
                                 </h:panelGrid>
                                 <hr />
 
                                 <br />
-                                
-                                    <br />
-                                     <br />
-                                    <h4> Mostrando Traslados</h4>
-                                    <div align="center">
 
-                                        <p:dataTable var="traslado" value="#{recibirPeritoMB.intercalado}" emptyMessage="No se han registrado más participantes en esta cadena de custodia." scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="150" style="margin-bottom:0">
-
-                                            <p:column headerText="">
-                                                <h:outputText value="#{recibirPeritoMB.cambio()}"/>
-                                            </p:column>
-
-                                            <p:column headerText="Nombre">
-                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.nombreUsuario} #{traslado.usuarioidUsuarioEntrega.apellidoUsuario}" />
-
-                                            </p:column>
-
-                                            <p:column headerText="Cargo">
-                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.cargoidCargo.nombreCargo}" />
-
-                                            </p:column>
-
-                                            <p:column headerText="R.U.N.">
-                                                <h:outputText value="#{traslado.usuarioidUsuarioEntrega.rutUsuario}" />
-
-                                            </p:column>
-
-                                            <p:column headerText="Fecha" rowspan="2">
-                                                <h:outputText value="#{traslado.fechaEntrega}" />
-                                            </p:column>
-
-                                            <p:column headerText="Observación" rowspan="2">
-                                                <h:outputText value="#{traslado.observaciones}" />
-                                            </p:column>
-
-                                            <p:column headerText="Motivo" rowspan="2">
-                                                <h:outputText value="#{traslado.tipoMotivoidMotivo.tipoMotivo}" />
-                                            </p:column>
-                                        </p:dataTable>
-                                    </div><br />
-
-                                    <!-- mostrar ediciones  -->
-                                    <h4> Ediciones</h4>
-                                    <div align="center">
-                                        <p:dataTable emptyMessage="No se han registrado ediciones." var="ediciones" value="#{recibirPeritoMB.edicionesList}" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="90" style="margin-bottom:0">
-                                            <p:column headerText="Editado por">
-                                                <h:outputText value="#{ediciones.usuarioidUsuario.nombreUsuario} #{ediciones.usuarioidUsuario.apellidoUsuario}" />
-                                            </p:column>
-
-                                            <p:column headerText="Fecha">
-                                                <h:outputText value="#{ediciones.fechaEdicion}" />
-                                            </p:column>
-
-                                            <p:column headerText="Observaciones">
-                                                <h:outputText value="#{ediciones.observaciones}" />
-                                            </p:column>
-                                        </p:dataTable>
-
-                                    </div><br />
                                 <br />
-                               
+                                <br />
+                                <h4> Mostrando Traslados</h4>
+                                <div align="center">
+
+                                    <p:dataTable var="traslado" value="#{recibirPeritoMB.intercalado}" emptyMessage="No se han registrado más participantes en esta cadena de custodia." scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="150" style="margin-bottom:0">
+
+                                        <p:column headerText="">
+                                            <h:outputText value="#{recibirPeritoMB.cambio()}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Nombre">
+                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.nombreUsuario} #{traslado.usuarioidUsuarioEntrega.apellidoUsuario}" />
+
+                                        </p:column>
+
+                                        <p:column headerText="Cargo">
+                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.cargoidCargo.nombreCargo}" />
+
+                                        </p:column>
+
+                                        <p:column headerText="R.U.N.">
+                                            <h:outputText value="#{traslado.usuarioidUsuarioEntrega.rutUsuario}" />
+
+                                        </p:column>
+
+                                        <p:column headerText="Fecha" rowspan="2">
+                                            <h:outputText value="#{traslado.fechaEntrega}" />
+                                        </p:column>
+
+                                        <p:column headerText="Observación" rowspan="2">
+                                            <h:outputText value="#{traslado.observaciones}" />
+                                        </p:column>
+
+                                        <p:column headerText="Motivo" rowspan="2">
+                                            <h:outputText value="#{traslado.tipoMotivoidMotivo.tipoMotivo}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </div><br />
+
+                                <!-- mostrar ediciones  -->
+                                <h4> Ediciones</h4>
+                                <div align="center">
+                                    <p:dataTable emptyMessage="No se han registrado ediciones." var="ediciones" value="#{recibirPeritoMB.edicionesList}" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="90" style="margin-bottom:0">
+                                        <p:column headerText="Editado por">
+                                            <h:outputText value="#{ediciones.usuarioidUsuario.nombreUsuario} #{ediciones.usuarioidUsuario.apellidoUsuario}" />
+                                        </p:column>
+
+                                        <p:column headerText="Fecha">
+                                            <h:outputText value="#{ediciones.fechaEdicion}" />
+                                        </p:column>
+
+                                        <p:column headerText="Observaciones">
+                                            <h:outputText value="#{ediciones.observaciones}" />
+                                        </p:column>
+                                    </p:dataTable>
+
+                                </div><br />
+                                <br />
+
                                 <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
                                 <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{recibirPeritoMB.observacionesT}" queryDelay="750" minQueryLength="4" />
                                 <br />    

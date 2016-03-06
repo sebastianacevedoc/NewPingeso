@@ -79,8 +79,10 @@ public class ForTrasladoMB {
 
     private List<String> usuarios;
 
+    private String numeroParte;
+
     public ForTrasladoMB() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ForTrasladoMB");
         facesContext = FacesContext.getCurrentInstance();
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -114,13 +116,13 @@ public class ForTrasladoMB {
 
     @PostConstruct
     public void cargarDatos() {
-     //   logger.setLevel(Level.ALL);
+        //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatos");
-        
+
         boolean falla = false;
 
         if (usuarioSis != null && rutInicia != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
         }
@@ -140,10 +142,16 @@ public class ForTrasladoMB {
             } catch (Exception e) {
                 System.out.println("POST CONSTRUCTOR FALLO");
             }
-        }   
-        
-        
+        }
+
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
+        
+
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
         this.usuarios = usuarioEJB.findAllUserTraslado(usuarioInicia);
@@ -152,7 +160,7 @@ public class ForTrasladoMB {
     }
 
     public String agregarTraslado() {
-     //   logger.setLevel(Level.ALL);
+        //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoDigitador");
         //logger.log(Level.FINEST, "rut usuario entrega {0}", this.usuarioEntrega);
         logger.log(Level.FINEST, " usuario recibe {0}", this.usuarioRecibe);
@@ -209,16 +217,16 @@ public class ForTrasladoMB {
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "todoHU11?faces-redirect=true");
             return "todoHU11?faces-redirect=true";
         }
-       // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
+        // FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
         FacesContext fc = FacesContext.getCurrentInstance();
         UIComponent uic = UIComponent.getCurrentComponent(fc);
         fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", resultado));
-       logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "traslado creado con éxito");
+        logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "traslado creado con éxito");
         return "";
     }
 
     public String nuevaCadena() {
-     //   logger.setLevel(Level.ALL);
+        //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "nuevaCadena");
         httpServletRequest.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "nuevaCadena", "/digitadorFormularioHU11");
@@ -329,5 +337,15 @@ public class ForTrasladoMB {
     public void setUsuarios(List<String> usuarios) {
         this.usuarios = usuarios;
     }
+
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
+    }
+
+
 
 }

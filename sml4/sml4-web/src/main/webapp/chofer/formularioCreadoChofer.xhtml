@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
-        <title>Formulario</title>
+        <title>Servicio Medico Legal SML</title>
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <link href=".../css/shop-item.css" rel="stylesheet" />
     </h:head>
@@ -29,9 +29,9 @@
                 <div class="col-md-9"> <!-- Barra de navegación -->
                     <h:form>
                         <ul class="nav nav-tabs nav-justified">
-                            <li role="presentation" class="active"> <h:commandLink id="cs1" action="#{crearFormularioChoferMB.iniciarCadena()}" value="Iniciar Cadena de Custodia"></h:commandLink> </li>                             
-                            <li role="presentation"> <h:commandLink id="cs2" action="#{crearFormularioChoferMB.buscar()}" value="Buscar Cadena de Custodia"></h:commandLink> </li>
-                            <li role="presentation"> <h:commandLink id="cs3" action="#{crearFormularioChoferMB.salir()}" value="Cerrar sesión"></h:commandLink> </li>  
+                            <li role="presentation" class="active"> <h:commandLink id="cs1" action="#{todoChoferMB.iniciarCadena()}" value="Iniciar Cadena de Custodia"></h:commandLink> </li>                             
+                            <li role="presentation"> <h:commandLink id="cs2" action="#{todoChoferMB.buscar()}" value="Buscar Cadena de Custodia"></h:commandLink> </li>
+                            <li role="presentation"> <h:commandLink id="cs3" action="#{todoChoferMB.salir()}" value="Cerrar sesión"></h:commandLink> </li>  
                         </ul>
                     </h:form>
                 </div>
@@ -70,11 +70,15 @@
                                         <p:inputText id="rit" value="#{todoChoferMB.formulario.rit}" label="rit" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="nue" value="N.U.E.:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="nue" value="#{todoChoferMB.formulario.nue}" label="nue" disabled="true"></p:inputText>                                   
-
+                                        <p:inputText id="nue" value="#{todoChoferMB.formulario.nue}" label="nue" disabled="true"></p:inputText>   
+                                        
+                                                                               
                                         <h:outputLabel  for="del" value="Delito:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="del" value="#{todoChoferMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
 
+                                        <p:outputLabel  for="cargo" value="Cargo:" style="width:120px"></p:outputLabel>
+                                        <p:inputText id="cargo" value="#{todoChoferMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"></p:inputText>
+                                        
                                         <h:outputLabel  for="dir" value="Dirección:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="dir" value="#{todoChoferMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
 
@@ -82,13 +86,13 @@
                                         <p:inputText id="lu" value="#{todoChoferMB.formulario.lugarLevantamiento}" label="Lugar" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="parte" value="N° Parte:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="parte" value="#{todoChoferMB.formulario.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
+                                        <p:inputText id="parte" value="#{todoChoferMB.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="uni" value="Unidad Policial:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="uni" value="#{todoChoferMB.formulario.unidadPolicial}" label="Unidad" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="lev" value="Levantada por:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="lev" value="#{todoChoferMB.formulario.usuarioidUsuarioInicia.nombreUsuario} #{todoPeritoMB.formulario.usuarioidUsuarioInicia.apellidoUsuario}" label="Levantada por" disabled="true"></p:inputText>
+                                        <p:inputText id="lev" value="#{todoChoferMB.formulario.usuarioidUsuarioInicia.nombreUsuario} #{todoChoferMB.formulario.usuarioidUsuarioInicia.apellidoUsuario}" label="Levantada por" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="run" value="R.U.N.:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="run" value="#{todoChoferMB.formulario.usuarioidUsuarioInicia.rutUsuario}" label="R.U.N." disabled="true"></p:inputText>            
@@ -169,8 +173,8 @@
 
                                     <div align="center">
                                         <h:panelGrid columns="4">                                            
-                                            <p:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Iniciar Cadena de Custodia" label="" action = "#{todoChoferMB.nuevaCadena()}" ></p:commandButton>  
-                                            <p:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Editar Formulario" label="" action = "#{todoChoferMB.editar()}" title="Solo para participantes de la cadena de custodia." disabled="#{!todoPeritoMB.editable}" />    
+                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Iniciar Cadena de Custodia" label="" action = "#{todoChoferMB.nuevaCadena()}" ></h:commandButton>  
+                                            <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Editar Formulario" label="" action = "#{todoChoferMB.editar()}" title="Solo para participantes de la cadena de custodia." disabled="#{!todoChoferMB.editable}" />    
                                         </h:panelGrid>
                                         <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                                     </div>

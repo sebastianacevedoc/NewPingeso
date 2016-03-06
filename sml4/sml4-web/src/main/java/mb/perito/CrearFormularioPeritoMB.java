@@ -99,8 +99,8 @@ public class CrearFormularioPeritoMB {
     public void cargarDatos() {
         //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
-        
-         boolean falla = false;
+
+        boolean falla = false;
 
         if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
             this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
@@ -123,7 +123,7 @@ public class CrearFormularioPeritoMB {
             } catch (Exception e) {
                 System.out.println("POST CONSTRUCTOR FALLO");
             }
-        }       
+        }
 
         this.cargo = this.usuarioSesion.getCargoidCargo().getNombreCargo();
         this.levantadaPor = this.usuarioSesion.getNombreUsuario() + " " + this.usuarioSesion.getApellidoUsuario();
@@ -136,10 +136,10 @@ public class CrearFormularioPeritoMB {
     }
 
     public String iniciarFormulario() {
-       //logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormularioPerito");
 
-        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, delito, direccionSS, lugar, fecha, observacion, descripcion, unidadPolicial,usuarioSesion);
+        String resultado = formularioEJB.crearFormulario(motivo, ruc, rit, nue, parte, delito, direccionSS, lugar, fecha, observacion, descripcion, unidadPolicial, usuarioSesion);
         //Enviando nue
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
         //Enviando usuario
@@ -181,6 +181,32 @@ public class CrearFormularioPeritoMB {
         httpServletRequest1.removeAttribute("cuentaUsuario");
         logger.exiting(this.getClass().getName(), "salirPerito", "/indexListo");
         return "/indexListo?faces-redirect=true";
+    }
+
+    public void validarDLU(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String cadena = (String) value;
+        if (!cadena.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.verificarCaracteresInitFin(cadena);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarDelito(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String delito1 = (String) value;
+        if (!delito1.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(delito1);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
     }
 
     public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
@@ -242,7 +268,7 @@ public class CrearFormularioPeritoMB {
         try {
             nue = Integer.parseInt(texto);
             if (nue > 0) {
-                mensaje = "Exito";
+                mensaje = validacionVistasMensajesEJB.existeNue(nue);
             } else {
                 mensaje = "N.U.E. erróneo";
             }
@@ -261,7 +287,7 @@ public class CrearFormularioPeritoMB {
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
-    
+
     public void validarDelitoRef(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;

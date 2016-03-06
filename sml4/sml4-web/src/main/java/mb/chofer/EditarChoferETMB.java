@@ -51,7 +51,7 @@ public class EditarChoferETMB {
     private FacesContext facesContext1;
     private int nue;
     private Formulario formulario;
-    
+
     //Para obtener el usuario
     private HttpServletRequest httpServletRequest;
     private FacesContext facesContext;
@@ -71,12 +71,11 @@ public class EditarChoferETMB {
 
     //boolean para restringir que un chofer que no ha particiado, no pueda editar
     private boolean esEditable;
-    
-    //boolen para restringir que la cadena esta bloqueda
 
+    //boolen para restringir que la cadena esta bloqueda
     //para registrar contenido de la edicion
     private int parte;
-    private String parteS;
+    private String numeroParte;
     private String ruc;
     private String rit;
 
@@ -124,11 +123,11 @@ public class EditarChoferETMB {
     public void cargarDatos() {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosChofer");
-        
+
         boolean falla = false;
 
-        if (usuarioS != null && nue != 0 ) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);                  
+        if (usuarioS != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioS);
         } else {
             falla = true;
         }
@@ -148,9 +147,14 @@ public class EditarChoferETMB {
             } catch (Exception e) {
                 System.out.println("POST CONSTRUCTOR FALLO");
             }
-        } 
-        
+        }
+
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
         this.trasladosList = formularioEJB.traslados(formulario);
         this.edicionesList = formularioEJB.listaEdiciones(this.nue);
         this.esEditable = formularioEJB.esParticipanteCC(formulario, usuarioSesion);
@@ -159,7 +163,8 @@ public class EditarChoferETMB {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usted no ha participado en la cadena por lo tanto no puede editar", ""));
         } else {
 
-            if (formulario.getNumeroParte() < 1) {
+            System.out.println("NUMERO DE PARTE:"+formulario.getNumeroParte());
+            if (formulario.getNumeroParte() == null || formulario.getNumeroParte() == 0) {
                 this.isParte = false;
             }
             if (formulario.getRuc() == null || formulario.getRuc().equals("")) {
@@ -167,7 +172,7 @@ public class EditarChoferETMB {
             }
             if (formulario.getRit() == null || formulario.getRit().equals("")) {
                 this.isRit = false;
-            }           
+            }
         }
         intercalado(trasladosList);
         logger.exiting(this.getClass().getName(), "cargarDatosChofer");
@@ -177,48 +182,6 @@ public class EditarChoferETMB {
     public String editarFormulario() {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarFormulario");
-//        boolean datosIncorrectos = false;
-//        if (this.isParte == false && formulario.getNumeroParte() != 0) {
-//            parte = formulario.getNumeroParte();
-//            logger.log(Level.INFO, "MB parte -> {0}", parte);
-//
-//            String mensaje = validacionVistasMensajesEJB.checkParte(formulario.getNumeroParte());
-//            if (mensaje.equals("Exito")) {
-//                isParte = true;
-//            } else {
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje, " "));
-//                datosIncorrectos = true;
-//            }
-//        }
-//        if (this.isRuc == false && formulario.getRuc() != null && !formulario.getRuc().equals("")) {
-//            ruc = formulario.getRuc();
-//            logger.log(Level.INFO, "MB ruc -> {0}", ruc);
-//            String mensaje = validacionVistasMensajesEJB.checkRuc(formulario.getRuc());
-//            if (mensaje.equals("Exito")) {
-//                isRuc = true;
-//            } else {
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje, " "));
-//                datosIncorrectos = true;
-//            }
-//        }
-//        if (this.isRit == false && formulario.getRit() != null && !formulario.getRit().equals("")) {
-//            rit = formulario.getRit();
-//            logger.log(Level.INFO, "MB rit -> {0}", rit);
-//            String mensaje = validacionVistasMensajesEJB.checkRit(formulario.getRit());
-//            if (mensaje.equals("Exito")) {
-//                isRit = true;
-//            } else {
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje, " "));
-//                datosIncorrectos = true;
-//            }
-//        }
-//
-//        if (datosIncorrectos) {
-//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
-//            logger.exiting(this.getClass().getName(), "editarFormulario", "");
-//            return "";
-//        }
 
         String response = formularioEJB.edicionFormulario(formulario, observacionEdicion, usuarioSesion, parte, ruc, rit);
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
@@ -227,9 +190,11 @@ public class EditarChoferETMB {
             logger.exiting(this.getClass().getName(), "editarFormulario", "todoChofer");
             return "todoChofer.xhtml?faces-redirect=true";
         }
-
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", response));
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ocurrió un problema al guardar los cambios, por favor intente más tarde.", "error al editar"));
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response, "Error al editar"));
+        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, response, "Error al editar"));
         logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
         return "";
     }
@@ -301,7 +266,6 @@ public class EditarChoferETMB {
         System.out.println(intercalado.toString());
     }
 
-    
     public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
@@ -311,7 +275,7 @@ public class EditarChoferETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }else{
+            } else {
                 ruc = texto;
             }
         }
@@ -325,7 +289,7 @@ public class EditarChoferETMB {
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }else{
+            } else {
                 rit = texto;
             }
         }
@@ -357,7 +321,7 @@ public class EditarChoferETMB {
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
-    
+
     public int getNue() {
         return nue;
     }
@@ -486,12 +450,14 @@ public class EditarChoferETMB {
         this.esEditable = esEditable;
     }
 
-    public String getParteS() {
-        return parteS;
+    public String getNumeroParte() {
+        return numeroParte;
     }
 
-    public void setParteS(String parteS) {
-        this.parteS = parteS;
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
     }
+
+
 
 }

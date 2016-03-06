@@ -7,7 +7,7 @@
 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Crear Usuario</title>
+        <title>Servicio Medico Legal SML</title>
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <link href=".../css/shop-item.css" rel="stylesheet" />
     </h:head>
@@ -104,7 +104,7 @@
                                             <p:message for="Apellido"/>
                                             <hr/>
 
-                                            <p:outputLabel for="Run" value="R.U.N:" style="width:90px"></p:outputLabel>
+                                            <p:outputLabel for="Run" value="R.U.N.:" style="width:90px"></p:outputLabel>
                                             <p:inputText id="Run" style="margin-right:10px" value = "#{crearUsuarioJefeAreaMB.rut}" rendered="true" required="true" requiredMessage="Debe ingresar R.U.N." validator="#{crearUsuarioJefeAreaMB.validarRut}"/>
                                             <p:message for="Run"/>
                                             <hr/>

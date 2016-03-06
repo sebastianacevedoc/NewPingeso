@@ -91,7 +91,7 @@ public class CrearFormularioChoferMB {
         this.httpServletRequest1 = (HttpServletRequest) facesContext1.getExternalContext().getRequest();
         if (httpServletRequest1.getSession().getAttribute("cuentaUsuario") != null) {
             this.usuarioSis = (String) httpServletRequest1.getSession().getAttribute("cuentaUsuario");
-            logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
+            logger.log(Level.FINEST, "Crear Chofer Usuario recibido {0}", this.usuarioSis);
         }
         logger.exiting(this.getClass().getName(), "CrearFormularioChoferMB");
     }
@@ -107,11 +107,13 @@ public class CrearFormularioChoferMB {
             this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
+            System.out.println("NO SE RECONOCE CUENTA USUARIO");
         }
 
         //si es un usario no permitido, o si está deshabilitado
         if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
             falla = true;
+            System.out.println("ACC DENEGADO");
         }
 
         //en caso de falla, redireccionamos a la página de inicio de sesión
@@ -194,6 +196,33 @@ public class CrearFormularioChoferMB {
             }
         }
     }
+    
+     public void validarDLU(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String cadena = (String) value;
+        if (!cadena.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.verificarCaracteresInitFin(cadena);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+    
+    
+    public void validarDelito(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String delito1 = (String) value;
+        if (!delito1.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(delito1);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
 
     public void validarRit(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
@@ -240,8 +269,8 @@ public class CrearFormularioChoferMB {
         String mensaje = "";
         try {
             nue = Integer.parseInt(texto);
-            if (nue > 0) {
-                mensaje = "Exito";
+            if (nue > 0) {                
+                mensaje = validacionVistasMensajesEJB.existeNue(nue);
             } else {
                 mensaje = "N.U.E. erróneo";
             }

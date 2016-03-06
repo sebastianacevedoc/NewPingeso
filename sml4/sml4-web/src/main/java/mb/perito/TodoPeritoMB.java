@@ -66,6 +66,8 @@ public class TodoPeritoMB {
 
     private List<Traslado> intercalado;
 
+    private String numeroParte;
+    
     static final Logger logger = Logger.getLogger(TodoPeritoMB.class.getName());
 
     public TodoPeritoMB() {
@@ -120,23 +122,29 @@ public class TodoPeritoMB {
         }
 
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        if (formulario.getNumeroParte() == 0) {
+            this.numeroParte = "";
+        } else {
+            this.numeroParte = "" + formulario.getNumeroParte();
+        }
+
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
 
         this.trasladosList = formularioEJB.traslados(this.formulario);
 
         this.edicionesList = formularioEJB.listaEdiciones(nue);
 
-        this.bloqueada = formulario.getBloqueado();       
-        
+        this.bloqueada = formulario.getBloqueado();
+
         this.editable = formularioEJB.esParticipanteCC(formulario, usuarioSesion);
         logger.log(Level.INFO, "editable {0}", editable);
         if (bloqueada) {
             this.deshabBtnRecibir = true;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Esta cadena de custodia se encuentra cerrada.", ""));
         }
-        
-        if(bloqueada || Objects.equals(usuarioSesion.getIdUsuario(), trasladosList.get(trasladosList.size()-1).getUsuarioidUsuarioEntrega().getIdUsuario())){
-            this.deshabBtnRecibir = true;            
+
+        if (bloqueada || Objects.equals(usuarioSesion.getIdUsuario(), trasladosList.get(trasladosList.size() - 1).getUsuarioidUsuarioEntrega().getIdUsuario())) {
+            this.deshabBtnRecibir = true;
         }
 
         intercalado(trasladosList);
@@ -152,7 +160,7 @@ public class TodoPeritoMB {
         logger.entering(this.getClass().getName(), "buscar");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "buscar", "buscadorPerito");
-        return "buscadorPerito?faces-redirect=true";
+        return "buscadorPerito.xhtml?faces-redirect=true";
     }
 
     //redirecciona a la pagina para iniciar cadena de custodia
@@ -161,7 +169,7 @@ public class TodoPeritoMB {
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "peritoFormulario");
-        return "peritoFormulario?faces-redirect=true";
+        return "peritoFormulario.xhtml?faces-redirect=true";
     }
 
     public String salir() {
@@ -170,7 +178,7 @@ public class TodoPeritoMB {
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
         logger.exiting(this.getClass().getName(), "salirPerito", "/indexListo");
-        return "/indexListo?faces-redirect=true";
+        return "/indexListo.xhtml?faces-redirect=true";
     }
 
     //envia a la pagina para realizar una edicion en este formulario.
@@ -190,7 +198,7 @@ public class TodoPeritoMB {
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Nueva Cadena", "Ir a nuevo formulario"));
         logger.exiting(this.getClass().getName(), "nuevaCadena", "peritoFormulario");
-        return "peritoFormulario?faces-redirect=true";
+        return "peritoFormulario.xhtml?faces-redirect=true";
     }
 
     //envía a la página para recibir la cadena
@@ -347,5 +355,15 @@ public class TodoPeritoMB {
     public void setDeshabBtnRecibir(boolean deshabBtnRecibir) {
         this.deshabBtnRecibir = deshabBtnRecibir;
     }
+
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
+    }
+    
+    
 
 }

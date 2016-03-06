@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
-        <title>Formulario</title>
+        <title>Servicio Medico Legal SML</title>
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <link href=".../css/shop-item.css" rel="stylesheet" />
     </h:head>
@@ -87,6 +87,11 @@
                                         <p:outputLabel  for="del" value="Delito:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="del" value="#{editarPeritoETMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
                                         <p:message for="del" /> 
+                                        <br />
+                                        
+                                        <p:outputLabel  for="cargo" value="Cargo:" style="width:120px"></p:outputLabel>
+                                        <p:inputText id="cargo" value="#{editarPeritoETMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"></p:inputText>
+                                        <p:message for="cargo" /> 
                                         <br />
                                         
                                         <p:outputLabel  for="dir" value="Dirección:" style="width:120px"></p:outputLabel>
@@ -196,8 +201,9 @@
                                         <h:outputLabel  for="edicion" value="Edición:" style="width:120px"></h:outputLabel>
                                         <!--<p:inputTextarea id="edicion" rows="3" cols="90" value="#" queryDelay="750" minQueryLength="4" />-->
                                         <p:inputTextarea id="edicion" rows="3" cols="90" value="#{editarPeritoETMB.observacionEdicion}" maxlength="300" minQueryLength="4" />
-                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Aceptar" label="" action ="#{editarPeritoETMB.editarFormulario()}" ></h:commandButton>  
-                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                        <h:commandButton id="btnEd" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Aceptar" label="" action ="#{editarPeritoETMB.editarFormulario()}" ></h:commandButton>  
+                                       <!-- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />-->
+                                       <p:message for="btnEd"/>
                                     </h:panelGrid>
 
                                 </h:form> 

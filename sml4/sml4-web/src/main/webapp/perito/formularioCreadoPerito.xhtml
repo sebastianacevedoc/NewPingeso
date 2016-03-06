@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
-        <title>Formulario</title>
+        <title>Servicio Medico Legal SML</title>
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <link href=".../css/shop-item.css" rel="stylesheet" />
     </h:head>
@@ -76,7 +76,10 @@
 
                                         <h:outputLabel  for="del" value="Delito:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="del" value="#{todoPeritoMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
-
+                                        
+                                        <p:outputLabel  for="cargo" value="Cargo:" style="width:120px"></p:outputLabel>
+                                        <p:inputText id="cargo" value="#{todoPeritoMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"></p:inputText>
+                                        
                                         <h:outputLabel  for="dir" value="Dirección:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="dir" value="#{todoPeritoMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
 
@@ -84,7 +87,7 @@
                                         <p:inputText id="lu" value="#{todoPeritoMB.formulario.lugarLevantamiento}" label="Lugar" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="parte" value="N° Parte:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="parte" value="#{todoPeritoMB.formulario.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
+                                        <p:inputText id="parte" value="#{todoPeritoMB.numeroParte}" label="N° Parte" disabled="true"></p:inputText>
 
                                         <h:outputLabel  for="uni" value="Unidad Policial:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="uni" value="#{todoPeritoMB.formulario.unidadPolicial}" label="Unidad" disabled="true"></p:inputText>

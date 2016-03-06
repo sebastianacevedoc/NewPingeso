@@ -67,6 +67,8 @@ public class TodoChoferMB {
     private String cambia;
 
     private List<Traslado> intercalado;
+    
+    private String numeroParte;
 
     static final Logger logger = Logger.getLogger(TodoChoferMB.class.getName());
 
@@ -81,13 +83,13 @@ public class TodoChoferMB {
         httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         if (httpServletRequest.getSession().getAttribute("nueF") != null) {
             this.nue = (int) httpServletRequest.getSession().getAttribute("nueF");
-            logger.log(Level.FINEST, "todo nue recibido {0}", this.nue);
+            logger.log(Level.FINEST, "Chofer todo nue recibido {0}", this.nue);
         }
         this.facesContext1 = FacesContext.getCurrentInstance();
         this.httpServletRequest1 = (HttpServletRequest) facesContext1.getExternalContext().getRequest();
         if (httpServletRequest1.getSession().getAttribute("cuentaUsuario") != null) {
             this.usuarioSis = (String) httpServletRequest1.getSession().getAttribute("cuentaUsuario");
-            logger.log(Level.FINEST, "Usuario recibido {0}", this.usuarioSis);
+            logger.log(Level.FINEST, "Chofer todo Usuario recibido {0}", this.usuarioSis);
         }
         logger.exiting(this.getClass().getName(), "TodoChoferMB");
     }
@@ -100,14 +102,16 @@ public class TodoChoferMB {
         boolean falla = false;
 
         if (usuarioSis != null && nue != 0 ) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                 
         } else {
             falla = true;
+            System.out.println("TF CUENTA USUARIO O NUE NO RECONOCIDO");
         }
 
         //si es un usario no permitido, o si está deshabilitado
         if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
             falla = true;
+            System.out.println("TF ACC DENEGADO");
         }
 
         //en caso de falla, redireccionamos a la página de inicio de sesión
@@ -124,6 +128,12 @@ public class TodoChoferMB {
         
         
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(usuarioSis);
 
         this.trasladosList = formularioEJB.traslados(this.formulario);
@@ -326,6 +336,14 @@ public class TodoChoferMB {
 
     public void setIntercalado(List<Traslado> intercalado) {
         this.intercalado = intercalado;
+    }
+
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
     }
     
     

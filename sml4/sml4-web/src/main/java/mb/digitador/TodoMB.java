@@ -98,6 +98,7 @@ public class TodoMB {
     private List<Traslado> intercalado;
 
     private List<String> usuarios;
+    private String numeroParte;
 
     static final Logger logger = Logger.getLogger(TodoMB.class.getName());
 
@@ -173,6 +174,11 @@ public class TodoMB {
         
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
         this.usuarios = usuarioEJB.findAllUserTraslado(usuarioInicia);
@@ -473,5 +479,14 @@ public class TodoMB {
     public void setUsuarios(List<String> usuarios) {
         this.usuarios = usuarios;
     }
+
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
+    }
+    
 
 }

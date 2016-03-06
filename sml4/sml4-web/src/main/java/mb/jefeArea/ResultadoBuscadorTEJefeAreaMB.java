@@ -55,6 +55,8 @@ public class ResultadoBuscadorTEJefeAreaMB {
     private String cambia;
 
     private List<Traslado> intercalado;
+    
+    private String numeroParte;
 
     static final Logger logger = Logger.getLogger(ResultadoBuscadorTEJefeAreaMB.class.getName());
 
@@ -113,6 +115,13 @@ public class ResultadoBuscadorTEJefeAreaMB {
         
         
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
+        
+        if(formulario.getNumeroParte() == 0){
+            this.numeroParte = "";
+        }else{
+              this.numeroParte = ""+formulario.getNumeroParte();
+        }
+        
         this.trasladosList = formularioEJB.traslados(this.formulario);
 
         intercalado(trasladosList);
@@ -280,4 +289,13 @@ public class ResultadoBuscadorTEJefeAreaMB {
         this.intercalado = intercalado;
     }
 
+    public String getNumeroParte() {
+        return numeroParte;
+    }
+
+    public void setNumeroParte(String numeroParte) {
+        this.numeroParte = numeroParte;
+    }
+
+    
 }

@@ -12,9 +12,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>
-            Servicio Médico Legal
-        </title>
+        <title>Servicio Medico Legal SML</title>
         <!--  Bootstrap Core CSS -->
         <link href=".../css/bootstrap.min.css" rel="stylesheet" />
         <!--  Custom CSS -->
@@ -106,28 +104,23 @@
                                         <p:message for="nue" /> 
                                         <br />
 
-                                        <p:outputLabel  for="cargo" value="Cargo:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="cargo" value="#{crearFormularioPeritoMB.cargo}" label="Cargo" disabled="true"></p:inputText>
-                                        <p:message for="cargo" /> 
-                                        <br />
-
                                         <p:outputLabel  for="del" value="Delito Ref:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref" validator="#{crearFormularioPeritoMB.validarDelitoRef}" ></p:inputText>
+                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref" validator="#{crearFormularioPeritoMB.validarDelito}" ></p:inputText>
                                         <p:message for="del" /> 
                                         <br />
 
                                         <p:outputLabel  for="dir" value="Dirección SS:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="dir" value="#{crearFormularioPeritoMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar Dirección SS"></p:inputText>
+                                        <p:inputText id="dir" value="#{crearFormularioPeritoMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar Dirección SS" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="dir" /> 
                                         <br />
 
                                         <p:outputLabel  for="lu" value="Lugar:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="lu" value="#{crearFormularioPeritoMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar Lugar"></p:inputText>
+                                        <p:inputText id="lu" value="#{crearFormularioPeritoMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar Lugar" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="lu" /> 
                                         <br />
 
                                         <p:outputLabel  for="uni" value="Unidad Policial:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="uni" value="#{crearFormularioPeritoMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar Unidad Policial"></p:inputText>
+                                        <p:inputText id="uni" value="#{crearFormularioPeritoMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar Unidad Policial" validator="#{crearFormularioPeritoMB.validarDLU}"></p:inputText>
                                         <p:message for="uni" /> 
                                         <br />
 
@@ -205,7 +198,7 @@
                                     </h:panelGrid>
                                     <br />
                                     <div align="center">
-                                    
+
                                         <h:panelGrid columns="5">    
                                             <h:outputLabel style="width:120px" for="check" value="Motivo Traslado: "></h:outputLabel> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <p:selectOneRadio id="check" layout="pageDirection" value="#{crearFormularioPeritoMB.motivo}" style="" required="true" requiredMessage="Debe ingresar Motivo de Traslado"> 

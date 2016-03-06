@@ -134,95 +134,6 @@ public class CrearUsuarioJefeAreaMB {
 //        logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioJefeAreaMB");
 
-//        boolean datosIncorrectos = false;
-//        if (cuentaUsuario == null || cuentaUsuario.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Cuenta", ""));
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.soloCaracteres(cuentaUsuario);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cuenta: " + mensaje, ""));
-//            }
-//            mensaje = validacionVistasMensajesEJB.validarCuentaUsuario(cuentaUsuario);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        }
-//        if (pass == null || pass.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar contraseña de al menos 8 caracteres", ""));
-//        }
-//
-//        if (pass2 == null || pass2.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe repetir la contraseña", ""));
-//        }
-//
-//        if (pass != null && pass2 != null && !pass.equals("") && !pass2.equals("") && !pass.equals(pass2)) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Contraseñas no coinciden", ""));
-//        }
-//        if (nombreUsuario == null || nombreUsuario.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Nombre", ""));
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.soloCaracteres(nombreUsuario);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre: " + mensaje, ""));
-//            }
-//        }
-//        if (apellidoUsuario == null || apellidoUsuario.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Apellido", ""));
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.soloCaracteres(apellidoUsuario);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Apellido: " + mensaje, ""));
-//            }
-//        }
-//        if (rut == null || rut.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar R.U.T.", ""));
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.checkRut(rut);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//            mensaje = validacionVistasMensajesEJB.validarRut(rut);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        }
-//        if (mail == null || mail.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Correo", ""));
-//        } else {
-//            String mensaje = validacionVistasMensajesEJB.validarCorreo(mail);
-//            if (!mensaje.equals("Exito")) {
-//                datosIncorrectos = true;
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo: " + mensaje, ""));
-//            }
-//        }
-//        if (cargo == null || cargo.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Cargo", ""));
-//        }
-//
-//        if (area == null || area.equals("")) {
-//            datosIncorrectos = true;
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Área", ""));
-//        }
-//        if (datosIncorrectos) {
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
-//            logger.exiting(this.getClass().getName(), "CrearUsuarioJA", "faltan datos");
-//            return "";
-//        }
         String response = usuarioEJB.crearUsuario(nombreUsuario, apellidoUsuario, rut, pass, mail, cuentaUsuario, cargo, area);
 
         if (response.equals("Exito")) {
@@ -271,10 +182,6 @@ public class CrearUsuarioJefeAreaMB {
         return "semaforoJefeArea.xhtml?faces-redirect=true";
     }
 
-    public String estadisticas() {
-        return "";
-    }
-
     public String salir() {
       //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");
@@ -287,68 +194,50 @@ public class CrearUsuarioJefeAreaMB {
     public void validarRut(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.checkRut(texto);
+        String mensaje = validacionVistasMensajesEJB.validarRut(texto);
         if (!mensaje.equals("Exito")) { //caso rut invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-        } else { //rut valido, verificamos si la se encuentra registrado
-            mensaje = validacionVistasMensajesEJB.validarRut(texto);
-            if (!mensaje.equals("Exito")) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }
-        }
+        } 
     }
 
     public void validarCorreo(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.checkCorreo(texto);
+        String mensaje = validacionVistasMensajesEJB.validarCorreo(texto);
         if (!mensaje.equals("Exito")) { //correo invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-        } else { //correo valido, verificamos si la se encuentra registrado
-            mensaje = validacionVistasMensajesEJB.validarCorreo(texto);
-            if (!mensaje.equals("Exito")) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }
-        }
+        } 
     }
 
     public void validarCuenta(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.soloCaracteres(texto);
+        String mensaje = validacionVistasMensajesEJB.validarCuentaUsuario(texto);
         if (!mensaje.equals("Exito")) { //cuenta invalido
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Cuenta inválida"));
-        } else { //cuenta valida, verificamos si la se encuentra registrado
-            mensaje = validacionVistasMensajesEJB.validarCuentaUsuario(texto);
-            if (!mensaje.equals("Exito")) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }
-        }
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+        } 
     }
 
     public void validarApellido(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.soloCaracteres(texto);
+        String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(texto);
         if (!mensaje.equals("Exito")) { //apellido invalido
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Apellido erróneo"));
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
 
     public void validarNombre(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.soloCaracteres(texto);
+        String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(texto);
         if (!mensaje.equals("Exito")) { //nombre invalido
             ((UIInput) toValidate).setValid(false);
-            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Nombre erróneo"));
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
 

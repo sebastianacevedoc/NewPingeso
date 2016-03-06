@@ -36,4 +36,6 @@ public interface ValidacionEJBLocal {
     boolean correoExiste(String email);
     
     public boolean rutExiste(String rut);
+    
+    public boolean nueExiste(int nue);
 }

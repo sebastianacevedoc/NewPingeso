@@ -209,7 +209,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         char espacio = 32;
 
         if (largoCuenta < 0) {
-            return "Debe ingresar un R.U.N";
+            return "Debe ingresar un R.U.N.";
         }
 
         if (!validacionEJB.val(rut)) {
@@ -226,8 +226,16 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     @Override
     public String validarDelitoRef(String delito){
         if(validacionEJB.soloCaracteres(delito) == false){
-            return "Debe ingresar solo caracteres.";
+            return "Debe ingresar solo caracteres";
         }    
         return "Exito";
+    }
+    
+    @Override
+    public String existeNue(int nue){
+        if(validacionEJB.nueExiste(nue)==true){
+            return "N.U.E. ya registrado";
+        }
+        return "Exito";        
     }
 }
