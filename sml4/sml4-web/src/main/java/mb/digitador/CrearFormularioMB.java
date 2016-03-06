@@ -214,21 +214,7 @@ public class CrearFormularioMB {
         String cadena = (String) value;
         if (!cadena.equals("")) {
 
-            String mensaje = validacionVistasMensajesEJB.verificarCaracteresInitFin(cadena);
-            if (!mensaje.equals("Exito")) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }
-        }
-    }
-    
-    
-    public void validarDelito(FacesContext context, UIComponent toValidate, Object value) {
-        context = FacesContext.getCurrentInstance();
-        String delito1 = (String) value;
-        if (!delito1.equals("")) {
-
-            String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(delito1);
+            String mensaje = validacionVistasMensajesEJB.verificarInitFin(cadena);
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
@@ -282,7 +268,7 @@ public class CrearFormularioMB {
         try {
             nue = Integer.parseInt(texto);
             if (nue > 0) {
-                mensaje = "Exito";
+                mensaje = validacionVistasMensajesEJB.existeNue(nue);
             } else {
                 mensaje = "N.U.E. erróneo";
             }

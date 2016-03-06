@@ -99,42 +99,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "Debe ingresar solo caracteres.";
         }
         return "Exito";
-    }
-    
-    @Override
-    public String verificarCaracteresInitFin(String direccion){
-    
-         int largoCadena = direccion.length();
-        
-        if(direccion.charAt(0) == 32){
-            return "No puede contener espacio al comienzo";
-        }
-        
-        if(direccion.charAt(largoCadena-1) == 32){
-            return "No puede contener espacio al final";
-        }
-        return "Exito";
-    }
-    
-    @Override
-    public String verificarInitFinCarac(String cadena){
-    
-        int largoCadena = cadena.length();
-        
-        if(cadena.charAt(0) == 32){
-            return "No puede contener espacio al comienzo";
-        }
-        
-        if(cadena.charAt(largoCadena-1) == 32){
-            return "No puede contener espacio al final";
-        }
-        
-        if(!validacionEJB.soloCaracteres(cadena)){
-            return "Debe contener solo caracteres";
-        }
-        
-        return "Exito";
-    }
+    }  
 
     @Override
     public String validarCuentaUsuario(String cuenta) {
@@ -237,5 +202,40 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "N.U.E. ya registrado";
         }
         return "Exito";        
+    }
+
+    @Override
+    public String verificarInitFinSoloCaracteres(String texto) {
+        int largoCadena = texto.length();
+        
+        if(texto.charAt(0) == 32){
+            return "No puede contener espacio al comienzo";
+        }
+        
+        if(texto.charAt(largoCadena-1) == 32){
+            return "No puede contener espacio al final";
+        }
+        
+        if(validacionEJB.soloCaracteres(texto) == false){
+            return "Debe ingresar solo caracteres";
+        }
+        return "Exito";
+    }
+
+    @Override
+    public String verificarInitFin(String texto) {        
+    
+    
+         int largoCadena = texto.length();
+        
+        if(texto.charAt(0) == 32){
+            return "No puede contener espacio al comienzo";
+        }
+        
+        if(texto.charAt(largoCadena-1) == 32){
+            return "No puede contener espacio al final";
+        }
+        return "Exito";
+    
     }
 }

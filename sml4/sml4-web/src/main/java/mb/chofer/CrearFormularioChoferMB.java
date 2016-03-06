@@ -202,28 +202,14 @@ public class CrearFormularioChoferMB {
         String cadena = (String) value;
         if (!cadena.equals("")) {
 
-            String mensaje = validacionVistasMensajesEJB.verificarCaracteresInitFin(cadena);
+            String mensaje = validacionVistasMensajesEJB.verificarInitFin(cadena);
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
             }
         }
-    }
-    
-    
-    public void validarDelito(FacesContext context, UIComponent toValidate, Object value) {
-        context = FacesContext.getCurrentInstance();
-        String delito1 = (String) value;
-        if (!delito1.equals("")) {
-
-            String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(delito1);
-            if (!mensaje.equals("Exito")) {
-                ((UIInput) toValidate).setValid(false);
-                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-            }
-        }
-    }
-
+    }    
+ 
     public void validarRit(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;

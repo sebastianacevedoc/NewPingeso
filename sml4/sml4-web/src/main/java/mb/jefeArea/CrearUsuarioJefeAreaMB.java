@@ -204,7 +204,10 @@ public class CrearUsuarioJefeAreaMB {
     public void validarCorreo(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.validarCorreo(texto);
+        String mensaje = validacionVistasMensajesEJB.checkCorreo(texto);
+        if(mensaje.equals("Exito")){//si el correo tiene el formato correcto, entonces validamos que este no exista.
+            mensaje = validacionVistasMensajesEJB.validarCorreo(texto);
+        }                
         if (!mensaje.equals("Exito")) { //correo invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
@@ -224,7 +227,7 @@ public class CrearUsuarioJefeAreaMB {
     public void validarApellido(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(texto);
+        String mensaje = validacionVistasMensajesEJB.verificarInitFinSoloCaracteres(texto);
         if (!mensaje.equals("Exito")) { //apellido invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
@@ -234,7 +237,7 @@ public class CrearUsuarioJefeAreaMB {
     public void validarNombre(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
-        String mensaje = validacionVistasMensajesEJB.verificarInitFinCarac(texto);
+        String mensaje = validacionVistasMensajesEJB.verificarInitFinSoloCaracteres(texto);
         if (!mensaje.equals("Exito")) { //nombre invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));

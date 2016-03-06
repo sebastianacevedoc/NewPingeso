@@ -39,9 +39,9 @@ public interface ValidacionVistasMensajesEJBLocal {
 
     public String validarRut(String rut);
 
-    public String verificarInitFinCarac(String cadena);
-
-    public String verificarCaracteresInitFin(String direccion);
+    public String verificarInitFinSoloCaracteres(String direccion);
+    
+    public String verificarInitFin(String direccion);
     
     public String validarDelitoRef(String delito);
     
