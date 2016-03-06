@@ -75,13 +75,12 @@ public class RecibirPeritoMB {
     private List<Traslado> trasladosList;
     private List<EdicionFormulario> edicionesList;
 
-
     private int contador = 1;
 
     private String cambia;
 
     private List<Traslado> intercalado;
-    
+
     private String numeroParte;
 
     public RecibirPeritoMB() {
@@ -111,10 +110,10 @@ public class RecibirPeritoMB {
 
     @PostConstruct
     public void cargarDatos() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosPerito");
-        
-         boolean falla = false;
+
+        boolean falla = false;
 
         if (usuarioSis != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
             this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
@@ -138,15 +137,14 @@ public class RecibirPeritoMB {
                 System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
-        
-        
+
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        if(formulario.getNumeroParte() == 0){
+        if (formulario.getNumeroParte() == 0) {
             this.numeroParte = "";
-        }else{
-              this.numeroParte = ""+formulario.getNumeroParte();
+        } else {
+            this.numeroParte = "" + formulario.getNumeroParte();
         }
-        
+
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.edicionesList = formularioEJB.listaEdiciones(nue);
 
@@ -156,24 +154,22 @@ public class RecibirPeritoMB {
         this.userEntrega = formularioEJB.obtenerPoseedorFormulario(formulario);
 
         this.motivo = "ninguno";
-         intercalado(trasladosList);
-        
+        intercalado(trasladosList);
+
         logger.exiting(this.getClass().getName(), "cargarDatosPerito");
     }
 
     public String agregarTraslado() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoPerito");
 
         String resultado = formularioEJB.crearTraslado(formulario, fechaT, observacionesT, motivo, usuarioSesion, userEntrega);
-        System.out.println("RESULTADO------->"+resultado);
-                    System.out.println("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeeee1");
+
         if (resultado.equals("Exito")) {
-            System.out.println("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeeee2");
             httpServletRequest.getSession().setAttribute("nueF", this.nue);
             logger.exiting(this.getClass().getName(), "agregarTrasladoPerito", "todoPerito?faces-redirect=true");
             return "todoPerito?faces-redirect=true";
-            
+
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
         logger.exiting(this.getClass().getName(), "agregarTrasladoPerito", "");
@@ -181,7 +177,7 @@ public class RecibirPeritoMB {
     }
 
     public String salir() {
-      //  logger.setLevel(Level.ALL);
+        //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirPerito");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -205,7 +201,7 @@ public class RecibirPeritoMB {
         return cambia;
     }
 
-     private void intercalado(List<Traslado> traslados) {
+    private void intercalado(List<Traslado> traslados) {
 
         for (int i = 0; i < traslados.size(); i++) {
 
@@ -228,8 +224,11 @@ public class RecibirPeritoMB {
             }
 
         }
+        System.out.println("-------------------------------------------");
         System.out.println(intercalado.toString());
+        System.out.println("-------------------------------------------");
     }
+
     public String getCambia() {
         return cambia;
     }
@@ -245,7 +244,6 @@ public class RecibirPeritoMB {
     public void setIntercalado(List<Traslado> intercalado) {
         this.intercalado = intercalado;
     }
-
 
     public Formulario getFormulario() {
         return formulario;
@@ -391,5 +389,4 @@ public class RecibirPeritoMB {
         this.numeroParte = numeroParte;
     }
 
-    
 }

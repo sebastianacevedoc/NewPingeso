@@ -189,12 +189,20 @@ public class FormularioEJB implements FormularioEJBLocal {
         ultimoTraslado.setFechaEntrega(fechaT);
         ultimoTraslado.setObservaciones(observaciones);
         ultimoTraslado.setUsuarioidUsuarioRecibe(uSesion);
-        
-        System.out.println(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MOTIVO ULTIMO TRASLADO "+ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo());
 
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
+        System.out.println("NUE ULTIMO TRASLADO: " + ultimoTraslado.getFormularioNUE().getNue());
+        System.out.println("USUARIO ENTREGA ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
+        System.out.println("MOTIVO ULTIMO TRASLADO: " + ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo());
+        System.out.println("USUARIO RECIBE ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioRecibe().getNombreUsuario());
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
         //verificamos si el traslado se trata de un peritaje, lo cual pone al formulario en amarillo (y no se debe crear un siguiente traslado).
         //ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo()
         if (motivoNext.equals("Peritaje")) {
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.println("EL SIGUIENTE MOTIVO ES PERITAJE:" + motivoNext);
+            System.out.println("SE PROCEDE A CAMBIAR EL SEMAFORO AMARILLO Y ACTUALIZAR EL FORMULARIO");
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
             Semaforo semAmarillo = semaforoFacade.findByColor("Amarillo");
             if (semAmarillo == null) {
                 logger.exiting(this.getClass().getName(), "crearTraslado", "No se encontro semaforo Amarillo");
@@ -208,11 +216,12 @@ public class FormularioEJB implements FormularioEJBLocal {
         }
 
         if (motivoNext.equals("ninguno")) { //indica que se esta recibiendo para peritaje. implica que se debe cerrar la cc y dejarla en verde.
-            //esto solo puede ser realiza por un tecnico o perito. 
-            if (!(uSesion.getCargoidCargo().getNombreCargo().equals("Tecnico") || uSesion.getCargoidCargo().getNombreCargo().equals("Perito"))) {
-                logger.exiting(this.getClass().getName(), "crearTraslado", "Error, un no Perito ni Tecnico desea recibir para traslado.");
-                return "Error, no tiene permiso para recibir con motivo de peritaje.";
-            }
+
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.println("EL SIGUIENTE MOTIVO ES NINGUNO:" + motivoNext);
+            System.out.println("SE PROCEDE A CAMBIAR EL SEMAFORO A VERDE Y ACTUALIZAR EL FORMULARIO");
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+
             Semaforo semVerde = semaforoFacade.findByColor("Verde");
             if (semVerde == null) {
                 logger.exiting(this.getClass().getName(), "crearTraslado", "No se encontro semaforo Verde");
@@ -225,6 +234,11 @@ public class FormularioEJB implements FormularioEJBLocal {
             logger.info("se finaliza la edición del formulario para cambiar semaforo a verde");
 
         } else { //custodia o traslado, (no se  modifica semaforo, se debe crear un siguiente traslado)
+            
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.println("EL SIGUIENTE MOTIVO:" + motivoNext);
+            System.out.println("SE CREA UN NUEVO TRASLADO");
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
             TipoMotivo motivoNextP = tipoMotivoFacade.findByTipoMotivo(motivoNext);
             if (motivoNextP == null) {
                 logger.exiting(this.getClass().getName(), "crearTraslado", "No se encontro motivoNext");
@@ -234,6 +248,13 @@ public class FormularioEJB implements FormularioEJBLocal {
             siguienteTraslado.setUsuarioidUsuarioEntrega(uSesion);
             siguienteTraslado.setFormularioNUE(formulario);
             siguienteTraslado.setTipoMotivoidMotivo(motivoNextP);
+            
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.println("USUARIO ENTREGA SIGUIENTE TRASLADO:" + siguienteTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
+            System.out.println("NUEVA DEL FORMULARIO SIGUIENTE TRASLADO: "+siguienteTraslado.getFormularioNUE().getNue());
+            System.out.println("MOTIVO DEL SIGUIENTE TRASLADO: "+siguienteTraslado.getTipoMotivoidMotivo().getTipoMotivo());
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            
             logger.info("se inicia la creacion del siguiente traslado");
             trasladoFacade.create(siguienteTraslado);
             logger.info("se finaliza la creacion del siguiente traslado");
@@ -247,6 +268,7 @@ public class FormularioEJB implements FormularioEJBLocal {
         return "Exito";
 
     }
+
     //** modificada para retornar una lista vacía si no encuentra resultados.
     @Override
     public List<Traslado> traslados(Formulario formulario) {
@@ -268,11 +290,6 @@ public class FormularioEJB implements FormularioEJBLocal {
     // el String de retorno se muentra como mensaje en la vista.
     @Override
     public String crearFormulario(String motivo, String ruc, String rit, int nue, int nParte, String delito, String direccionSS, String lugar, Date fecha, String observacion, String descripcion, String unidad, Usuario inicia) {
-
-        //Verificando que los campos sean string
-        if ( !validacionEJB.soloCaracteres(delito)) {
-            return "El campo delito acepta solamente caracteres";
-        }
 
         //match con motivo
         TipoMotivo motivoP = tipoMotivoFacade.findByTipoMotivo(motivo);
@@ -311,18 +328,21 @@ public class FormularioEJB implements FormularioEJBLocal {
         nuevoFormulario.setBloqueado(false);
         nuevoFormulario.setSemaforoidSemaforo(estadoInicial);
 
-
-
         logger.finest("se inicia la persistencia del nuevo formulario");
         formularioFacade.create(nuevoFormulario);
         logger.finest("se finaliza la persistencia del nuevo formulario");
-
 
         //creando primer traslado
         Traslado primerTraslado = new Traslado();
         primerTraslado.setFormularioNUE(formularioFacade.findByNue(nue));
         primerTraslado.setTipoMotivoidMotivo(motivoP);
         primerTraslado.setUsuarioidUsuarioEntrega(inicia);
+
+        System.out.println("-------------------------------------------------------------------------------------------------------------");
+        System.out.println("NUE PRIMER TRASLADO: " + primerTraslado.getFormularioNUE().getNue());
+        System.out.println("USUARIO ENTREGA PRIMER  TRASLADO: " + primerTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
+        System.out.println("--------------------------------------------------------------------------------------------------------------");
+
         logger.finest("se inicia la persistencia del primer traslado");
         trasladoFacade.create(primerTraslado);
         logger.finest("se finaliza la persistencia del primer traslado");
@@ -347,7 +367,7 @@ public class FormularioEJB implements FormularioEJBLocal {
             logger.exiting(this.getClass().getName(), "edicionFormulario", "usuario no ha participado en cc");
             return "Usted no ha participado en esta cadena de custodia.";
         }
-        
+
         if (obsEdicion.equals("") && parte == 0 && ruc == null && rit == null) { //si no viene ningún campo, al menos se necesita observacion
             logger.exiting(this.getClass().getName(), "edicionFormulario", "requiere observacion");
             return "Se requiere edición.";

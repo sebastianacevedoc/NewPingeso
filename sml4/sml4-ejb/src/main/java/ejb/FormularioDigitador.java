@@ -5,7 +5,6 @@
  */
 package ejb;
 
-import static ejb.FormularioEJB.logger;
 import entity.Formulario;
 import entity.Semaforo;
 import entity.TipoMotivo;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -62,30 +62,13 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
     @EJB
     private TipoMotivoFacadeLocal tipoMotivoFacade;
 
+    static final Logger logger = Logger.getLogger(FormularioDigitador.class.getName());
+    
     //ZACK
     //Función que crea el formulario
     // el String de retorno se muentra como mensaje en la vista.
     @Override
     public String crearFormulario(String rut, String ruc, String rit, int nue, int nParte, String delito, String direccionSS, String lugar, String unidadPolicial, Date fecha, String observacion, String descripcion, Usuario digitador) {
-
-        //Verificando si existe un formulario con ese nue
-        Formulario verificar = formularioFacade.findByNue(nue);
-        if (verificar != null) {
-            logger.exiting(this.getClass().getName(), "crearFormulario", "Error nue existente");
-            return "Formulario existente";
-        }
-        //Verificando delito
-        if (!validacionEJB.soloCaracteres(delito)) {
-            logger.exiting(this.getClass().getName(), "crearFormulario", "Error con delito");
-            return "Error con delito, debe ingresar solo caracteres";
-        }
-        
-        Date fechaActual = new Date();
-
-        if (fecha.after(fechaActual)) {
-
-            return "Error con fecha ingresada, no puede ser superior a la fecha actual";
-        }
 
         //ruc - rit- nparte - obs y descripcion no son obligatorios
         Usuario usuarioIngresar = usuarioFacade.findByRUN(rut);
@@ -208,7 +191,10 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
         if (nuevoTraslado.getTipoMotivoidMotivo().getTipoMotivo().equals("Peritaje")) {
             //quite la restriccion de que solo puede cerrar un tecnico o perito, porque dadas las circunstancias, no se puede asegurar.
             logger.info("se realiza peritaje, por tanto se finaliza la cc.");
-            formulario.setBloqueado(true);
+            formulario.setBloqueado(true);  
+            //cambiado el semaforo del formulario
+            Semaforo semaforo = semaforoFacade.findByColor("Verde");
+            formulario.setSemaforoidSemaforo(semaforo);
             logger.info("se inicia la edición del formulario para bloquearlo");
             formularioFacade.edit(formulario);
             logger.info("se finaliza la edición del formulario para bloquearlo");

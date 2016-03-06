@@ -209,6 +209,7 @@ public class ForTrasladoMB {
             return "";
         }
 
+        
         String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibeRut, fechaT, observacionesT, motivo);
         if (resultado.equals("Exito")) {
             httpServletRequest.getSession().setAttribute("nueF", this.nue);

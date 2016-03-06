@@ -161,7 +161,6 @@ public class CrearFormularioMB {
             }
         }
         
-
         String resultado = formularioDigitador.crearFormulario(rut, ruc, rit, nue, parte, delito, direccionSS, lugar, unidadPolicial, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
