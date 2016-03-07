@@ -5,7 +5,6 @@
  */
 package ejb;
 
-import static ejb.FormularioEJB.logger;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -31,6 +30,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         return "Exito";
     }
 
+    //delito, unidad, nombre, apellido, contraseña, mail   45
     @Override
     public String checkRuc(String ruc) {
 
@@ -38,10 +38,11 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "Debe ingresar el RUC para realizar la búsqueda";
         }
         if (ruc == null || !validacionEJB.checkRucOrRit(ruc)) {
-            System.out.println("Error ruc ------> " + ruc);
+            //System.out.println("Error ruc ------> " + ruc);
             return "El RUC ingresado es erróneo ";
         }
-        System.out.println("RUC ------> " + ruc);
+
+        //System.out.println("RUC ------> " + ruc);
         return "Exito";
     }
 
@@ -60,8 +61,11 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     @Override
     public String checkRucE(String ruc) {
         if (!validacionEJB.checkRucOrRit(ruc)) {
-            System.out.println("Error ruc ------> " + ruc);
+            //System.out.println("Error ruc ------> " + ruc);
             return "R.U.C. erróneo";
+        }
+        if (!validacionEJB.cantCaract(ruc)) {
+            return "No puede exceder los 45 caracteres";
         }
 
         return "Exito";
@@ -71,6 +75,9 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     public String checkRitE(String rit) {
         if (rit == null || rit.equals("") || !validacionEJB.checkRucOrRit(rit)) {
             return "R.I.T. erróneo";
+        }
+        if (!validacionEJB.cantCaract(rit)) {
+            return "No puede exceder los 45 caracteres";
         }
         return "Exito";
     }
@@ -99,7 +106,7 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
             return "Debe ingresar solo caracteres.";
         }
         return "Exito";
-    }  
+    }
 
     @Override
     public String validarCuentaUsuario(String cuenta) {
@@ -107,6 +114,11 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         int largoCuenta = cuenta.length();
         char espacio = 32;
 
+        if (!validacionEJB.cantCaract2(cuenta)) {
+            return "No puede exceder los 30 caracteres";
+
+        }
+        
         if (largoCuenta < 0) {
             return "Debe ingresar cuenta de usuario";
         }
@@ -116,10 +128,10 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
                 return "No puede contener espacios";
             }
         }
-
         if (validacionEJB.validarCuentaUsuario(cuenta) == false) {
             return "Cuenta ya registrada";
         }
+        
         return "Exito";
     }
 
@@ -151,6 +163,10 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         int largoCuenta = correo.length();
         char espacio = 32;
 
+        if (!validacionEJB.cantCaract(correo)) {
+            return "No puede exceder los 45 caracteres";
+        }
+        
         if (largoCuenta < 0) {
             return "Debe ingresar un correo";
         }
@@ -164,6 +180,9 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         if (validacionEJB.correoExiste(correo) == true) {
             return "Correo ya registrado";
         }
+
+        
+
         return "Exito";
     }
 
@@ -187,55 +206,81 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         return "Exito";
     }
 
-  
     @Override
-    public String validarDelitoRef(String delito){
-        if(validacionEJB.soloCaracteres(delito) == false){
+    public String validarDelitoRef(String delito) {
+        if (validacionEJB.soloCaracteres(delito) == false) {
             return "Debe ingresar solo caracteres";
-        }    
+        }
         return "Exito";
     }
-    
+
     @Override
-    public String existeNue(int nue){
-        if(validacionEJB.nueExiste(nue)==true){
+    public String existeNue(int nue) {
+        if (validacionEJB.nueExiste(nue) == true) {
             return "N.U.E. ya registrado";
         }
-        return "Exito";        
+        return "Exito";
     }
 
     @Override
     public String verificarInitFinSoloCaracteres(String texto) {
         int largoCadena = texto.length();
-        
-        if(texto.charAt(0) == 32){
+
+        if (!validacionEJB.cantCaract(texto)) {
+            return "No puede exceder los 45 caracteres";
+        }
+
+        if (texto.charAt(0) == 32) {
             return "No puede contener espacio al comienzo";
         }
-        
-        if(texto.charAt(largoCadena-1) == 32){
+
+        if (texto.charAt(largoCadena - 1) == 32) {
             return "No puede contener espacio al final";
         }
-        
-        if(validacionEJB.soloCaracteres(texto) == false){
+
+        if (validacionEJB.soloCaracteres(texto) == false) {
             return "Debe ingresar solo caracteres";
         }
         return "Exito";
     }
 
     @Override
-    public String verificarInitFin(String texto) {        
-    
-    
-         int largoCadena = texto.length();
-        
-        if(texto.charAt(0) == 32){
+    public String verificarInitFin(String texto) {
+
+        int largoCadena = texto.length();
+
+        if (texto.charAt(0) == 32) {
             return "No puede contener espacio al comienzo";
         }
-        
-        if(texto.charAt(largoCadena-1) == 32){
+
+        if (texto.charAt(largoCadena - 1) == 32) {
             return "No puede contener espacio al final";
         }
+        if (!validacionEJB.cantCaract(texto)) {
+            return "No puede exceder los 45 caracteres";
+        }
         return "Exito";
-    
+
     }
+
+    @Override
+    public String verificarObservacion(String texto) {
+        if (!validacionEJB.cantCaract3(texto)) {
+            return "No puede exceder los 300 caracteres";
+        }
+
+        return "Exito";
+    }
+    
+    @Override
+    public String verificarEdicion(String texto){
+        if(!validacionEJB.cantCaract4(texto)){
+            return "No puede exceder los 400 caracteres";
+        }
+        
+        return "Exito";
+    }
+
+    
+    
 }

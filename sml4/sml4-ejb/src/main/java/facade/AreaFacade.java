@@ -40,7 +40,7 @@ public class AreaFacade extends AbstractFacade<Area> implements AreaFacadeLocal 
 
     @Override
     public Area findByArea(String nombreArea) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByArea", nombreArea);
         Area retorno = null;
         try {

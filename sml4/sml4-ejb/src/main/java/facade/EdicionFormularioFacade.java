@@ -41,7 +41,7 @@ public class EdicionFormularioFacade extends AbstractFacade<EdicionFormulario> i
     //@NamedQuery(name = "EdicionFormulario.findByFormulario", query = "SELECT e FROM EdicionFormulario e WHERE e.formularioNUE = :formularioNUE")
     @Override
     public List<EdicionFormulario> listaEdiciones(Formulario formulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "listEdiciones", formulario);
         List<EdicionFormulario> retorno = null;
         try {

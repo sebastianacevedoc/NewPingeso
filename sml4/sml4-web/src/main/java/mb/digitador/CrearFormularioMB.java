@@ -25,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -84,7 +83,7 @@ public class CrearFormularioMB {
     private Usuario iniciaCadena;
 
     private List<String> usuarios;
-    
+
     public CrearFormularioMB() {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearFormularioMB");
@@ -113,11 +112,11 @@ public class CrearFormularioMB {
     public void cargarDatos() {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadUsuario");
-        
+
         boolean falla = false;
 
         if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
         }
@@ -135,10 +134,10 @@ public class CrearFormularioMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
-        }    
-        
+        }
+
         this.usuarios = usuarioEJB.findAllUserCrear();
         logger.exiting(this.getClass().getName(), "loadUsuario");
     }
@@ -146,21 +145,21 @@ public class CrearFormularioMB {
     public String iniciarFormulario() {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarFormulario");
-        StringTokenizer st = new StringTokenizer(levantadaPor," ");
+        StringTokenizer st = new StringTokenizer(levantadaPor, " ");
         int cont = st.countTokens();
-        for (int i =0; i <cont; i++){
+        for (int i = 0; i < cont; i++) {
             String cosas = st.nextToken();
-            if(i==0){
+            if (i == 0) {
                 rut = cosas;
-                System.out.println("RUT ------> "+rut);
+                //System.out.println("RUT ------> "+rut);
             }
-            if(i==2){
+            if (i == 2) {
                 //30.08
                 levantadaPor = cosas;
-                System.out.println("NOMBRE-------> "+levantadaPor);
+                //System.out.println("NOMBRE-------> "+levantadaPor);
             }
         }
-        
+
         String resultado = formularioDigitador.crearFormulario(rut, ruc, rit, nue, parte, delito, direccionSS, lugar, unidadPolicial, fecha, observacion, descripcion, usuarioSesion);
 
         if (resultado.equals("Exito")) {
@@ -207,8 +206,21 @@ public class CrearFormularioMB {
             }
         }
     }
-    
-      public void validarDLU(FacesContext context, UIComponent toValidate, Object value) {
+
+    public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+
+    public void validarDLU(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String cadena = (String) value;
         if (!cadena.equals("")) {
@@ -286,21 +298,20 @@ public class CrearFormularioMB {
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
-    
-    public void validarFecha(FacesContext context, UIComponent toValidate, Object value){
+
+    public void validarFecha(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         Date f = (Date) value;
         String mensaje = "";
-        
-        if(f != null){
+
+        if (f != null) {
             mensaje = validacionVistasMensajesEJB.checkFecha(f);
-            if(!mensaje.equals("Exito")){
+            if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
             }
         }
     }
-
 
     public String getUsuarioSis() {
         return usuarioSis;
@@ -468,5 +479,5 @@ public class CrearFormularioMB {
 
     public void setUsuarios(List<String> usuarios) {
         this.usuarios = usuarios;
-    }    
+    }
 }

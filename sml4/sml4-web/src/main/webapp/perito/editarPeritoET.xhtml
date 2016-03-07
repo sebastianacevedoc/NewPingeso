@@ -68,6 +68,7 @@
                             <div class="thumbnail" style="width: 785px; padding: 15px;">
                                 <!-- Barra de navegación -->
                                 <h:form>
+                                    <div align="center">
                                     <h:panelGrid columns="4" cellpadding="5" class="ui-grid">
                                         <p:outputLabel  for="ruc" value="R.U.C.:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="ruc" value="#{editarPeritoETMB.formulario.ruc}" label="ruc" validator="#{editarPeritoETMB.validarRuc}" disabled="#{editarPeritoETMB.isRuc}" > </p:inputText>
@@ -84,7 +85,7 @@
                                         <p:message for="nue" /> 
                                         <br />
                                         
-                                        <p:outputLabel  for="del" value="Delito:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="del" value="Delito Ref:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="del" value="#{editarPeritoETMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
                                         <p:message for="del" /> 
                                         <br />
@@ -94,7 +95,7 @@
                                         <p:message for="cargo" /> 
                                         <br />
                                         
-                                        <p:outputLabel  for="dir" value="Dirección:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="dir" value="Dirección de SS:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="dir" value="#{editarPeritoETMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
                                         <p:message for="dir" /> 
                                         <br />
@@ -125,6 +126,7 @@
                                         <br />
                                         
                                     </h:panelGrid> <br />
+                                    </div>
 
 
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
@@ -199,8 +201,10 @@
                                     <!-- panel para ingresar la observacion -->
                                     <h:panelGrid columns="1">
                                         <h:outputLabel  for="edicion" value="Edición:" style="width:120px"></h:outputLabel>
+                                         
                                         <!--<p:inputTextarea id="edicion" rows="3" cols="90" value="#" queryDelay="750" minQueryLength="4" />-->
-                                        <p:inputTextarea id="edicion" rows="3" cols="90" value="#{editarPeritoETMB.observacionEdicion}" maxlength="300" minQueryLength="4" />
+                                        <p:inputTextarea id="edicion" rows="3" cols="90" value="#{editarPeritoETMB.observacionEdicion}" maxlength="300" minQueryLength="4" validator="#{editarPeritoETMB.validarEdicion}" />
+                                        <p:message for="edicion" /> 
                                         <h:commandButton id="btnEd" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Aceptar" label="" action ="#{editarPeritoETMB.editarFormulario()}" ></h:commandButton>  
                                        <!-- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />-->
                                        <p:message for="btnEd"/>

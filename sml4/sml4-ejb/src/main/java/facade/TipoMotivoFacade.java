@@ -40,7 +40,7 @@ public class TipoMotivoFacade extends AbstractFacade<TipoMotivo> implements Tipo
 
     @Override
     public TipoMotivo findByTipoMotivo(String motivo) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByTipoMotivo", motivo);
         TipoMotivo retorno = null;
         try {

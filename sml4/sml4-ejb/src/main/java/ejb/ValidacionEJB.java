@@ -10,7 +10,6 @@ import entity.Usuario;
 import facade.FormularioFacadeLocal;
 import facade.UsuarioFacadeLocal;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +33,7 @@ public class ValidacionEJB implements ValidacionEJBLocal {
 
     @Override
     public boolean compareFechas(Date fechaT, Date fechaFormulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "compareFechas");
         if (fechaT != null && fechaFormulario != null) {
             Date dateTraslado = fechaT;
@@ -103,10 +102,10 @@ public class ValidacionEJB implements ValidacionEJBLocal {
         Matcher encaja = patron.matcher(palabra);
 
         if (!encaja.find()) {
-            //System.out.println(palabra + " -> solo tiene letras y espacio!");
+            ////System.out.println(palabra + " -> solo tiene letras y espacio!");
             return true;
         } else {
-            //System.out.println(palabra + " -> tiene otra cosa");
+            ////System.out.println(palabra + " -> tiene otra cosa");
             return false;
         }
 
@@ -124,7 +123,7 @@ public class ValidacionEJB implements ValidacionEJBLocal {
         String[] numeros = rucOrRit.split("-");
         int largoN = numeros.length;
         int largoInterno = 0;
-        System.out.println("Largo: " + largoN);
+        //System.out.println("Largo: " + largoN);
 
         if (lastGuion.equals("-")) {
             return false;
@@ -187,7 +186,7 @@ public class ValidacionEJB implements ValidacionEJBLocal {
     @Override
     public String verificarUsuario(String user, String pass) {
 
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "Función verificarUsuario", user);
         //Buscamos al usuario segun su cuenta usuario
         Usuario foundUser = usuarioFacade.findByCuentaUsuario(user);
@@ -206,7 +205,7 @@ public class ValidacionEJB implements ValidacionEJBLocal {
                 } else if (foundUser.getCargoidCargo().getNombreCargo().equals("Digitador")) {
                     direccion = "/digitador/digitadorFormularioHU11.xhtml?faces-redirect=true";
                 } else if (foundUser.getCargoidCargo().getNombreCargo().equals("Tecnico")) {
-                     direccion = "/perito/peritoFormulario.xhtml?faces-redirect=true";
+                    direccion = "/perito/peritoFormulario.xhtml?faces-redirect=true";
                 } else if (foundUser.getCargoidCargo().getNombreCargo().equals("Jefe de area")) {
                     direccion = "/jefeArea/buscadorJefeArea.xhtml?faces-redirect=true";
                 } else if (foundUser.getCargoidCargo().getNombreCargo().equals("Administrativo")) {
@@ -257,9 +256,44 @@ public class ValidacionEJB implements ValidacionEJBLocal {
     @Override
     public boolean nueExiste(int nue) {
         Formulario existe = formularioFacade.findByNue(nue);
-        if(existe != null){
+        if (existe != null) {
             return true;
         }
         return false;
+    }
+
+    //area, cargo, ruc, rit, delito, unidad, nombre, apellido, contraseña, mail, lugar, levantamiento   45
+    @Override
+    public boolean cantCaract(String dato) {
+        if (dato.length() > 45) {
+            return false;
+        }
+        return true;
+    }
+
+    //cuenta, 30
+    @Override
+    public boolean cantCaract2(String dato) {
+        if (dato.length() > 30) {
+            return false;
+        }
+        return true;
+    }
+
+    //observaciones, descripcion de especie 300
+    @Override
+    public boolean cantCaract3(String dato) {
+        if (dato.length() > 300) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean cantCaract4(String dato) {
+        if (dato.length() > 400) {
+            return false;
+        }
+        return true;
     }
 }

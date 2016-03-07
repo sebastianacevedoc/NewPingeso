@@ -90,13 +90,13 @@
                                     <h:outputLabel  for="nue" value="N.U.E.:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="nue" value="#{forTrasladoMB.formulario.nue}" label="nue" disabled="true"></p:inputText>                                   
 
-                                    <h:outputLabel  for="del" value="Delito:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="del" value="Delito Ref:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="del" value="#{forTrasladoMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
 
                                     <h:outputLabel for="car" value="Cargo:" style="width: 120px"/>
                                     <p:inputText id="car" value="#{forTrasladoMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"/>
 
-                                    <h:outputLabel  for="dir" value="Dirección:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="dir" value="Dirección de SS:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="dir" value="#{forTrasladoMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
 
                                     <h:outputLabel  for="lu" value="Lugar:" style="width:120px"></h:outputLabel>
@@ -180,37 +180,38 @@
                                     <br />
                                 </div>
                                 <h4 class="pull-center">Recibe:</h4><br />
-                                
 
-                                    <div align="center">
-                                        <h:panelGrid columns="4" cellpadding="5" class="ui-grid">  
+
+                                <div align="center">
+                                    <h:panelGrid columns="4" cellpadding="5" class="ui-grid">  
                                         <h:outputLabel  for="lev2" value="Recibida por*:" style="width:120px"></h:outputLabel>
                                         <p:selectOneMenu id="lev2" value="#{forTrasladoMB.usuarioRecibe}" style="width:205px" required="true" requiredMessage="Debe seleccionar el usuario">
                                             <f:selectItem itemLabel="Seleccione" itemValue="" />
                                             <f:selectItems value="#{forTrasladoMB.usuarios}" />                                        
                                         </p:selectOneMenu>
                                         <p:message for="lev2" display="text"/> 
-                                        </h:panelGrid>
-                                    </div>
+                                    </h:panelGrid>
+                                </div>
 
-                                    <br /><br />
+                                <br /><br />
 
 
-                                    <div align="center">
-                                        <h:selectOneRadio id="check" value="#{forTrasladoMB.motivo}" label="Motivo*:" required="true" requiredMessage="Ingrese que acción realizará con la evidencia">
-                                            <f:selectItem itemValue="Peritaje" itemLabel="Peritaje" /> <!-- agregar libreria arriba-->
-                                            <f:selectItem itemValue="Traslado" itemLabel="Traslado" />
-                                            <f:selectItem itemValue="Custodia" itemLabel="Custodia" />
-                                        </h:selectOneRadio><br />
-                                        <p:message for="check" display="text"/>
-                                    </div><br />
+                                <div align="center">
+                                    <h:selectOneRadio id="check" value="#{forTrasladoMB.motivo}" label="Motivo*:" required="true" requiredMessage="Ingrese que acción realizará con la evidencia">
+                                        <f:selectItem itemValue="Peritaje" itemLabel="Peritaje" /> <!-- agregar libreria arriba-->
+                                        <f:selectItem itemValue="Traslado" itemLabel="Traslado" />
+                                        <f:selectItem itemValue="Custodia" itemLabel="Custodia" />
+                                    </h:selectOneRadio><br />
+                                    <p:message for="check" display="text"/>
+                                </div><br />
 
-                                    <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                    <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{forTrasladoMB.observacionesT}" queryDelay="750" minQueryLength="4" />
-                                    <br />    
-                                    <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{forTrasladoMB.agregarTraslado()}"/>
- <p:message for="btnAceptar"/>
-                                    <br />
+                                <h:outputLabel  for="ObsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
+                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{forTrasladoMB.observacionesT}" queryDelay="750" minQueryLength="4"  validator="#{forTrasladoMB.validarObs}" />
+                                <p:message for="ObsCC" /> 
+                                <br />    
+                                <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{forTrasladoMB.agregarTraslado()}"/>
+                                <p:message for="btnAceptar"/>
+                                <br />
 
                             </h:form> <br />
 

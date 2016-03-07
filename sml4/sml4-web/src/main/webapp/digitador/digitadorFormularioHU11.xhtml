@@ -103,12 +103,12 @@
                                         <p:message for="nue" display="text"/> 
                                         <br />
 
-                                        <h:outputLabel  for="del" value="Delito*:" style="width:120px"></h:outputLabel>
+                                        <h:outputLabel  for="del" value="Delito Ref*:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="del" value="#{crearFormularioMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar el delito" validator ="#{crearFormularioMB.validarDLU}" ></p:inputText>
                                         <p:message for="del" display="text"/> 
                                         <br />
 
-                                        <h:outputLabel  for="dir" value="Dirección*:" style="width:120px"></h:outputLabel>
+                                        <h:outputLabel  for="dir" value="Dirección de SS*:" style="width:120px"></h:outputLabel>
                                         <p:inputText id="dir" value="#{crearFormularioMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar la dirección" validator = "#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="dir" display="text"/> 
                                         <br />
@@ -142,7 +142,8 @@
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
 
                                         <h:outputLabel  for="Observaciones" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioMB.observacion}" queryDelay="750" minQueryLength="4" />
+                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioMB.observacion}" queryDelay="750" minQueryLength="4"  validator="#{crearFormularioMB.validarObs}" />
+                                        <p:message for="Observaciones" /> 
 
                                     </h:panelGrid>  
                                     <br />  

@@ -9,10 +9,8 @@ import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import ejb.ValidacionVistasMensajesEJBLocal;
 import entity.Usuario;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -121,7 +119,7 @@ public class CrearFormularioPeritoMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
@@ -275,11 +273,12 @@ public class CrearFormularioPeritoMB {
         }
     }
 
-    public void validarDelitoRef(FacesContext context, UIComponent toValidate, Object value) {
+    
+     public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
         if (!texto.equals("")) {
-            String mensaje = validacionVistasMensajesEJB.validarDelitoRef(texto);
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));

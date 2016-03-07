@@ -3,27 +3,20 @@ package ejb;
 import entity.Area;
 import entity.Cargo;
 import entity.EdicionFormulario;
-import entity.Evidencia;
 import entity.Formulario;
 import entity.FormularioEvidencia;
 import entity.Semaforo;
-import entity.TipoEvidencia;
 import entity.TipoMotivo;
-import entity.TipoUsuario;
 import entity.Traslado;
 import entity.Usuario;
 import facade.AreaFacadeLocal;
 import facade.CargoFacadeLocal;
 import facade.EdicionFormularioFacadeLocal;
-import facade.EvidenciaFacadeLocal;
 import facade.FormularioEvidenciaFacadeLocal;
 import facade.FormularioFacadeLocal;
 import facade.SemaforoFacadeLocal;
-import facade.TipoEvidenciaFacadeLocal;
 import facade.TipoMotivoFacadeLocal;
-import facade.TipoUsuarioFacadeLocal;
 import facade.TrasladoFacadeLocal;
-import facade.UsuarioFacadeLocal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,24 +34,14 @@ public class FormularioEJB implements FormularioEJBLocal {
 
     @EJB
     private FormularioEvidenciaFacadeLocal formularioEvidenciaFacade;
-
-    @EJB
-    private TipoEvidenciaFacadeLocal tipoEvidenciaFacade;
-
-    @EJB
-    private EvidenciaFacadeLocal evidenciaFacade;
     @EJB
     private SemaforoFacadeLocal semaforoFacade;
     @EJB
     private CargoFacadeLocal cargoFacade;
     @EJB
-    private TipoUsuarioFacadeLocal tipoUsuarioFacade;
-    @EJB
     private AreaFacadeLocal areaFacade;
     @EJB
     private TrasladoFacadeLocal trasladoFacade;
-    @EJB
-    private UsuarioFacadeLocal usuarioFacade;
     @EJB
     private TipoMotivoFacadeLocal tipoMotivoFacade;
     @EJB
@@ -72,7 +55,7 @@ public class FormularioEJB implements FormularioEJBLocal {
 
     @Override
     public Usuario obtenerPoseedorFormulario(Formulario formulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "obtenerPoseedorFormulario", formulario.getNue());
         //Busco todo slos traslados del formulario
         List<Traslado> trasladoList = traslados(formulario);
@@ -89,7 +72,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     // por qué es necesario tener las ediciones de un solo usuario ?
     //@Override
     public List<EdicionFormulario> listaEdiciones(int nue, int idUser) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "listaEdiciones", nue + " " + idUser);
         List<EdicionFormulario> lista = new ArrayList();
         List<EdicionFormulario> response = new ArrayList();
@@ -114,7 +97,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     //observacion: se pueden reducir la cant de consultas usando como parametro de entrada un Formulario.
     @Override
     public List<EdicionFormulario> listaEdiciones(int nue) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "listaEdiciones");
         List<EdicionFormulario> retorno = new ArrayList<>();
         Formulario f = formularioFacade.findByNue(nue);
@@ -134,7 +117,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     @Override
     public Formulario findFormularioByNue(int nueAbuscar) {
 
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findFormularioByNue", nueAbuscar);
 
         Formulario formulario = formularioFacade.findByNue(nueAbuscar);
@@ -149,7 +132,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     //Acondicionado para la nueva regla de negocio
     @Override
     public String crearTraslado(Formulario formulario, Date fechaT, String observaciones, String motivoNext, Usuario uSesion, Usuario entrega) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearTraslado");
 
         if (formulario == null) {
@@ -184,18 +167,25 @@ public class FormularioEJB implements FormularioEJBLocal {
             return "El usuario que recibe la cadena de custodia debe ser distinto al usuario que la entrega.";
         }
 
-        //Actualizando traslado
         Traslado ultimoTraslado = ultimoTraslado(formulario.getNue());
-        ultimoTraslado.setFechaEntrega(fechaT);
-        ultimoTraslado.setObservaciones(observaciones);
-        ultimoTraslado.setUsuarioidUsuarioRecibe(uSesion);
 
-        System.out.println("-------------------------------------------------------------------------------------------------------------");
-        System.out.println("NUE ULTIMO TRASLADO: " + ultimoTraslado.getFormularioNUE().getNue());
-        System.out.println("USUARIO ENTREGA ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
-        System.out.println("MOTIVO ULTIMO TRASLADO: " + ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo());
-        System.out.println("USUARIO RECIBE ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioRecibe().getNombreUsuario());
-        System.out.println("--------------------------------------------------------------------------------------------------------------");
+        Traslado actualizar = new Traslado();
+        actualizar.setIdTraslado(ultimoTraslado.getIdTraslado());
+        actualizar.setUsuarioidUsuarioEntrega(ultimoTraslado.getUsuarioidUsuarioEntrega());
+        actualizar.setUsuarioidUsuarioRecibe(uSesion);
+        actualizar.setFechaEntrega(fechaT);
+        actualizar.setObservaciones(observaciones);
+        actualizar.setFormularioNUE(ultimoTraslado.getFormularioNUE());
+        actualizar.setTipoMotivoidMotivo(ultimoTraslado.getTipoMotivoidMotivo());
+
+        Formulario fNew;
+
+//        System.out.println("-------------------------------------------------------------------------------------------------------------");
+//        System.out.println("NUE ULTIMO TRASLADO: " + ultimoTraslado.getFormularioNUE().getNue());
+//        System.out.println("USUARIO ENTREGA ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
+//        System.out.println("MOTIVO ULTIMO TRASLADO: " + ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo());
+//        System.out.println("USUARIO RECIBE ULTIMO TRASLADO: " + ultimoTraslado.getUsuarioidUsuarioRecibe().getNombreUsuario());
+//        System.out.println("--------------------------------------------------------------------------------------------------------------");
         //verificamos si el traslado se trata de un peritaje, lo cual pone al formulario en amarillo (y no se debe crear un siguiente traslado).
         //ultimoTraslado.getTipoMotivoidMotivo().getTipoMotivo()
         if (motivoNext.equals("Peritaje")) {
@@ -212,6 +202,7 @@ public class FormularioEJB implements FormularioEJBLocal {
             logger.info("se inicia la edición del formulario para dejarlo en amarillo");
             formularioFacade.edit(formulario);
             logger.info("se finaliza la edición del formulario para dejarlo en amarillo");
+            fNew = formularioFacade.findByNue(formulario.getNue());
 
         }
 
@@ -231,10 +222,12 @@ public class FormularioEJB implements FormularioEJBLocal {
             formulario.setBloqueado(true);
             logger.info("se inicia la edición del formulario para cambiar semaforo a verde");
             formularioFacade.edit(formulario);
+
+            fNew = formularioFacade.findByNue(formulario.getNue());
             logger.info("se finaliza la edición del formulario para cambiar semaforo a verde");
 
         } else { //custodia o traslado, (no se  modifica semaforo, se debe crear un siguiente traslado)
-            
+
             System.out.println("-------------------------------------------------------------------------------------------------------------");
             System.out.println("EL SIGUIENTE MOTIVO:" + motivoNext);
             System.out.println("SE CREA UN NUEVO TRASLADO");
@@ -244,24 +237,26 @@ public class FormularioEJB implements FormularioEJBLocal {
                 logger.exiting(this.getClass().getName(), "crearTraslado", "No se encontro motivoNext");
                 return "Error con el motivo de traslado.";
             }
+            fNew = formularioFacade.findByNue(formulario.getNue());
             Traslado siguienteTraslado = new Traslado();
             siguienteTraslado.setUsuarioidUsuarioEntrega(uSesion);
-            siguienteTraslado.setFormularioNUE(formulario);
+            siguienteTraslado.setFormularioNUE(fNew);
             siguienteTraslado.setTipoMotivoidMotivo(motivoNextP);
-            
+
             System.out.println("-------------------------------------------------------------------------------------------------------------");
             System.out.println("USUARIO ENTREGA SIGUIENTE TRASLADO:" + siguienteTraslado.getUsuarioidUsuarioEntrega().getNombreUsuario());
-            System.out.println("NUEVA DEL FORMULARIO SIGUIENTE TRASLADO: "+siguienteTraslado.getFormularioNUE().getNue());
-            System.out.println("MOTIVO DEL SIGUIENTE TRASLADO: "+siguienteTraslado.getTipoMotivoidMotivo().getTipoMotivo());
+            System.out.println("NUEVA DEL FORMULARIO SIGUIENTE TRASLADO: " + siguienteTraslado.getFormularioNUE().getNue());
+            System.out.println("MOTIVO DEL SIGUIENTE TRASLADO: " + siguienteTraslado.getTipoMotivoidMotivo().getTipoMotivo());
             System.out.println("-------------------------------------------------------------------------------------------------------------");
-            
+
             logger.info("se inicia la creacion del siguiente traslado");
             trasladoFacade.create(siguienteTraslado);
             logger.info("se finaliza la creacion del siguiente traslado");
         }
 
+        actualizar.setFormularioNUE(fNew);
         logger.info("se inicia actualizacion del traslado");
-        trasladoFacade.edit(ultimoTraslado);
+        trasladoFacade.edit(actualizar);
         logger.info("se finaliza actualizacion del traslado");
 
         logger.exiting(this.getClass().getName(), "crearTraslado", "Exito");
@@ -272,7 +267,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     //** modificada para retornar una lista vacía si no encuentra resultados.
     @Override
     public List<Traslado> traslados(Formulario formulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "traslados", formulario.toString());
         List<Traslado> retorno = trasladoFacade.findByNue(formulario);
         if (retorno == null) {
@@ -356,12 +351,12 @@ public class FormularioEJB implements FormularioEJBLocal {
     //modificado Ara
     @Override
     public String edicionFormulario(Formulario formulario, String obsEdicion, Usuario usuarioSesion, int parte, String ruc, String rit) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "edicionFormulario");
-        System.out.println("EJB ruc " + ruc);
-        System.out.println("EJB rit " + rit);
-        System.out.println("EJB parte " + parte);
-        System.out.println("EJB obs " + obsEdicion);
+        //System.out.println("EJB ruc " + ruc);
+        //System.out.println("EJB rit " + rit);
+        //System.out.println("EJB parte " + parte);
+        //System.out.println("EJB obs " + obsEdicion);
 
         if (!esParticipanteCC(formulario, usuarioSesion)) {
             logger.exiting(this.getClass().getName(), "edicionFormulario", "usuario no ha participado en cc");
@@ -446,7 +441,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     //retorna true cuando el usuario si ha particiado en la cc.
     @Override
     public boolean esParticipanteCC(Formulario formulario, Usuario usuario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "obtenerParticipantesCC");
         if (usuario.equals(formulario.getUsuarioidUsuarioInicia())) {
             logger.exiting(this.getClass().getName(), "obtenerParticipantesCC", true);
@@ -504,7 +499,7 @@ public class FormularioEJB implements FormularioEJBLocal {
     }
 
     private Traslado ultimoTraslado(int nue) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "ultimoTraslado", nue);
         Traslado traslado = null;
         Formulario f = formularioFacade.find(nue);

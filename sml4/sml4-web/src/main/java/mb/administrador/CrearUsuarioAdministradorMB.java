@@ -26,7 +26,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import mb.jefeArea.CrearUsuarioJefeAreaMB;
 
 /**
  *
@@ -46,7 +45,7 @@ public class CrearUsuarioAdministradorMB {
     @EJB
     private FormularioEJBLocal formularioEJB;
 
-    static final Logger logger = Logger.getLogger(CrearUsuarioJefeAreaMB.class.getName());
+    static final Logger logger = Logger.getLogger(CrearUsuarioAdministradorMB.class.getName());
 
     private Usuario usuarioSesion;
 
@@ -118,7 +117,7 @@ public class CrearUsuarioAdministradorMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
@@ -144,8 +143,8 @@ public class CrearUsuarioAdministradorMB {
         // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioADM");
 
-//        System.out.println("-------------->>>>>>>>>>>>>UIComponent "+uic.getClientId());
-//        System.out.println("-------------->>>>>>>>>>>>>UIComponent CONTEX "+ uic.getClientId(fc));        
+//        //System.out.println("-------------->>>>>>>>>>>>>UIComponent "+uic.getClientId());
+//        //System.out.println("-------------->>>>>>>>>>>>>UIComponent CONTEX "+ uic.getClientId(fc));        
         String response = usuarioEJB.crearUsuario(nombreUsuario, apellidoUsuario, rut, pass, mail, cuentaUsuario, cargo, area);
 
         if (response.equals("Exito")) {
@@ -256,6 +255,11 @@ public class CrearUsuarioAdministradorMB {
         if (texto.length() < 8) {
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Contraseña es inferior a 8 caracteres"));
+        }
+        
+        if (texto.length() > 45) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No puede exceder los 45 caracteres"));
         }
     }
 

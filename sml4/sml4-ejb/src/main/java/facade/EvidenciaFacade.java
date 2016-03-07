@@ -49,7 +49,7 @@ public class EvidenciaFacade extends AbstractFacade<Evidencia> implements Eviden
      */
     @Override
     public Evidencia findByNombreAndTipoEvidencia(String evidencia, TipoEvidencia tipoEvid) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByNombreAndTipoEvidencia");
         Evidencia retorno = null;
         try {
@@ -94,7 +94,7 @@ public class EvidenciaFacade extends AbstractFacade<Evidencia> implements Eviden
 
     @Override
     public List<Evidencia> evidenciasT(TipoEvidencia tipoEvid) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "evidenciasT");
         List<Evidencia> retorno = null;
         try {

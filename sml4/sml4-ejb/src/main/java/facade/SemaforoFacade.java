@@ -43,7 +43,7 @@ public class SemaforoFacade extends AbstractFacade<Semaforo> implements Semaforo
 
     @Override
     public Semaforo findByColor(String color) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByColor", color);
         Semaforo retorno = null;
         try {

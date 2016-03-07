@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 public class InicioSesionMB {
 
     @EJB
-    private UsuarioEJBLocal usuarioEJB;
-    @EJB
     private ValidacionEJBLocal validacionEJB;
 
     static final Logger logger = Logger.getLogger(InicioSesionMB.class.getName());
@@ -39,7 +37,7 @@ public class InicioSesionMB {
     private String pass;
 
     public InicioSesionMB() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "InicioSesionMB");
         this.facesContext = FacesContext.getCurrentInstance();
         this.httpServletRequest = (HttpServletRequest) facesContext.getExternalContext().getRequest();
@@ -48,7 +46,7 @@ public class InicioSesionMB {
 
     //Función para logear al usuario
     public String login() {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "Función login");
         logger.log(Level.FINEST, "login1 usuario: {0}", this.user);
         logger.log(Level.FINEST, "login1 p: {0}", this.pass);

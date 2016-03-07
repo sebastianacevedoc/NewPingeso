@@ -22,7 +22,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import mb.jefeArea.BuscadorJefeAreaMB;
 
 /**
  *
@@ -38,10 +37,8 @@ public class BuscadorAdministradorMB {
 
     @EJB
     private UsuarioEJBLocal usuarioEJB;
-    @EJB
-    private FormularioEJBLocal formularioEJB;
-
-    static final Logger logger = Logger.getLogger(BuscadorJefeAreaMB.class.getName());
+   
+    static final Logger logger = Logger.getLogger(BuscadorAdministradorMB.class.getName());
 
     private Usuario usuarioSesion;
 
@@ -112,7 +109,7 @@ public class BuscadorAdministradorMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");                
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 

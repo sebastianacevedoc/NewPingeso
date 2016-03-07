@@ -1,7 +1,6 @@
 //nombre: ResultadoBuscadorUserJefeAreaMB
 package mb.jefeArea;
 
-import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import entity.Usuario;
 import java.util.Objects;
@@ -26,8 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean
 public class ResultadoBuscadorUserJefeaAreaMB {
 
-    @EJB
-    private FormularioEJBLocal formularioEJB;
     @EJB
     private UsuarioEJBLocal usuarioEJB;
 
@@ -97,7 +94,7 @@ public class ResultadoBuscadorUserJefeaAreaMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }        
         

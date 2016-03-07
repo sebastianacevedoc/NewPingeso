@@ -1,7 +1,6 @@
  //nombre: ResultadoCrearJefeAreaMB
 package mb.jefeArea;
 
-import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import entity.Usuario;
 import java.util.logging.Level;
@@ -26,8 +25,6 @@ public class ResultadoCrearJefeAreaMB {
 
     @EJB
     private UsuarioEJBLocal usuarioEJB;
-    @EJB
-    private FormularioEJBLocal formularioEJB;
 
     static final Logger logger = Logger.getLogger(ResultadoCrearJefeAreaMB.class.getName());
 
@@ -93,7 +90,7 @@ public class ResultadoCrearJefeAreaMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 

@@ -99,42 +99,42 @@
                                         <p:message for="parte" /> 
                                         <br />
 
-                                        <p:outputLabel  for="nue" value="N.U.E.:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="nue" value="N.U.E.*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="nue" value="#{crearFormularioPeritoMB.nueS}" label="nue" required="true" requiredMessage="Debe ingresar N.U.E." validator="#{crearFormularioPeritoMB.validarNue}"></p:inputText>
                                         <p:message for="nue" /> 
                                         <br />
 
-                                        <p:outputLabel  for="del" value="Delito Ref:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="del" value="Delito Ref*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="del" /> 
                                         <br />
 
-                                        <p:outputLabel  for="dir" value="Dirección SS:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="dir" value="Dirección de SS*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="dir" value="#{crearFormularioPeritoMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar Dirección SS" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="dir" /> 
                                         <br />
 
-                                        <p:outputLabel  for="lu" value="Lugar:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="lu" value="Lugar*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="lu" value="#{crearFormularioPeritoMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar Lugar" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="lu" /> 
                                         <br />
 
-                                        <p:outputLabel  for="uni" value="Unidad Policial:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="uni" value="Unidad Policial*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="uni" value="#{crearFormularioPeritoMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar Unidad Policial" validator="#{crearFormularioPeritoMB.validarDLU}"></p:inputText>
                                         <p:message for="uni" /> 
                                         <br />
 
-                                        <p:outputLabel  for="lev" value="Levantada por:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="lev" value="Levantada por*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="lev" value="#{crearFormularioPeritoMB.levantadaPor}" label="Levantada por" disabled="true"></p:inputText>
                                         <p:message for="lev" /> 
                                         <br />
 
-                                        <p:outputLabel  for="run" value="R.U.N.:" style="width:120px"></p:outputLabel>
+                                        <p:outputLabel  for="run" value="R.U.N.*:" style="width:120px"></p:outputLabel>
                                         <p:inputText id="run" value="#{crearFormularioPeritoMB.rut}" label="R.U.N." disabled="true" ></p:inputText>
                                         <p:message for="run" /> 
                                         <br />
 
-                                        <h:outputLabel for="fecha" value="Fecha: " style="width:120px" />
+                                        <h:outputLabel for="fecha" value="Fecha*: " style="width:120px" />
                                         <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" value="#{crearFormularioPeritoMB.fecha}" disabled="true" />
                                         <p:message for="fecha"/>
                                         <br />
@@ -145,8 +145,8 @@
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
 
                                         <p:outputLabel  for="Observaciones" value="Observaciones:" style="width:120px"></p:outputLabel>
-                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioPeritoMB.observacion}" queryDelay="750" minQueryLength="4" />
-
+                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioPeritoMB.observacion}" queryDelay="750" minQueryLength="4" validator="#{crearFormularioPeritoMB.validarObs}" />
+                                        <p:message for="Observaciones" /> 
                                     </h:panelGrid>  
                                     <br />  
 
@@ -155,8 +155,9 @@
 
                                         <p:outputLabel  for="descripcion" value="Descripción de la especie:" ></p:outputLabel>
                                         <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{crearFormularioPeritoMB.descripcion}" queryDelay="750" minQueryLength="4" />
+                                        <p:message for="descripcion" /> 
                                     </h:panelGrid>                                                           
-
+                                    
 
                                     <!-- cosas nuevas-->
                                     <br />
@@ -200,7 +201,7 @@
                                     <div align="center">
 
                                         <h:panelGrid columns="5">    
-                                            <h:outputLabel style="width:120px" for="check" value="Motivo Traslado: "></h:outputLabel> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h:outputLabel style="width:120px" for="check" value="Motivo Traslado*: "></h:outputLabel> &nbsp;&nbsp;&nbsp;&nbsp;
                                             <p:selectOneRadio id="check" layout="pageDirection" value="#{crearFormularioPeritoMB.motivo}" style="" required="true" requiredMessage="Debe ingresar Motivo de Traslado"> 
                                                 <f:selectItem itemValue="Peritaje" itemLabel="Peritaje " />
                                                 <f:selectItem itemValue="Traslado" itemLabel="Traslado " />

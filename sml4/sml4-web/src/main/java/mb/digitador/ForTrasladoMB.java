@@ -24,6 +24,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -140,17 +141,16 @@ public class ForTrasladoMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        if(formulario.getNumeroParte() == 0){
+        if (formulario.getNumeroParte() == 0) {
             this.numeroParte = "";
-        }else{
-              this.numeroParte = ""+formulario.getNumeroParte();
+        } else {
+            this.numeroParte = "" + formulario.getNumeroParte();
         }
-        
 
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
@@ -172,16 +172,16 @@ public class ForTrasladoMB {
             String cosas = st.nextToken();
             if (i == 0) {
                 usuarioRecibeRut = cosas;
-                System.out.println("RUT ------> " + usuarioRecibeRut);
+                //System.out.println("RUT ------> " + usuarioRecibeRut);
             }
             if (i == 2) {
                 //30.08
                 usuarioRecibe = cosas;
-                System.out.println("NOMBRE-------> " + usuarioRecibe);
+                //System.out.println("NOMBRE-------> " + usuarioRecibe);
             }
         }
 
-        if (usuarioRecibeRut == null) {
+        if (usuarioRecibeRut == null || usuarioRecibeRut.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
 
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar el rut");
@@ -209,7 +209,6 @@ public class ForTrasladoMB {
             return "";
         }
 
-        
         String resultado = formularioDigitador.crearTraslado(formulario, usuarioInicia, usuarioRecibeRut, fechaT, observacionesT, motivo);
         if (resultado.equals("Exito")) {
             httpServletRequest.getSession().setAttribute("nueF", this.nue);
@@ -241,6 +240,18 @@ public class ForTrasladoMB {
         httpServletRequest1.removeAttribute("cuentaUsuario");
         logger.exiting(this.getClass().getName(), "salirDigitador", "/indexListo");
         return "/indexListo?faces-redirect=true";
+    }
+    
+    public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
     }
 
     public Formulario getFormulario() {
@@ -346,7 +357,5 @@ public class ForTrasladoMB {
     public void setNumeroParte(String numeroParte) {
         this.numeroParte = numeroParte;
     }
-
-
 
 }

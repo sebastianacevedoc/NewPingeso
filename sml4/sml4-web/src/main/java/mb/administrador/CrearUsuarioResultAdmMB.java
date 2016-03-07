@@ -18,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import mb.jefeArea.ResultadoCrearJefeAreaMB;
 
 /**
  *
@@ -31,10 +30,8 @@ public class CrearUsuarioResultAdmMB {
 
     @EJB
     private UsuarioEJBLocal usuarioEJB;
-    @EJB
-    private FormularioEJBLocal formularioEJB;
 
-    static final Logger logger = Logger.getLogger(ResultadoCrearJefeAreaMB.class.getName());
+    static final Logger logger = Logger.getLogger(CrearUsuarioResultAdmMB.class.getName());
 
     private Usuario usuarioSesion;
 
@@ -105,7 +102,7 @@ public class CrearUsuarioResultAdmMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 

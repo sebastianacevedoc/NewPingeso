@@ -30,6 +30,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import static mb.digitador.ForTrasladoMB.logger;
 
 /**
  *
@@ -103,7 +104,7 @@ public class TodoMB {
     static final Logger logger = Logger.getLogger(TodoMB.class.getName());
 
     public TodoMB() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "TodoMB");
         this.trasladosList = new ArrayList<>();
         this.usuarios = new ArrayList();
@@ -144,13 +145,13 @@ public class TodoMB {
 
     @PostConstruct
     public void cargarDatos() {
-      //  logger.setLevel(Level.ALL);
+        //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "cargarDatosDigitador");
-        
+
         boolean falla = false;
 
         if (usuarioSis != null && rutInicia != null && nue != 0) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
         }
@@ -168,16 +169,16 @@ public class TodoMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
-        }   
-        
+        }
+
         this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         this.formulario = formularioEJB.findFormularioByNue(this.nue);
-        if(formulario.getNumeroParte() == 0){
+        if (formulario.getNumeroParte() == 0) {
             this.numeroParte = "";
-        }else{
-              this.numeroParte = ""+formulario.getNumeroParte();
+        } else {
+            this.numeroParte = "" + formulario.getNumeroParte();
         }
         this.trasladosList = formularioEJB.traslados(this.formulario);
         this.usuarioInicia = usuarioEJB.findUserByRut(this.rutInicia);
@@ -194,7 +195,7 @@ public class TodoMB {
     }
 
     public String salir() {
-    //    logger.setLevel(Level.ALL);
+        //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirDigitador");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -204,7 +205,7 @@ public class TodoMB {
 
     //redirecciona a la pagina para iniciar cadena de custodia
     public String nuevaCadena() {
-          //    logger.setLevel(Level.ALL);
+        //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "iniciarCadena");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.exiting(this.getClass().getName(), "iniciarCadena", "digitadorFormularioHU11");
@@ -212,7 +213,7 @@ public class TodoMB {
     }
 
     public String agregarTraslado() {
-      //    logger.setLevel(Level.ALL);
+        //    logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "agregarTrasladoDigitador");
         //logger.log(Level.FINEST, "rut usuario entrega {0}", this.usuarioEntrega);
         logger.log(Level.FINEST, " usuario recibe {0}", this.usuarioRecibe);
@@ -224,16 +225,16 @@ public class TodoMB {
             String cosas = st.nextToken();
             if (i == 0) {
                 usuarioRecibeRut = cosas;
-                System.out.println("RUT ------> " + usuarioRecibeRut);
+                //System.out.println("RUT ------> " + usuarioRecibeRut);
             }
             if (i == 2) {
                 //30.08
                 usuarioRecibe = cosas;
-                System.out.println("NOMBRE-------> " + usuarioRecibe);
+                //System.out.println("NOMBRE-------> " + usuarioRecibe);
             }
         }
 
-        if (usuarioRecibeRut == null) {
+        if (usuarioRecibeRut == null || usuarioRecibeRut.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
 
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar el rut");
@@ -319,17 +320,29 @@ public class TodoMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
-    
-    public void validarFecha(FacesContext context, UIComponent toValidate, Object value){
+
+    public void validarFecha(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         Date f = (Date) value;
         String mensaje = "";
-        
-        if(f != null){
+
+        if (f != null) {
             mensaje = validacionVistasMensajesEJB.checkFecha(f);
-            if(!mensaje.equals("Exito")){
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+    
+    public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
+            if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
             }
@@ -487,6 +500,5 @@ public class TodoMB {
     public void setNumeroParte(String numeroParte) {
         this.numeroParte = numeroParte;
     }
-    
 
 }

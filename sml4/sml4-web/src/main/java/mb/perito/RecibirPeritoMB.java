@@ -7,9 +7,10 @@ package mb.perito;
 
 import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
+import ejb.ValidacionVistasMensajesEJB;
+import ejb.ValidacionVistasMensajesEJBLocal;
 import entity.EdicionFormulario;
 import entity.Formulario;
-import entity.FormularioEvidencia;
 import entity.Traslado;
 import entity.Usuario;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +41,15 @@ import javax.servlet.http.HttpServletRequest;
 public class RecibirPeritoMB {
 
     @EJB
+    private ValidacionVistasMensajesEJBLocal validacionVistasMensajesEJB;
+
+    @EJB
     private UsuarioEJBLocal usuarioEJB;
 
     @EJB
     private FormularioEJBLocal formularioEJB;
+    
+    
 
     static final Logger logger = Logger.getLogger(RecibirPeritoMB.class.getName());
 
@@ -134,7 +142,7 @@ public class RecibirPeritoMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
@@ -171,7 +179,10 @@ public class RecibirPeritoMB {
             return "todoPerito?faces-redirect=true";
 
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
+        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, resultado, "Uno o más datos inválidos"));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        UIComponent uic = UIComponent.getCurrentComponent(fc);
+        fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", resultado));
         logger.exiting(this.getClass().getName(), "agregarTrasladoPerito", "");
         return "";
     }
@@ -224,11 +235,23 @@ public class RecibirPeritoMB {
             }
 
         }
-        System.out.println("-------------------------------------------");
-        System.out.println(intercalado.toString());
-        System.out.println("-------------------------------------------");
+        //System.out.println("-------------------------------------------");
+        //System.out.println(intercalado.toString());
+        //System.out.println("-------------------------------------------");
     }
 
+     public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+    
     public String getCambia() {
         return cambia;
     }

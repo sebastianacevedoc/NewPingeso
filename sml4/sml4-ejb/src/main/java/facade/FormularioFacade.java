@@ -43,7 +43,7 @@ public class FormularioFacade extends AbstractFacade<Formulario> implements Form
     //@NamedQuery(name = "Formulario.findByNue", query = "SELECT f FROM Formulario f WHERE f.nue = :nue")
     @Override
     public Formulario findByNue(int nue) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByNue", nue);
         Formulario retorno = null;
         try {
@@ -90,7 +90,7 @@ public class FormularioFacade extends AbstractFacade<Formulario> implements Form
 
     @Override
     public List<Formulario> findByNParte(int nParte) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByNParte", nParte);
         List<Formulario> retorno = null;
         try {
@@ -136,7 +136,7 @@ public class FormularioFacade extends AbstractFacade<Formulario> implements Form
 
     @Override
     public List<Formulario> findByRuc(String ruc) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByRuc", ruc);
         List<Formulario> retorno = null;
         try {
@@ -182,7 +182,7 @@ public class FormularioFacade extends AbstractFacade<Formulario> implements Form
 
     @Override
     public List<Formulario> findByRit(String rit) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByRit", rit);
         List<Formulario> retorno = null;
         try {

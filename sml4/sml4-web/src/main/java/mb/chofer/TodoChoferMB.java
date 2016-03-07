@@ -105,13 +105,13 @@ public class TodoChoferMB {
             this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                 
         } else {
             falla = true;
-            System.out.println("TF CUENTA USUARIO O NUE NO RECONOCIDO");
+            //System.out.println("TF CUENTA USUARIO O NUE NO RECONOCIDO");
         }
 
         //si es un usario no permitido, o si está deshabilitado
         if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
             falla = true;
-            System.out.println("TF ACC DENEGADO");
+            //System.out.println("TF ACC DENEGADO");
         }
 
         //en caso de falla, redireccionamos a la página de inicio de sesión
@@ -122,7 +122,7 @@ public class TodoChoferMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }    
         
@@ -238,7 +238,7 @@ public class TodoChoferMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
 
     public List<EdicionFormulario> getEdicionesList() {

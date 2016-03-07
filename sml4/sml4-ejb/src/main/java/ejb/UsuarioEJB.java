@@ -16,10 +16,7 @@ import facade.UsuarioFacadeLocal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -49,7 +46,7 @@ public class UsuarioEJB implements UsuarioEJBLocal {
 
     @Override
     public Usuario findUsuarioSesionByCuenta(String cuentaUsuario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findUsuarioSesionByCuenta", cuentaUsuario);
         Usuario foundUser = usuarioFacade.findByCuentaUsuario(cuentaUsuario);
         if (foundUser != null) {

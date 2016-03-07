@@ -40,7 +40,7 @@ public class CargoFacade extends AbstractFacade<Cargo> implements CargoFacadeLoc
 
     @Override
     public Cargo findByCargo(String cargo) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByCargo", cargo);
         Cargo retorno = null;
         try {

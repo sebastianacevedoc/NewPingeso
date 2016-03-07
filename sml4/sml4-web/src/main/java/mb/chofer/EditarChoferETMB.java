@@ -145,7 +145,7 @@ public class EditarChoferETMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
@@ -163,7 +163,7 @@ public class EditarChoferETMB {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usted no ha participado en la cadena por lo tanto no puede editar", ""));
         } else {
 
-            System.out.println("NUMERO DE PARTE:"+formulario.getNumeroParte());
+            //System.out.println("NUMERO DE PARTE:"+formulario.getNumeroParte());
             if (formulario.getNumeroParte() == null || formulario.getNumeroParte() == 0) {
                 this.isParte = false;
             }
@@ -263,7 +263,7 @@ public class EditarChoferETMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
 
     public void validarRuc(FacesContext context, UIComponent toValidate, Object value) {
@@ -321,6 +321,21 @@ public class EditarChoferETMB {
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
         }
     }
+    
+     public void validarEdicion(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.verificarEdicion(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            } 
+        }
+    }
+
+    
+    
 
     public int getNue() {
         return nue;

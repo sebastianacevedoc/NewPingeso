@@ -5,7 +5,6 @@ import ejb.UsuarioEJBLocal;
 import ejb.ValidacionVistasMensajesEJBLocal;
 import entity.Formulario;
 import entity.Usuario;
-import entity.Usuario_;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,9 +50,6 @@ public class BuscadorJefeAreaMB {
     private HttpServletRequest httpServletRequest2;
     private FacesContext facesContext2;
 
-    private HttpServletRequest httpServletRequest3;
-    private FacesContext facesContext3;
-
     private String usuarioSis;
     //para busqueda de nue
     private int nue;
@@ -89,7 +85,7 @@ public class BuscadorJefeAreaMB {
 //            this.buscar = (String) httpServletRequest3.getSession().getAttribute("buscar");
 //
 //        }
-//        System.out.println("LOAD busqueda -> " + buscar);
+//        //System.out.println("LOAD busqueda -> " + buscar);
 
         logger.exiting(this.getClass().getName(), "BusquedaJefeAreaMB");
     }
@@ -120,7 +116,7 @@ public class BuscadorJefeAreaMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }            
         
@@ -335,7 +331,7 @@ public class BuscadorJefeAreaMB {
         String tipo = (String) toValidate.getAttributes().get("check");
         String mensaje = "";
         
-        System.out.println("INPUT "+texto+" TIPO "+tipo);
+        //System.out.println("INPUT "+texto+" TIPO "+tipo);
         
         if (tipo != null && !tipo.equals("")) {
             switch (tipo) {

@@ -7,12 +7,10 @@ package facade;
 
 import entity.Area;
 import entity.TipoEvidencia;
-import entity.TipoMotivo;
 import java.util.logging.Level;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockTimeoutException;
-import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
@@ -44,7 +42,7 @@ public class TipoEvidenciaFacade extends AbstractFacade<TipoEvidencia> implement
     //@NamedQuery(name = "TipoEvidencia.findByNombreAndTipoEvidencia", query = "SELECT t FROM TipoEvidencia t WHERE t.nombreTipoEvidencia = :nombreTipoEvidencia AND t.areaidArea = :areaidArea")
 @Override
     public TipoEvidencia findByNombreAndTipoEvidencia(String nombreTipoEvidencia, Area areaEvidencia) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByNombreAndTipoEvidencia", nombreTipoEvidencia);
         TipoEvidencia retorno = null;
         try {
@@ -92,7 +90,7 @@ public class TipoEvidenciaFacade extends AbstractFacade<TipoEvidencia> implement
     //@NamedQuery(name = "TipoEvidencia.findByNombreTipoEvidencia", query = "SELECT t FROM TipoEvidencia t WHERE t.nombreTipoEvidencia = :nombreTipoEvidencia")
      @Override
     public TipoEvidencia findByNombreTipoEvidencia(String nombreTipoEvidencia) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByNombreTipoEvidencia", nombreTipoEvidencia);
         TipoEvidencia retorno = null;
         try {
@@ -139,7 +137,7 @@ public class TipoEvidenciaFacade extends AbstractFacade<TipoEvidencia> implement
 //     //@NamedQuery(name = "TipoMotivo.findByTipoMotivo", query = "SELECT t FROM TipoMotivo t WHERE t.tipoMotivo = :tipoMotivo")
 //    @Override
 //    public TipoMotivo findByTipoMotivo(String motivo) {
-//        logger.setLevel(Level.ALL);
+//        //logger.setLevel(Level.ALL);
 //        logger.entering(this.getClass().getName(), "findByTipoMotivo", motivo);
 //        TipoMotivo retorno = null;
 //        try {

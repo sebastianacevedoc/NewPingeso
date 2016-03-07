@@ -15,6 +15,8 @@ import javax.ejb.Local;
 @Local
 public interface ValidacionVistasMensajesEJBLocal {
 
+    public String verificarEdicion(String texto);
+
     public String checkRuc(String ruc);
 
     public String checkRit(String rit);
@@ -40,10 +42,12 @@ public interface ValidacionVistasMensajesEJBLocal {
     public String validarRut(String rut);
 
     public String verificarInitFinSoloCaracteres(String direccion);
-    
+
     public String verificarInitFin(String direccion);
-    
+
     public String validarDelitoRef(String delito);
-    
+
     public String existeNue(int nue);
+
+    public String verificarObservacion(String texto);
 }

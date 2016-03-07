@@ -93,13 +93,13 @@
                                     <h:outputLabel  for="nue" value="N.U.E.:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="nue" value="#{recibirPeritoMB.formulario.nue}" label="nue" disabled="true"></p:inputText>                                   
 
-                                    <h:outputLabel  for="del" value="Delito:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="del" value="Delito Ref:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="del" value="#{recibirPeritoMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
 
                                     <h:outputLabel for="car" value="Cargo:" style="width: 120px"/>
                                     <p:inputText id="car" value="#{recibirPeritoMB.formulario.usuarioidUsuario.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"/>
 
-                                    <h:outputLabel  for="dir" value="Dirección:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="dir" value="Dirección de SS:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="dir" value="#{recibirPeritoMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
 
                                     <h:outputLabel  for="lu" value="Lugar:" style="width:120px"></h:outputLabel>
@@ -197,10 +197,12 @@
                                 <br />
 
                                 <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{recibirPeritoMB.observacionesT}" queryDelay="750" minQueryLength="4" />
+                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{recibirPeritoMB.observacionesT}" queryDelay="750" minQueryLength="4" validator="#{recibirPeritoMB.validarObs}" />
+                                <p:message for="ObsCC" /> 
                                 <br />    
-                                <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{recibirPeritoMB.agregarTraslado()}"/>
-                                <p:messages id="messages" closable="true" />
+                                <h:commandButton id="btnT" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" value="Aceptar" action="#{recibirPeritoMB.agregarTraslado()}"/>
+                                <!--<p:messages id="messages" closable="true" />-->
+                                <p:message for="btnT"/>
                                 <br />
 
                             </h:form> <br />

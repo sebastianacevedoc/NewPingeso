@@ -117,7 +117,7 @@ public class TodoPeritoMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
 
@@ -257,7 +257,7 @@ public class TodoPeritoMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
 
     public String getCambia() {

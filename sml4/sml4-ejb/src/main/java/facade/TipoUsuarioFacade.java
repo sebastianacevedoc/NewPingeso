@@ -40,7 +40,7 @@ public class TipoUsuarioFacade extends AbstractFacade<TipoUsuario> implements Ti
 
     @Override
     public TipoUsuario findByTipo(String nombreTipo) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByTipo", nombreTipo);
         TipoUsuario retorno = null;
         try {

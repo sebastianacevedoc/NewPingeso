@@ -20,7 +20,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import mb.jefeArea.ResultadoBuscadorUserJefeaAreaMB;
 
 /**
  *
@@ -31,8 +30,6 @@ import mb.jefeArea.ResultadoBuscadorUserJefeaAreaMB;
 @ManagedBean
 public class ResultadoBuscadorUserAdmMB {
 
-    @EJB
-    private FormularioEJBLocal formularioEJB;
     @EJB
     private UsuarioEJBLocal usuarioEJB;
 
@@ -49,7 +46,7 @@ public class ResultadoBuscadorUserAdmMB {
     private Usuario usuarioBuscado;
     private String estadoUsuarioEspanol;
 
-    private static final Logger logger = Logger.getLogger(ResultadoBuscadorUserJefeaAreaMB.class.getName());
+    private static final Logger logger = Logger.getLogger(ResultadoBuscadorUserAdmMB.class.getName());
     private boolean estadoH;
     private boolean estadoD;
 
@@ -108,7 +105,7 @@ public class ResultadoBuscadorUserAdmMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }      
         

@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -109,7 +108,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }    
         
@@ -181,7 +180,7 @@ public class ResultadoBuscadorTEJefeAreaMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
 
     //retorna a la vista para realizar busqueda

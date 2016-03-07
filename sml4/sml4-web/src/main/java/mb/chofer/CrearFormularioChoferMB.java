@@ -107,13 +107,13 @@ public class CrearFormularioChoferMB {
             this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
-            System.out.println("NO SE RECONOCE CUENTA USUARIO");
+            //System.out.println("NO SE RECONOCE CUENTA USUARIO");
         }
 
         //si es un usario no permitido, o si está deshabilitado
         if (usuarioSesion == null || !usuarioSesion.getCargoidCargo().getNombreCargo().equals("Chofer") || usuarioSesion.getEstadoUsuario() == false) {
             falla = true;
-            System.out.println("ACC DENEGADO");
+            //System.out.println("ACC DENEGADO");
         }
 
         //en caso de falla, redireccionamos a la página de inicio de sesión
@@ -124,7 +124,7 @@ public class CrearFormularioChoferMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         } 
         
@@ -277,17 +277,18 @@ public class CrearFormularioChoferMB {
     }
     
     
-    public void validarDelitoRef(FacesContext context, UIComponent toValidate, Object value) {
+     public void validarObs(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
         if (!texto.equals("")) {
-            String mensaje = validacionVistasMensajesEJB.validarDelitoRef(texto);
+
+            String mensaje = validacionVistasMensajesEJB.verificarObservacion(texto);
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
             }
         }
-    } 
+    }
     
     public String getMotivo() {
         return motivo;

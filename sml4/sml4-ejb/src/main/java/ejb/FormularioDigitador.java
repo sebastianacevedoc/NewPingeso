@@ -10,21 +10,14 @@ import entity.Semaforo;
 import entity.TipoMotivo;
 import entity.Traslado;
 import entity.Usuario;
-import facade.AreaFacadeLocal;
-import facade.CargoFacadeLocal;
-import facade.EvidenciaFacadeLocal;
-import facade.FormularioEvidenciaFacadeLocal;
 import facade.FormularioFacadeLocal;
 import facade.SemaforoFacadeLocal;
-import facade.TipoEvidenciaFacadeLocal;
 import facade.TipoMotivoFacadeLocal;
-import facade.TipoUsuarioFacadeLocal;
 import facade.TrasladoFacadeLocal;
 import facade.UsuarioFacadeLocal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -40,21 +33,10 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
     private SemaforoFacadeLocal semaforoFacade;
 
     @EJB
-    private FormularioEvidenciaFacadeLocal formularioEvidenciaFacade;
-    @EJB
-    private EvidenciaFacadeLocal evidenciaFacade;
-    @EJB
-    private TipoEvidenciaFacadeLocal tipoEvidenciaFacade;
-    @EJB
     private FormularioFacadeLocal formularioFacade;
     @EJB
     private ValidacionEJBLocal validacionEJB;
-    @EJB
-    private TipoUsuarioFacadeLocal tipoUsuarioFacade;
-    @EJB
-    private AreaFacadeLocal areaFacade;
-    @EJB
-    private CargoFacadeLocal cargoFacade;
+   
     @EJB
     private UsuarioFacadeLocal usuarioFacade;
     @EJB
@@ -118,7 +100,7 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
 
     @Override
     public String crearTraslado(Formulario formulario, Usuario usuarioInicia, String usuarioRecibeRut, Date fechaT, String observaciones, String motivo) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "crearTraslado");
 
         if (formulario == null) {
@@ -207,7 +189,7 @@ public class FormularioDigitador implements FormularioDigitadorLocal {
 
     //** modificada para retornar una lista vacía si no encuentra resultados.
     private List<Traslado> traslados(Formulario formulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "traslados", formulario.toString());
         List<Traslado> retorno = trasladoFacade.findByNue(formulario);
         if (retorno == null) {

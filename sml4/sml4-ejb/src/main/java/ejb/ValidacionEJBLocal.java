@@ -15,6 +15,8 @@ import javax.ejb.Local;
 @Local
 public interface ValidacionEJBLocal {
 
+    public boolean cantCaract4(String dato);
+
     boolean compareFechas(Date fechaT, Date fechaFormulario);
 
     boolean val(String rut);
@@ -28,14 +30,20 @@ public interface ValidacionEJBLocal {
     boolean validarEmail(String email);
 
     String verificarUsuario(String user, String pass);
-    
+
     boolean validarCuentaUsuario(String cuentaUsuario);
-    
+
     boolean validarPassUsuario(String passUsuario);
-    
+
     boolean correoExiste(String email);
-    
+
     public boolean rutExiste(String rut);
-    
+
     public boolean nueExiste(int nue);
+
+    public boolean cantCaract(String dato);
+
+    public boolean cantCaract2(String dato);
+
+    public boolean cantCaract3(String dato);
 }

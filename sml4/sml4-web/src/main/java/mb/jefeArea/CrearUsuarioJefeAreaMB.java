@@ -65,7 +65,7 @@ public class CrearUsuarioJefeAreaMB {
     private List<String> areas;
 
     public CrearUsuarioJefeAreaMB() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "CrearUsuarioJefeAreaMB");
 
         this.facesContext = FacesContext.getCurrentInstance();
@@ -85,13 +85,13 @@ public class CrearUsuarioJefeAreaMB {
 
     @PostConstruct
     public void loadDatos() {
-       // logger.setLevel(Level.ALL);
+        // logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "loadDatosJefeArea");
-        
-         boolean falla = false;
+
+        boolean falla = false;
 
         if (usuarioSis != null) { //verifica si falla la carga de los datos que pasan por parámetro
-            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);                  
+            this.usuarioSesion = usuarioEJB.findUsuarioSesionByCuenta(this.usuarioSis);
         } else {
             falla = true;
         }
@@ -109,10 +109,10 @@ public class CrearUsuarioJefeAreaMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
-        }       
-        
+        }
+
         //Cargando cargos
         List<Cargo> cargos1 = formularioEJB.findAllCargos();
 
@@ -140,15 +140,15 @@ public class CrearUsuarioJefeAreaMB {
             httpServletRequest.getSession().setAttribute("rut", this.rut);
             httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
             logger.exiting(this.getClass().getName(), "crearUsuario", "crearUsuarioResultJefeArea");
-            System.out.println("SE PUDO CREAR");
+            //System.out.println("SE PUDO CREAR");
             return "crearUsuarioResultJefeArea?faces-redirect=true";
         }
         FacesContext fc = FacesContext.getCurrentInstance();
         UIComponent uic = UIComponent.getCurrentComponent(fc);
         fc.addMessage(uic.getClientId(fc), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", response));
-       
+
         logger.info("No se pudo crear el usuario");
-        System.out.println("NO SE PUDO CREAR");
+        //System.out.println("NO SE PUDO CREAR");
         logger.exiting(this.getClass().getName(), "CrearUsuarioJefeAreaMB", "crearUsuario");
         return "";
 
@@ -174,7 +174,7 @@ public class CrearUsuarioJefeAreaMB {
     }
 
     public String semaforo() {
-     //   logger.setLevel(Level.ALL);
+        //   logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "buscadorJefeArea");
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioSis);
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
@@ -183,7 +183,7 @@ public class CrearUsuarioJefeAreaMB {
     }
 
     public String salir() {
-      //  logger.setLevel(Level.ALL);
+        //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");
         logger.log(Level.FINEST, "usuario saliente {0}", this.usuarioSesion.getNombreUsuario());
         httpServletRequest1.removeAttribute("cuentaUsuario");
@@ -198,20 +198,20 @@ public class CrearUsuarioJefeAreaMB {
         if (!mensaje.equals("Exito")) { //caso rut invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-        } 
+        }
     }
 
     public void validarCorreo(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;
         String mensaje = validacionVistasMensajesEJB.checkCorreo(texto);
-        if(mensaje.equals("Exito")){//si el correo tiene el formato correcto, entonces validamos que este no exista.
+        if (mensaje.equals("Exito")) {//si el correo tiene el formato correcto, entonces validamos que este no exista.
             mensaje = validacionVistasMensajesEJB.validarCorreo(texto);
-        }                
+        }
         if (!mensaje.equals("Exito")) { //correo invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-        } 
+        }
     }
 
     public void validarCuenta(FacesContext context, UIComponent toValidate, Object value) {
@@ -221,7 +221,7 @@ public class CrearUsuarioJefeAreaMB {
         if (!mensaje.equals("Exito")) { //cuenta invalido
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
-        } 
+        }
     }
 
     public void validarApellido(FacesContext context, UIComponent toValidate, Object value) {
@@ -251,6 +251,11 @@ public class CrearUsuarioJefeAreaMB {
         if (texto.length() < 8) {
             ((UIInput) toValidate).setValid(false);
             context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Contraseña es inferior a 8 caracteres"));
+        }
+
+        if (texto.length() > 45) {
+            ((UIInput) toValidate).setValid(false);
+            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No puede exceder los 45 caracteres"));
         }
     }
 

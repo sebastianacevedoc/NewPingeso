@@ -9,9 +9,7 @@ import ejb.FormularioEJBLocal;
 import ejb.UsuarioEJBLocal;
 import ejb.ValidacionVistasMensajesEJBLocal;
 import entity.EdicionFormulario;
-import entity.Evidencia;
 import entity.Formulario;
-import entity.FormularioEvidencia;
 import entity.Traslado;
 import entity.Usuario;
 import java.util.ArrayList;
@@ -142,7 +140,7 @@ public class EditarPeritoETMB {
                 String uri = exc.getRequestContextPath();
                 exc.redirect(uri + "/faces/indexListo.xhtml");
             } catch (Exception e) {
-                System.out.println("POST CONSTRUCTOR FALLO");
+                //System.out.println("POST CONSTRUCTOR FALLO");
             }
         }
         
@@ -171,48 +169,7 @@ public class EditarPeritoETMB {
     public String editarFormulario() {
         //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "editarFormularioPerito");
-//        boolean datosIncorrectos = false;
-//        if (this.isParte == false && formulario.getNumeroParte() != 0) {
-//            parte = formulario.getNumeroParte();
-//            logger.log(Level.INFO, "MB parte -> {0}", parte);
-//            String mensaje = validacionVistasMensajesEJB.checkParte(formulario.getNumeroParte());
-//            if(mensaje.equals("Exito"))
-//                isParte = true;
-//            else{                
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-//                datosIncorrectos = true;
-//            }            
-//        }
-//        if (this.isRuc == false && formulario.getRuc() != null && !formulario.getRuc().equals("")) {
-//            ruc = formulario.getRuc();
-//            logger.log(Level.INFO, "MB ruc -> {0}", ruc);   
-//            String mensaje = validacionVistasMensajesEJB.checkRucE(formulario.getRuc());
-//            if(mensaje.equals("Exito"))
-//                isRuc = true;
-//            else{                
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-//                datosIncorrectos = true;
-//            }
-//        }
-//        if (this.isRit == false && formulario.getRit() != null && !formulario.getRit().equals("")) {
-//            rit = formulario.getRit();
-//            logger.log(Level.INFO, "MB rit -> {0}", rit);
-//            String mensaje = validacionVistasMensajesEJB.checkRitE(formulario.getRit());
-//            if(mensaje.equals("Exito"))
-//                isRit = true;
-//            else{                
-//                FacesContext.getCurrentInstance().addMessage("ruc", new FacesMessage(FacesMessage.SEVERITY_WARN, mensaje," "));
-//                datosIncorrectos = true;
-//            }
-//        }
-//        
-//        if(datosIncorrectos){
-//            httpServletRequest.getSession().setAttribute("nueF", this.nue);
-//            httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
-//            logger.exiting(this.getClass().getName(), "editarFormularioPerito", "");
-//            return "";
-//        }        
-
+   
         String response = formularioEJB.edicionFormulario(formulario, observacionEdicion, usuarioSesion, parte, ruc, rit);
         httpServletRequest.getSession().setAttribute("nueF", this.nue);
         httpServletRequest1.getSession().setAttribute("cuentaUsuario", this.usuarioS);
@@ -296,7 +253,7 @@ public class EditarPeritoETMB {
             }
 
         }
-        System.out.println(intercalado.toString());
+        //System.out.println(intercalado.toString());
     }
      
      
@@ -356,6 +313,18 @@ public class EditarPeritoETMB {
         }
     }
 
+     public void validarEdicion(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        String texto = (String) value;
+        if (!texto.equals("")) {
+            String mensaje = validacionVistasMensajesEJB.verificarEdicion(texto);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+    
     public String getCambia() {
         return cambia;
     }

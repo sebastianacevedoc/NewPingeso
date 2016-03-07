@@ -46,7 +46,7 @@ public class FormularioEvidenciaFacade extends AbstractFacade<FormularioEvidenci
     //   @NamedQuery(name = "FormularioEvidencia.findByFormulario", query = "SELECT f FROM FormularioEvidencia f WHERE f.formularioNUE = :formularioNUE")
     @Override
     public List<FormularioEvidencia> findByFormulario(Formulario formulario) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByFormulario", formulario);
         List<FormularioEvidencia> retorno = null;
         try {
@@ -93,7 +93,7 @@ public class FormularioEvidenciaFacade extends AbstractFacade<FormularioEvidenci
     
     @Override
     public List<FormularioEvidencia> findByTE(TipoEvidencia te) {
-        logger.setLevel(Level.ALL);
+        //logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "findByTE", te);
         List<FormularioEvidencia> retorno = null;
         try {

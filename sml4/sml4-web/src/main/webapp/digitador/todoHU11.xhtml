@@ -88,13 +88,13 @@
                                     <h:outputLabel  for="nue" value="N.U.E.:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="nue" value="#{todoMB.formulario.nue}" label="nue" disabled="true"></p:inputText>                                   
 
-                                    <h:outputLabel  for="del" value="Delito:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="del" value="Delito Ref:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="del" value="#{todoMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
                                     
                                     <h:outputLabel for="car" value="Cargo:" style="width: 120px"/>
                                     <p:inputText id="car" value="#{todoMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"/>
 
-                                    <h:outputLabel  for="dir" value="Dirección:" style="width:120px"></h:outputLabel>
+                                    <h:outputLabel  for="dir" value="Dirección de SS:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="dir" value="#{todoMB.formulario.direccionSS}" label="Dirección" disabled="true"></p:inputText>
 
                                     <h:outputLabel  for="lu" value="Lugar:" style="width:120px"></h:outputLabel>
@@ -234,8 +234,9 @@
                                     <p:message for="mot" display="text"/>
                                 </div><br />
 
-                                <h:outputLabel  for="obsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
-                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{todoMB.observacionesT}" disabled="#{todoMB.bloqueada}" queryDelay="750" minQueryLength="4" />
+                                <h:outputLabel  for="ObsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
+                                <p:inputTextarea id="ObsCC" rows="3" cols="90" value="#{todoMB.observacionesT}" disabled="#{todoMB.bloqueada}" queryDelay="750" minQueryLength="4" validator="#{todoMB.validarObs}"/>
+                                <p:message for="ObsCC" /> 
                                 <br />    
                                 <h:commandButton id="btnAceptar" value="Aceptar" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" action="#{todoMB.agregarTraslado()}" disabled="#{todoMB.bloqueada}"/>
                                 <h:commandButton value="Iniciar Cadena de Custodia" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" label="" action = "#{todoMB.nuevaCadena()}" ></h:commandButton>  
