@@ -27,36 +27,11 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
 
             return "No puede ser superior a la fecha actual";
         }
+      
         return "Exito";
     }
-
-    //delito, unidad, nombre, apellido, contraseña, mail   45
-    @Override
-    public String checkRuc(String ruc) {
-
-        if (ruc.equals("")) {
-            return "Debe ingresar el RUC para realizar la búsqueda";
-        }
-        if (ruc == null || !validacionEJB.checkRucOrRit(ruc)) {
-            //System.out.println("Error ruc ------> " + ruc);
-            return "El RUC ingresado es erróneo ";
-        }
-
-        //System.out.println("RUC ------> " + ruc);
-        return "Exito";
-    }
-
-    @Override
-    public String checkRit(String rit) {
-
-        if (rit.equals("")) {
-            return "El RIT ingresado es erróneo";
-        }
-        if (rit == null || !validacionEJB.checkRucOrRit(rit)) {
-            return "Debe ingresar un R.I.T. válido";
-        }
-        return "Exito";
-    }
+    
+    
 
     @Override
     public String checkRucE(String ruc) {
@@ -180,9 +155,6 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         if (validacionEJB.correoExiste(correo) == true) {
             return "Correo ya registrado";
         }
-
-        
-
         return "Exito";
     }
 
@@ -268,7 +240,6 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
         if (!validacionEJB.cantCaract3(texto)) {
             return "No puede exceder los 300 caracteres";
         }
-
         return "Exito";
     }
     
@@ -276,11 +247,20 @@ public class ValidacionVistasMensajesEJB implements ValidacionVistasMensajesEJBL
     public String verificarEdicion(String texto){
         if(!validacionEJB.cantCaract4(texto)){
             return "No puede exceder los 400 caracteres";
-        }
+        }        
+        return "Exito";
+    }    
+
+    @Override
+    public String checkFechaTraslado(Date fecha, Date traslado) {
         
+        //fecha actual no debe ser anterior al ultimo traslado
+        if (traslado.after(fecha)) {
+
+            return "No puede ser anterior al último traslado";
+        }
+      
         return "Exito";
     }
-
-    
     
 }

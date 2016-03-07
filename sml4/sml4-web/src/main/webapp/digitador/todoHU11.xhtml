@@ -90,7 +90,7 @@
 
                                     <h:outputLabel  for="del" value="Delito Ref:" style="width:120px"></h:outputLabel>
                                     <p:inputText id="del" value="#{todoMB.formulario.delitoRef}" label="Delito" disabled="true"></p:inputText>
-                                    
+
                                     <h:outputLabel for="car" value="Cargo:" style="width: 120px"/>
                                     <p:inputText id="car" value="#{todoMB.formulario.usuarioidUsuarioInicia.cargoidCargo.nombreCargo}" label="Cargo" disabled="true"/>
 
@@ -121,11 +121,6 @@
 
                                     <h:outputLabel  for="obs" value="Observaciones:" style="width:120px"></h:outputLabel>
                                     <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{todoMB.formulario.observaciones}" queryDelay="750" minQueryLength="4" disabled="true" />
-
-                                    <!--
-                                    <h:outputLabel for="evi" value="Evidencia:" style="width:120px"/>
-                                    <p:inputText id="evi" value="" label="Evidencia" disabled="true"></p:inputText>
-                                    -->
 
                                     <h:outputLabel  for="des" value="Descripción:" style="width:120px"></h:outputLabel>
                                     <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{todoMB.formulario.descripcionEspecieFormulario}" queryDelay="750" minQueryLength="4" disabled="true" />
@@ -175,7 +170,7 @@
                                     <h4 class="pull-center">Siguiente Traslado</h4><br />
                                     <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
                                         <h:outputLabel  style="width:120px" for="fech" value="Fecha:"></h:outputLabel> <!-- nose si poner la misma etiqueta -->
-                                        <p:calendar id="fech" pattern="dd/MM/yyyy HH:mm" locale="es" value="#{todoMB.fechaT}" disabled="#{todoMB.bloqueada}" converterMessage="fecha errónea" required="true" requiredMessage="Debe ingresar la fecha" validator="#{todoMB.validarFecha}"/>                                    
+                                        <p:calendar id="fech" pattern="dd/MM/yyyy HH:mm" locale="es" value="#{todoMB.fechaT}" disabled="#{todoMB.bloqueada}" converterMessage="fecha errónea" required="true" requiredMessage="Debe ingresar la fecha" validator="#{todoMB.validarFechaTraslado}"/>                                    
                                         <p:message for="fech" display="text"/>
                                     </h:panelGrid>
                                 </div>
@@ -206,18 +201,18 @@
                                 <br />
 
                                 <h4 class="pull-center">Recibe:</h4><br />
-                                
 
-                                    <div align="center">
-                                        <h:panelGrid columns="4" cellpadding="5" class="ui-grid">  
+
+                                <div align="center">
+                                    <h:panelGrid columns="4" cellpadding="5" class="ui-grid">  
                                         <h:outputLabel  for="lev2" value="Recibida por*:" style="width:120px"></h:outputLabel>
                                         <p:selectOneMenu id="lev2" value="#{todoMB.usuarioRecibe}" disabled="#{todoMB.bloqueada}" style="width:205px" required="true" requiredMessage="Debe seleccionar el usuario">
                                             <f:selectItem itemLabel="Seleccione" itemValue="" />
                                             <f:selectItems value="#{todoMB.usuarios}" />                                        
                                         </p:selectOneMenu>
                                         <p:message for="lev2" display="text"/> 
-                                        </h:panelGrid>
-                                    </div>
+                                    </h:panelGrid>
+                                </div>
                                 <br />
 
                                 <br />
@@ -231,7 +226,7 @@
                                         <f:selectItem itemValue="Traslado" itemLabel="Traslado" />
                                         <f:selectItem itemValue="Custodia" itemLabel="Custodia" />
                                     </h:selectOneRadio><br />
-                                    <p:message for="mot" display="text"/>
+                                    <p:message for="mot" display="text" />
                                 </div><br />
 
                                 <h:outputLabel  for="ObsCC" value="Observaciones:" style="width:120px"></h:outputLabel>
@@ -240,10 +235,13 @@
                                 <br />    
                                 <h:commandButton id="btnAceptar" value="Aceptar" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" action="#{todoMB.agregarTraslado()}" disabled="#{todoMB.bloqueada}"/>
                                 <h:commandButton value="Iniciar Cadena de Custodia" style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" label="" action = "#{todoMB.nuevaCadena()}" ></h:commandButton>  
-                                
+                                <p:message for="btnAceptar" /> 
                                 <br />
 
- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                            </h:form>
+                            <h:form>
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                             </h:form>
 
                         </div>

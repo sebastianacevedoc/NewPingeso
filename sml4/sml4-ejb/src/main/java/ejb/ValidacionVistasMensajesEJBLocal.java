@@ -17,15 +17,17 @@ public interface ValidacionVistasMensajesEJBLocal {
 
     public String verificarEdicion(String texto);
 
-    public String checkRuc(String ruc);
+    //public String checkRuc(String ruc);
 
-    public String checkRit(String rit);
+   // public String checkRit(String rit);
 
     public String checkRucE(String ruc);
 
     public String checkRitE(String rit);
 
     public String checkFecha(Date fecha);
+    
+    public String checkFechaTraslado(Date fecha, Date traslado);
 
     public String checkCorreo(String correo);
 

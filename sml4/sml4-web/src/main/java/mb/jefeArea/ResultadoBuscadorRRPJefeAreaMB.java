@@ -171,7 +171,7 @@ public class ResultadoBuscadorRRPJefeAreaMB {
             logger.exiting(this.getClass().getName(), "buscarFormularioJefeArea", "buscadorJefeAreaResultTE");
             return "buscadorJefeAreaResultTE.xhtml?faces-redirect=true";
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "no existe", "Datos no válidos"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Problema al cargar los datos", "Intente más tarde"));
         logger.info("formulario no encontrado");
         logger.exiting(this.getClass().getName(), "buscarFormularioJefeArea", "buscadorJefeArea");
         return "";

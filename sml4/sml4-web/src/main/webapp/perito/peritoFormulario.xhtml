@@ -105,7 +105,7 @@
                                         <br />
 
                                         <p:outputLabel  for="del" value="Delito Ref*:" style="width:120px"></p:outputLabel>
-                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref" validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
+                                        <p:inputText id="del" value="#{crearFormularioPeritoMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref." validator="#{crearFormularioPeritoMB.validarDLU}" ></p:inputText>
                                         <p:message for="del" /> 
                                         <br />
 
@@ -141,78 +141,78 @@
 
                                     </h:panelGrid> <br />
 
-
-                                    <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
-
-                                        <p:outputLabel  for="Observaciones" value="Observaciones:" style="width:120px"></p:outputLabel>
-                                        <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioPeritoMB.observacion}" queryDelay="750" minQueryLength="4" validator="#{crearFormularioPeritoMB.validarObs}" />
-                                        <p:message for="Observaciones" /> 
-                                    </h:panelGrid>  
-                                    <br />  
-
-
-                                    <h:panelGrid columns="1" cellpadding="5" class="ui-grid">    
-
-                                        <p:outputLabel  for="descripcion" value="Descripción de la especie:" ></p:outputLabel>
-                                        <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{crearFormularioPeritoMB.descripcion}" queryDelay="750" minQueryLength="4" />
-                                        <p:message for="descripcion" /> 
-                                    </h:panelGrid>                                                           
                                     
+                                        <h:panelGrid columns="1" cellpadding="5" class="ui-grid">
 
-                                    <!-- cosas nuevas-->
-                                    <br />
-                                    <h4 class="pull-center">Entrega:</h4> <br />
+                                            <p:outputLabel  for="Observaciones" value="Observaciones:" style="width:120px"></p:outputLabel>
+                                            <p:inputTextarea id="Observaciones" rows="3" cols="90" value="#{crearFormularioPeritoMB.observacion}" queryDelay="750" minQueryLength="4" validator="#{crearFormularioPeritoMB.validarObs}" />
+                                            <p:message for="Observaciones" /> 
+                                        </h:panelGrid>  
+                                        <br />  
 
-                                    <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
 
-                                        <p:outputLabel  style="width:120px" for="UnE" value="Área:"></p:outputLabel> <!-- nose si poner la misma etiqueta -->
-                                        <p:inputText id="UnE" value="#{crearFormularioPeritoMB.usuarioSesion.areaidArea.nombreArea}" label="Área" disabled="true">
-                                        </p:inputText>
-                                        <p:message for="UnE" /> 
+                                        <h:panelGrid columns="1" cellpadding="5" class="ui-grid">    
 
-                                    </h:panelGrid>
-                                    <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
+                                            <p:outputLabel  for="descripcion" value="Descripción de la especie:" ></p:outputLabel>
+                                            <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{crearFormularioPeritoMB.descripcion}" queryDelay="750" minQueryLength="4" validator="#{crearFormularioPeritoMB.validarObs}" />
+                                            <p:message for="descripcion" /> 
+                                        </h:panelGrid>                                                           
 
-                                        <p:outputLabel  style="width:120px" for="CE" value="Cargo:"></p:outputLabel> <!-- nose si poner la misma etiqueta -->
-                                        <p:inputText id="CE" value="#{crearFormularioPeritoMB.usuarioSesion.cargoidCargo.nombreCargo}" label="Cargo" disabled="true">
-                                        </p:inputText>
-                                        <p:message for="CE"/> 
+                                    
+                                        <!-- cosas nuevas-->
+                                        <br />
+                                        <h4 class="pull-center">Entrega:</h4> <br />
 
-                                    </h:panelGrid>
+                                        <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
 
-                                    <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
+                                            <p:outputLabel  style="width:120px" for="UnE" value="Área:"></p:outputLabel> <!-- nose si poner la misma etiqueta -->
+                                            <p:inputText id="UnE" value="#{crearFormularioPeritoMB.usuarioSesion.areaidArea.nombreArea}" label="Área" disabled="true">
+                                            </p:inputText>
+                                            <p:message for="UnE" /> 
 
-                                        <p:outputLabel  style="width:120px" for="nomE" value="Nombre:"></p:outputLabel>
-                                        <p:inputText id="nomE" value="#{crearFormularioPeritoMB.usuarioSesion.nombreUsuario} #{crearFormularioPeritoMB.usuarioSesion.apellidoUsuario}" label="Nombre" disabled="true">
-                                        </p:inputText>
-                                        <p:message for="nomE" /> 
-
-                                    </h:panelGrid>
-
-                                    <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
-
-                                        <h:outputLabel  style="width:120px" for="runE" value="R.U.N.:"></h:outputLabel>
-                                        <p:inputText id="runE" value="#{crearFormularioPeritoMB.usuarioSesion.rutUsuario}" label="R.U.N." disabled="true">
-                                        </p:inputText>
-                                        <p:message for="runE" /> 
-
-                                    </h:panelGrid>
-                                    <br />
-                                    <div align="center">
-
-                                        <h:panelGrid columns="5">    
-                                            <h:outputLabel style="width:120px" for="check" value="Motivo Traslado*: "></h:outputLabel> &nbsp;&nbsp;&nbsp;&nbsp;
-                                            <p:selectOneRadio id="check" layout="pageDirection" value="#{crearFormularioPeritoMB.motivo}" style="" required="true" requiredMessage="Debe ingresar Motivo de Traslado"> 
-                                                <f:selectItem itemValue="Peritaje" itemLabel="Peritaje " />
-                                                <f:selectItem itemValue="Traslado" itemLabel="Traslado " />
-                                                <f:selectItem itemValue="Custodia" itemLabel="Custodia " />
-                                            </p:selectOneRadio>
-                                            <p:message for="check" />
                                         </h:panelGrid>
-                                    </div><br />
+                                        <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
 
-                                    <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{crearFormularioPeritoMB.iniciarFormulario()}"  />
-                                    <!-- <p:messages id="messages" closable="true" />--> 
+                                            <p:outputLabel  style="width:120px" for="CE" value="Cargo:"></p:outputLabel> <!-- nose si poner la misma etiqueta -->
+                                            <p:inputText id="CE" value="#{crearFormularioPeritoMB.usuarioSesion.cargoidCargo.nombreCargo}" label="Cargo" disabled="true">
+                                            </p:inputText>
+                                            <p:message for="CE"/> 
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
+
+                                            <p:outputLabel  style="width:120px" for="nomE" value="Nombre:"></p:outputLabel>
+                                            <p:inputText id="nomE" value="#{crearFormularioPeritoMB.usuarioSesion.nombreUsuario} #{crearFormularioPeritoMB.usuarioSesion.apellidoUsuario}" label="Nombre" disabled="true">
+                                            </p:inputText>
+                                            <p:message for="nomE" /> 
+
+                                        </h:panelGrid>
+
+                                        <h:panelGrid columns="5" cellpadding="5" class="ui-grid">
+
+                                            <h:outputLabel  style="width:120px" for="runE" value="R.U.N.:"></h:outputLabel>
+                                            <p:inputText id="runE" value="#{crearFormularioPeritoMB.usuarioSesion.rutUsuario}" label="R.U.N." disabled="true">
+                                            </p:inputText>
+                                            <p:message for="runE" /> 
+
+                                        </h:panelGrid>
+                                        <br />
+                                        <div align="center">
+
+                                            <h:panelGrid columns="5">    
+                                                <h:outputLabel style="width:120px" for="check" value="Motivo Traslado*: "></h:outputLabel> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <p:selectOneRadio id="check" layout="pageDirection" value="#{crearFormularioPeritoMB.motivo}" style="" required="true" requiredMessage="Debe ingresar Motivo de Traslado"> 
+                                                    <f:selectItem itemValue="Peritaje" itemLabel="Peritaje " />
+                                                    <f:selectItem itemValue="Traslado" itemLabel="Traslado " />
+                                                    <f:selectItem itemValue="Custodia" itemLabel="Custodia " />
+                                                </p:selectOneRadio>
+                                                <p:message for="check" />
+                                            </h:panelGrid>
+                                        </div><br />
+
+                                        <h:commandButton style="background-color: #f4f4f4; color: #555; border-bottom-color: #555;" class="btn btn-primary" id="btnAceptar" value="Aceptar" action="#{crearFormularioPeritoMB.iniciarFormulario()}"  />
+                                        <!-- <p:messages id="messages" closable="true" />--> 
                                 </h:form> <br />
                             </div>
                         </div>

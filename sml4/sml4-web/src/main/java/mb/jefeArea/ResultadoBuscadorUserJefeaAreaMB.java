@@ -192,10 +192,6 @@ public class ResultadoBuscadorUserJefeaAreaMB {
         return "semaforoJefeArea.xhtml?faces-redirect=true";
     }
 
-    public String estadisticas() {
-        return "";
-    }
-
     public String salir() {
       //  logger.setLevel(Level.ALL);
         logger.entering(this.getClass().getName(), "salirJefeArea");

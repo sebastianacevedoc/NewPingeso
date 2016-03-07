@@ -36,8 +36,6 @@
  
                             <li role="presentation"><h:commandLink id="cs3" action="#{resultadoBuscadorUserJefeaAreaMB.semaforo()}" value="Semáforo"></h:commandLink></li>
  
-                            <!--<li role="presentation"><h:commandLink id="cs4" action="{resultadoBuscadorUserJefeaAreaMB.estadisticas()}" value="Estadísticas"></h:commandLink></li>-->
- 
                             <li role="presentation"> <h:commandLink id="cs5" action="#{resultadoBuscadorUserJefeaAreaMB.salir()}" value="Cerrar sesión"></h:commandLink> </li>
  
                         </ul>
@@ -85,9 +83,6 @@
                                                 <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.cargoidCargo.nombreCargo} - #{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.areaidArea.nombreArea}"/>                                                
                                             </p:column>
                                             
-                                            <!--<p:column headerText="Área">
-                                                <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.areaidArea.nombreArea}"/>                                                
-                                            </p:column>-->
                                             
                                             <p:column headerText="Correo">
                                                 <h:outputText value="#{resultadoBuscadorUserJefeaAreaMB.usuarioBuscado.mailUsuario}"/>                                                

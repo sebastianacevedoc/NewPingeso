@@ -104,27 +104,27 @@
                                         <br />
 
                                         <h:outputLabel  for="del" value="Delito Ref*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="del" value="#{crearFormularioMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar el delito" validator ="#{crearFormularioMB.validarDLU}" ></p:inputText>
+                                        <p:inputText id="del" value="#{crearFormularioMB.delito}" label="Delito" required="true" requiredMessage="Debe ingresar Delito Ref." validator ="#{crearFormularioMB.validarDLU}" ></p:inputText>
                                         <p:message for="del" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="dir" value="Dirección de SS*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="dir" value="#{crearFormularioMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar la dirección" validator = "#{crearFormularioMB.validarDLU}"></p:inputText>
+                                        <p:inputText id="dir" value="#{crearFormularioMB.direccionSS}" label="Dirección" required="true" requiredMessage="Debe ingresar Dirección de SS" validator = "#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="dir" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="lu" value="Lugar*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="lu" value="#{crearFormularioMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar el lugar" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
+                                        <p:inputText id="lu" value="#{crearFormularioMB.lugar}" label="Lugar" required="true" requiredMessage="Debe ingresar Lugar" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="lu" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="uni" value="Unidad Policial*:" style="width:120px"></h:outputLabel>
-                                        <p:inputText id="uni" value="#{crearFormularioMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar la unidad policial" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
+                                        <p:inputText id="uni" value="#{crearFormularioMB.unidadPolicial}" label="Unidad" required="true" requiredMessage="Debe ingresar Unidad Policial" validator="#{crearFormularioMB.validarDLU}"></p:inputText>
                                         <p:message for="uni" display="text"/> 
                                         <br />
 
                                         <h:outputLabel  for="lev" value="Levantada por*:" style="width:120px"></h:outputLabel>
-                                        <p:selectOneMenu id="lev" value="#{crearFormularioMB.levantadaPor}" style="width:205px" required="true" requiredMessage="Debe seleccionar el usuario">
+                                        <p:selectOneMenu id="lev" value="#{crearFormularioMB.levantadaPor}" style="width:205px" required="true" requiredMessage="Debe seleccionar usuario">
                                             <f:selectItem itemLabel="Seleccione" itemValue="" />
                                             <f:selectItems value="#{crearFormularioMB.usuarios}" />                                        
                                         </p:selectOneMenu>
@@ -132,7 +132,7 @@
                                         <br />
 
                                         <h:outputLabel for="fecha" value="Fecha*: " style="width:120px" />
-                                        <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" required="true" requiredMessage="Debe ingresar fecha" converterMessage="fecha errónea" value="#{crearFormularioMB.fecha}" validator="#{crearFormularioMB.validarFecha}"/>
+                                        <p:calendar id="fecha" pattern="dd/MM/yyyy HH:mm" locale="es" required="true" requiredMessage="Debe ingresar fecha" converterMessage="Fecha errónea" value="#{crearFormularioMB.fecha}" validator="#{crearFormularioMB.validarFecha}"/>
                                         <p:message for="fecha" display="text"/>
                                         <br />
 
@@ -151,7 +151,8 @@
 
                                     <h:panelGrid columns="1" cellpadding="5" class="ui-grid">    
                                         <h:outputLabel  for="descripcion" value="Descripción de la especie:" ></h:outputLabel>
-                                        <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{crearFormularioMB.descripcion}" queryDelay="750" minQueryLength="4" />
+                                        <p:inputTextarea id="descripcion" rows="3" cols="90" value="#{crearFormularioMB.descripcion}" queryDelay="750" minQueryLength="4" validator="#{crearFormularioMB.validarObs}" />
+                                        <p:message for="descripcion" /> 
                                     </h:panelGrid>                                                           
 
 

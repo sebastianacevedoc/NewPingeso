@@ -146,24 +146,6 @@ public class BuscadorChoferMB {
         return "choferFormulario?faces-redirect=true";
     }
     
-//    /* valida suponiendo que se ha ingresado texto, ya que la vista lo requiere obligatoriamente. */
-//    public void validarNUE(FacesContext context, UIComponent toValidate, Object value) {
-//        context = FacesContext.getCurrentInstance();
-//        String texto = (String) value;
-//        String mensaje = "NUE erróneo";
-//        try {
-//            int nueIngresado = Integer.parseInt(texto);
-//            this.nue = nueIngresado;
-//            if (nueIngresado <= 0) {
-//                ((UIInput) toValidate).setValid(false);
-//                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//            }
-//        } catch (NumberFormatException nfe) {
-//            ((UIInput) toValidate).setValid(false);
-//            context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, mensaje, ""));
-//        }
-//    }
-    
     public void validarNue(FacesContext context, UIComponent toValidate, Object value) {
         context = FacesContext.getCurrentInstance();
         String texto = (String) value;

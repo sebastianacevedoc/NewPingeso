@@ -235,7 +235,7 @@ public class TodoMB {
         }
 
         if (usuarioRecibeRut == null || usuarioRecibeRut.equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T.", " "));
 
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar el rut");
             return "";
@@ -250,7 +250,7 @@ public class TodoMB {
             }
         }
         if (usuarioRecibe == null || usuarioRecibe.equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un nombre válido", " "));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un Nombre ", " "));
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar un nombre valido");
             return "";
 
@@ -330,6 +330,23 @@ public class TodoMB {
 
         if (f != null) {
             mensaje = validacionVistasMensajesEJB.checkFecha(f);
+            if (!mensaje.equals("Exito")) {
+                ((UIInput) toValidate).setValid(false);
+                context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));
+            }
+        }
+    }
+    
+    public void validarFechaTraslado(FacesContext context, UIComponent toValidate, Object value) {
+        context = FacesContext.getCurrentInstance();
+        Date f = (Date) value;
+        String mensaje = "";
+
+        if (f != null) {
+            mensaje = validacionVistasMensajesEJB.checkFecha(f);
+            if( !trasladosList.isEmpty() && trasladosList.get(trasladosList.size() - 1) != null ){
+                mensaje = validacionVistasMensajesEJB.checkFechaTraslado(f, trasladosList.get(trasladosList.size()-1).getFechaEntrega());    
+            }            
             if (!mensaje.equals("Exito")) {
                 ((UIInput) toValidate).setValid(false);
                 context.addMessage(toValidate.getClientId(context), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", mensaje));

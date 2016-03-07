@@ -182,7 +182,7 @@ public class ForTrasladoMB {
         }
 
         if (usuarioRecibeRut == null || usuarioRecibeRut.equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T. válido", " "));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un R.U.T.", " "));
 
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar el rut");
             return "";
@@ -197,7 +197,7 @@ public class ForTrasladoMB {
             }
         }
         if (usuarioRecibe == null || usuarioRecibe.equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar un nombre válido", " "));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar Nombre", " "));
             logger.exiting(this.getClass().getName(), "agregarTrasladoDigitador", "Debe ingresar un nombre valido");
             return "";
 
